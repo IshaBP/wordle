@@ -1,6 +1,5 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  preset: "ts-jest",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/test-setup.ts"],
   collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!<rootDir>/node_modules/"],
