@@ -1,15 +1,21 @@
 import { match } from "./match";
 
 describe("Match functionality", () => {
-  it.todo(
-    "should return null chosenWord or guessWord or both are not in dictionary"
-  );
-  it.todo(
-    "should throw an error if chosenWord and guessWord are not of equal length"
-  );
+  it("should return null if chosenWord or guessWord or both are not in dictionary", () => {
+    expect(match("abcde", "fghij")).toBeNull();
+    expect(match("basis", "fghij")).toBeNull();
+    expect(match("abcde", "basis")).toBeNull();
+    expect(match("baths", "basis")).not.toBeNull();
+  });
+
+  it("should throw an error if chosenWord and guessWord are not of equal length", () => {
+    expect(() => match("basis", "background")).toThrow();
+  });
+
   it.todo(
     "should return result of length equal to chosenWord indicating matches"
   );
+
   it.todo(
     'should return "MATCH" for the places in chosenWord where the letters in guessWord match'
   );
