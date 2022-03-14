@@ -12,16 +12,30 @@ describe("Match functionality", () => {
     expect(() => match("basis", "background")).toThrow();
   });
 
-  it.todo(
-    "should return result of length equal to chosenWord indicating matches"
-  );
+  it("should return result of length equal to chosenWord", () => {
+    expect(match("basis", "basis")).toHaveLength(5);
+  });
 
-  it.todo(
-    'should return "MATCH" for the places in chosenWord where the letters in guessWord match'
-  );
-  it.todo(
-    'should return "NO_MATCH" for the places in chosenWord where the letters in guessWord do not match'
-  );
+  it('should return "MATCH" for the places in chosenWord where the letters in guessWord match', () => {
+    expect(match("basis", "basis")).toEqual([
+      "MATCH",
+      "MATCH",
+      "MATCH",
+      "MATCH",
+      "MATCH",
+    ]);
+  });
+
+  it('should return "NO_MATCH" for the places in chosenWord where the letters in guessWord do not match', () => {
+    expect(match("ounce", "basis")).toEqual([
+      "NO_MATCH",
+      "NO_MATCH",
+      "NO_MATCH",
+      "NO_MATCH",
+      "NO_MATCH",
+    ]);
+  });
+
   it.todo(
     'should return "PARTIAL_MATCH" for the letters which are present in guessWord but at a different position than chosenWord'
   ); // baton, beads
