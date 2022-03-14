@@ -36,11 +36,30 @@ describe("Match functionality", () => {
     ]);
   });
 
-  it.todo(
-    'should return "PARTIAL_MATCH" for the letters which are present in guessWord but at a different position than chosenWord'
-  ); // baton, beads
-  it.todo(
-    "should try to match guessWord only for the as many instances of a letter as are present in chosenWord"
-  ); // baths basis
-  it.todo('should prioritize "MATCH" more than "PARTIAL_MATCH"'); // baths basis
+  it('should return "PARTIAL_MATCH" for the letters which are present in guessWord but at a different position than chosenWord', () => {
+    expect(match("angel", "glean")).toEqual([
+      "PARTIAL_MATCH",
+      "PARTIAL_MATCH",
+      "PARTIAL_MATCH",
+      "PARTIAL_MATCH",
+      "PARTIAL_MATCH",
+    ]);
+  });
+
+  it("should try to match guessWord only for as many instances of a letter as are present in chosenWord", () => {
+    const result = match("baths", "basis");
+    expect(result?.filter((res) => res === "MATCH")).toHaveLength(3);
+    expect(result?.filter((res) => res === "NO_MATCH")).toHaveLength(2);
+    expect(result?.filter((res) => res === "PARTIAL_MATCH")).toHaveLength(0);
+  });
+
+  it('should prioritize "MATCH" more than "PARTIAL_MATCH"', () => {
+    expect(match("baths", "basis")).toEqual([
+      "MATCH",
+      "MATCH",
+      "NO_MATCH",
+      "NO_MATCH",
+      "MATCH",
+    ]);
+  });
 });
