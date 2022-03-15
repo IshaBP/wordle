@@ -5,6 +5,8 @@ const dictionary = [
   "baths",
   "basis",
   "glean",
+  "nudge",
+  "nuked",
   "ounce",
 ];
 

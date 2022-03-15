@@ -46,6 +46,16 @@ describe("Match functionality", () => {
     ]);
   });
 
+  it('should return "MATCH", "NO_MATCH" and "PARTIAL_MATCH" at appropriate positions', () => {
+    expect(match("nudge", "nuked")).toEqual([
+      "MATCH",
+      "MATCH",
+      "NO_MATCH",
+      "PARTIAL_MATCH",
+      "PARTIAL_MATCH",
+    ]);
+  });
+
   it("should try to match guessWord only for as many instances of a letter as are present in chosenWord", () => {
     const result = match("baths", "basis");
     expect(result?.filter((res) => res === "MATCH")).toHaveLength(3);
