@@ -29,6 +29,7 @@ export const match = (
 
   const result: Status[] = [];
 
+  // TODO: Abstract word iterator
   for (let idx = 0; idx < chosenWord.length; idx++) {
     if (chosenWord[idx] === guessWord[idx]) {
       result[idx] = "MATCH";
