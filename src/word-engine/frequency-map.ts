@@ -3,21 +3,24 @@ export class FrequencyMap {
 
   constructor(word: string) {
     for (let idx = 0; idx < word.length; idx++) {
-      const letter = word[idx];
-      if (this.map.has(letter)) {
-        this.map.set(letter, this.map.get(letter) + 1);
-      } else {
-        this.map.set(letter, 1);
-      }
+      this.increment(word[idx]);
     }
   }
 
   has(letter: string): boolean {
-    return this.map.has(letter) && this.map.get(letter);
+    return this.map.has(letter) && this.map.get(letter) !== 0;
   }
 
   get(letter: string): number {
     return this.map.get(letter) ?? 0;
+  }
+
+  increment(letter: string): void {
+    if (this.has(letter)) {
+      this.map.set(letter, this.map.get(letter) + 1);
+    } else {
+      this.map.set(letter, 1);
+    }
   }
 
   decrement(letter: string): void {
