@@ -1,10 +1,12 @@
+import { iterateWord } from "./util";
+
 export class FrequencyMap {
   #map = new Map<string, number>();
 
   constructor(word: string) {
-    for (let idx = 0; idx < word.length; idx++) {
-      this.increment(word[idx]);
-    }
+    iterateWord(word, (letter: string) => {
+      this.increment(letter);
+    });
   }
 
   has(letter: string): boolean {
