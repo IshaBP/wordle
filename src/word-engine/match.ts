@@ -1,4 +1,5 @@
 import { isInDictionary } from "./dictionary";
+import { FrequencyMap } from "./frequency-map";
 
 export const match = (
   chosenWord: string,
@@ -16,24 +17,16 @@ export const match = (
     return new Array(chosenWord.length).fill("MATCH");
   }
 
-  // TODO: Abstract frequency map
-  const freqMap = new Map();
-  for (let idx = 0; idx < chosenWord.length; idx++) {
-    const letter = chosenWord[idx];
-    if (freqMap.has(letter)) {
-      freqMap.set(letter, freqMap.get(letter) + 1);
-    } else {
-      freqMap.set(letter, 1);
-    }
-  }
-
+  const freqMap = new FrequencyMap(chosenWord);
   const result: Status[] = [];
 
   // TODO: Abstract word iterator
   for (let idx = 0; idx < chosenWord.length; idx++) {
-    if (chosenWord[idx] === guessWord[idx]) {
+    const guess = guessWord[idx];
+
+    if (chosenWord[idx] === guess) {
       result[idx] = "MATCH";
-      freqMap.set(guessWord[idx], freqMap.get(guessWord[idx]) - 1);
+      freqMap.decrement(guess);
     } else {
       result[idx] = "NO_MATCH";
     }
@@ -42,9 +35,9 @@ export const match = (
   for (let idx = 0; idx < chosenWord.length; idx++) {
     const guess = guessWord[idx];
 
-    if (result[idx] === "NO_MATCH" && freqMap.get(guess)) {
+    if (result[idx] === "NO_MATCH" && freqMap.has(guess)) {
       result[idx] = "PARTIAL_MATCH";
-      freqMap.set(guess, freqMap.get(guess) - 1);
+      freqMap.decrement(guess);
     }
   }
 
