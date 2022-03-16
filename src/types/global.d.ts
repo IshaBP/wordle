@@ -1,1 +1,1 @@
-type Status = "MATCH" | "NO_MATCH" | "PARTIAL_MATCH";
+type MatchStatus = "MATCH" | "NO_MATCH" | "PARTIAL_MATCH";
