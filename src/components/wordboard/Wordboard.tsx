@@ -1,3 +1,6 @@
+import { FlexBox } from "react-styled-flex";
+import styled from "styled-components";
+
 interface Letter {
   key: KeyCode;
   matchStatus: MatchStatus;
@@ -12,16 +15,35 @@ export interface WordboardProps {
 
 export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
   return (
-    <section>
+    <FlexBox as={"section"} column gap={"1rem"}>
       {game.map((guessWord, wordIdx) => (
-        <div key={wordIdx} aria-label={"guess-word"}>
+        <FlexBox key={wordIdx} aria-label={"guess-word"} gap={"1rem"}>
           {guessWord.map((letter, letterIdx) => (
-            <span key={letterIdx} aria-label={"letter"}>
-              {letter.matchStatus}
-            </span>
+            <Letter
+              key={letterIdx}
+              aria-label={"letter"}
+              status={letter.matchStatus}
+            >
+              {letter.key}
+            </Letter>
           ))}
-        </div>
+        </FlexBox>
       ))}
-    </section>
+    </FlexBox>
   );
 };
+
+const Letter = styled.div<{ status: MatchStatus }>`
+  border: 1px solid black;
+  padding: 5px;
+  background-color: ${({ status }) => {
+    if (status === "MATCH") {
+      return "green";
+    } else if (status === "PARTIAL_MATCH") {
+      return "yellow";
+    } else if (status === "NO_MATCH") {
+      return "grey";
+    }
+    return undefined;
+  }};
+`;
