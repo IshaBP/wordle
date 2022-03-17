@@ -1,7 +1,14 @@
+import { render } from "@testing-library/react";
 import { Keyboard } from "./Keyboard";
 
 describe("Keyboard", () => {
-  it.todo("should display all alphabets");
+  it.concurrent("should display all alphabets", () => {
+    const { getAllByRole } = render(<Keyboard />);
+    const keys = getAllByRole("button");
+
+    expect(keys).toHaveLength(28);
+  });
+
   it.todo("should display enter and backspace keys");
   it.todo("should display all keys in QWERTY order");
   it.todo(
