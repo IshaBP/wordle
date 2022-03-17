@@ -90,7 +90,7 @@ describe("Keyboard", () => {
     onKey.mockReset();
   });
 
-  it.only("should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>", () => {
+  it("should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>", () => {
     const onKey = jest.fn();
     render(<Keyboard onKey={onKey} />);
 
@@ -99,7 +99,7 @@ describe("Keyboard", () => {
     expect(onKey).not.toBeCalled();
 
     // special characters
-    userEvent.keyboard("~`!@#$%^&*(){}[]:';\"<>,//._-=+-");
+    userEvent.keyboard("}]~`!@#$%^&*():';\"<>,//._-=+-");
     expect(onKey).not.toBeCalled();
 
     // tab
