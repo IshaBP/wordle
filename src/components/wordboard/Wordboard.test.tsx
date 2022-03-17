@@ -1,7 +1,6 @@
 import {
   getAllByLabelText,
   getAllByText,
-  getByText,
   render,
   screen,
 } from "@testing-library/react";
@@ -75,14 +74,6 @@ describe("Wordboard", () => {
   });
 
   it.todo("should animate if latest row status is 'INVALID'");
-
-  // Move to toast
-  it.todo(
-    "should not prompt with 'Not a valid word' if latest row status is 'ACCEPTED'"
-  );
-  it.todo(
-    "should prompt with 'Not a valid word' if latest row status is 'INVALID'"
-  ); // word length less than 5 or word not in dictionary
 });
 
 const wordLength = 5;

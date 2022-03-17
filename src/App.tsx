@@ -1,12 +1,9 @@
-import { useState } from "react";
-import { Keyboard } from "./components/keyboard/Keyboard";
+import { Game } from "./game/Game";
 
-function App() {
+export const App = () => {
   return (
     <main className="App">
-      <Keyboard onKey={() => {}} />
+      <Game />
     </main>
   );
-}
-
-export default App;
+};
