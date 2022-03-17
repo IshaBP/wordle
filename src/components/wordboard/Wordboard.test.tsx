@@ -30,7 +30,7 @@ describe("Wordboard", () => {
     );
 
     for (let guessWord of screen.getAllByLabelText("guess-word")) {
-      expect(getAllByText(guessWord, "a")).toHaveLength(5);
+      expect(getAllByText(guessWord, "A")).toHaveLength(5);
     }
   });
 

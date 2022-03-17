@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as wordEngine from "../word-engine";
 import { Game } from "./Game";
+
+jest.mock("../word-engine");
+const mockedWordEngine = wordEngine as jest.Mocked<typeof wordEngine>;
 
 describe("Game", () => {
   it("should display Wordboard and Keyboard", () => {
@@ -59,9 +63,30 @@ describe("Game", () => {
     expect(getAlphabetAtIndex(0, 4)).toBe("");
   });
 
-  it.todo("should submit guess word on pressing enter on Keyboard");
+  it("should not submit guess word if less than 5 alphabets are entered and enter is pressed", () => {
+    render(<Game />);
+
+    userEvent.keyboard("a");
+    userEvent.keyboard("b");
+    userEvent.keyboard("{enter}");
+    expect(mockedWordEngine.match).not.toHaveBeenCalled();
+  });
+
+  it.only("should submit guess word if 5 alphabets are entered and enter is pressed", () => {
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("check");
+    render(<Game />);
+
+    userEvent.keyboard("a");
+    userEvent.keyboard("b");
+    userEvent.keyboard("c");
+    userEvent.keyboard("d");
+    userEvent.keyboard("e");
+    userEvent.keyboard("{enter}");
+    expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
+    expect(mockedWordEngine.match).toHaveBeenCalledWith("check", "abcde");
+  });
+
   it.todo("should submit guess word only if it exists in dictionary");
-  it.todo("should submit guess word only all 5 alphabets are entered");
   it.todo("should proceed to next row when guessed word is partially matching");
   it.todo(
     "should not proceed to next row when guessed word is completely matching"
