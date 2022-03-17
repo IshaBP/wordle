@@ -10,17 +10,56 @@ describe("Game", () => {
     screen.getByLabelText("keyboard");
   });
 
-  it("should display alphabet on Wordboard on clicking it on on-screen Keyboard", () => {
+  it("should display alphabet on Wordboard on pressing it on Keyboard", () => {
     render(<Game />);
 
-    userEvent.click(screen.getByRole("button", { name: "A" }));
+    userEvent.keyboard("a");
     expect(getAlphabetAtIndex(0, 0)).toBe("A");
+    userEvent.keyboard("b");
+    expect(getAlphabetAtIndex(0, 1)).toBe("B");
+    userEvent.keyboard("c");
+    expect(getAlphabetAtIndex(0, 2)).toBe("C");
+    userEvent.keyboard("d");
+    expect(getAlphabetAtIndex(0, 3)).toBe("D");
+    userEvent.keyboard("e");
+    expect(getAlphabetAtIndex(0, 4)).toBe("E");
   });
 
-  it.todo(
-    "should remove alphabet from Wordboard on clicking backspace on on-screen Keyboard"
-  );
-  it.todo("should submit guess word on clicking enter on on-screen Keyboard");
+  it("should remove alphabet from Wordboard on pressing backspace on Keyboard", () => {
+    render(<Game />);
+
+    userEvent.keyboard("a");
+    userEvent.keyboard("b");
+    userEvent.keyboard("c");
+    userEvent.keyboard("d");
+    userEvent.keyboard("e");
+
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 4)).toBe("");
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 3)).toBe("");
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 2)).toBe("");
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 1)).toBe("");
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 0)).toBe("");
+  });
+
+  it("should keep the row as is on pressing backspace in an empty row", () => {
+    render(<Game />);
+
+    userEvent.keyboard("{backspace}");
+    userEvent.keyboard("{backspace}");
+    userEvent.keyboard("{backspace}");
+    expect(getAlphabetAtIndex(0, 0)).toBe("");
+    expect(getAlphabetAtIndex(0, 1)).toBe("");
+    expect(getAlphabetAtIndex(0, 2)).toBe("");
+    expect(getAlphabetAtIndex(0, 3)).toBe("");
+    expect(getAlphabetAtIndex(0, 4)).toBe("");
+  });
+
+  it.todo("should submit guess word on pressing enter on Keyboard");
   it.todo("should submit guess word only if it exists in dictionary");
   it.todo("should submit guess word only all 5 alphabets are entered");
   it.todo("should proceed to next row when guessed word is partially matching");

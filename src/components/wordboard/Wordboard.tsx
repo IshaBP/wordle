@@ -26,7 +26,7 @@ export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
               aria-label={"letter"}
               status={letter.matchStatus}
             >
-              {letter.matchStatus === "INITIAL" ? "" : letter.key}
+              {letter.matchStatus === "INITIAL" ? "" : letter.key.toUpperCase()}
             </Letter>
           ))}
         </FlexBox>
