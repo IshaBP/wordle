@@ -11,8 +11,8 @@ const keyRows: [KeyRow, KeyRow, KeyRow] = [
 export const Keyboard = () => {
   return (
     <>
-      {keyRows.map((keyRow) => (
-        <KeyRow keyRow={keyRow} />
+      {keyRows.map((keyRow, index) => (
+        <KeyRow key={index} keyRow={keyRow} />
       ))}
     </>
   );
@@ -20,10 +20,10 @@ export const Keyboard = () => {
 
 const KeyRow = ({ keyRow }: { keyRow: KeyRow }) => {
   return (
-    <>
+    <div aria-label="key-row">
       {keyRow.map((keyCode) => (
         <Key key={keyCode} code={keyCode} onClick={() => {}} />
       ))}
-    </>
+    </div>
   );
 };
