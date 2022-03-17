@@ -19,9 +19,9 @@ const keyCodes = {
 };
 
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
-const isValidKeyCode = (key: string): key is KeyCode => {
+const isValidAlphabetKeyCode = (key: string): key is KeyCode => {
   const code = key.charCodeAt(0);
-  return keyCodes.a <= code && code <= keyCodes.z;
+  return key.length === 1 && keyCodes.a <= code && code <= keyCodes.z;
 };
 
 export const Keyboard = ({ onKey }: KeyboardProps) => {
@@ -32,7 +32,7 @@ export const Keyboard = ({ onKey }: KeyboardProps) => {
         onKey("<ENT>");
       } else if (key === "backspace") {
         onKey("<BKSP>");
-      } else if (isValidKeyCode(key)) {
+      } else if (isValidAlphabetKeyCode(key)) {
         onKey(key);
       }
     };

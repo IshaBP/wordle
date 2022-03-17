@@ -54,7 +54,7 @@ describe("Keyboard", () => {
     render(<Keyboard onKey={onKey} />);
 
     iterateAlphabets((alphabet) => {
-      userEvent.keyboard(alphabet.toUpperCase()); // Uppercase alphabets
+      userEvent.keyboard(alphabet.toUpperCase()); // uppercase alphabets
       expect(onKey).toBeCalledWith(alphabet.toLowerCase());
       expect(onKey).toBeCalledTimes(1);
       onKey.mockReset();
@@ -66,7 +66,7 @@ describe("Keyboard", () => {
     render(<Keyboard onKey={onKey} />);
 
     iterateAlphabets((alphabet) => {
-      userEvent.keyboard(alphabet.toLowerCase()); // Lowercase alphabets
+      userEvent.keyboard(alphabet.toLowerCase()); // lowercase alphabets
       expect(onKey).toBeCalledWith(alphabet.toLowerCase());
       expect(onKey).toBeCalledTimes(1);
       onKey.mockReset();
@@ -77,22 +77,43 @@ describe("Keyboard", () => {
     const onKey = jest.fn();
     render(<Keyboard onKey={onKey} />);
 
-    // Enter
+    // enter
     userEvent.keyboard("{enter}");
     expect(onKey).toBeCalledWith("<ENT>");
     expect(onKey).toBeCalledTimes(1);
     onKey.mockReset();
 
-    // Backspace
+    // backspace
     userEvent.keyboard("{backspace}");
     expect(onKey).toBeCalledWith("<BKSP>");
     expect(onKey).toBeCalledTimes(1);
     onKey.mockReset();
   });
 
-  it.todo(
-    "should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>"
-  );
+  it.only("should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>", () => {
+    const onKey = jest.fn();
+    render(<Keyboard onKey={onKey} />);
+
+    // numbers
+    userEvent.keyboard("1234567890");
+    expect(onKey).not.toBeCalled();
+
+    // special characters
+    userEvent.keyboard("~`!@#$%^&*(){}[]:';\"<>,//._-=+-");
+    expect(onKey).not.toBeCalled();
+
+    // tab
+    userEvent.tab();
+    expect(onKey).not.toBeCalled();
+
+    // shift
+    userEvent.keyboard("{shift}");
+    expect(onKey).not.toBeCalled();
+
+    // alt
+    userEvent.keyboard("{alt}");
+    expect(onKey).not.toBeCalled();
+  });
 });
 
 const iterateAlphabets = (
