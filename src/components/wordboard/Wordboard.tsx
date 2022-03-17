@@ -1,10 +1,12 @@
 import { FlexBox } from "react-styled-flex";
 import styled from "styled-components";
 
-interface Letter {
-  key: KeyCode;
-  matchStatus: MatchStatus;
-}
+type Letter =
+  | { key: undefined; matchStatus: "INITIAL" }
+  | {
+      key: KeyCode;
+      matchStatus: Exclude<MatchStatus, "INITIAL">;
+    };
 
 type Row = Array<Letter>;
 
@@ -15,7 +17,7 @@ export interface WordboardProps {
 
 export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
   return (
-    <FlexBox as={"section"} column gap={"1rem"}>
+    <FlexBox as={"section"} column gap={"1rem"} aria-label={"wordboard"}>
       {game.map((guessWord, wordIdx) => (
         <FlexBox key={wordIdx} aria-label={"guess-word"} gap={"1rem"}>
           {guessWord.map((letter, letterIdx) => (
@@ -24,7 +26,7 @@ export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
               aria-label={"letter"}
               status={letter.matchStatus}
             >
-              {letter.key}
+              {letter.matchStatus === "INITIAL" ? "" : letter.key}
             </Letter>
           ))}
         </FlexBox>
@@ -33,7 +35,9 @@ export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
   );
 };
 
-const Letter = styled.div<{ status: MatchStatus }>`
+const Letter = styled(FlexBox).attrs({ center: true })<{ status: MatchStatus }>`
+  height: 2rem;
+  width: 2rem;
   border: 1px solid black;
   padding: 5px;
   background-color: ${({ status }) => {

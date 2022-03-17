@@ -22,7 +22,12 @@ describe("Wordboard", () => {
   });
 
   it("should display alphabets in the letter tiles", () => {
-    render(<Wordboard game={createGame()} latestRowStatus={"IN_PROGRESS"} />);
+    render(
+      <Wordboard
+        game={createGame("PARTIAL_MATCH")}
+        latestRowStatus={"IN_PROGRESS"}
+      />
+    );
 
     for (let guessWord of screen.getAllByLabelText("guess-word")) {
       expect(getAllByText(guessWord, "a")).toHaveLength(5);
@@ -83,8 +88,17 @@ const createGame = (
   matchStatus: MatchStatus = "INITIAL"
 ): WordboardProps["game"] =>
   new Array(guessCount).fill(null).map(() =>
-    new Array(wordLength).fill(null).map(() => ({
-      key: "a",
-      matchStatus: matchStatus,
-    }))
+    new Array(wordLength).fill(null).map(() => {
+      if (matchStatus === "INITIAL") {
+        return {
+          key: undefined,
+          matchStatus: "INITIAL",
+        };
+      } else {
+        return {
+          key: "a",
+          matchStatus: matchStatus,
+        };
+      }
+    })
   );

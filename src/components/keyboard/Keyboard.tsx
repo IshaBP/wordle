@@ -17,11 +17,11 @@ export const Keyboard = ({ onKey }: KeyboardProps) => {
   useKeyPress(onKey);
 
   return (
-    <>
+    <section aria-label={"keyboard"}>
       {keyRows.map((keyRow, index) => (
         <KeyRow key={index} keyRow={keyRow} onKey={onKey} />
       ))}
-    </>
+    </section>
   );
 };
 
