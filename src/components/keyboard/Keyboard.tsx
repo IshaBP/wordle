@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Key } from "./Key";
 
 type KeyRow = Array<KeyCode>;
@@ -9,10 +10,40 @@ const keyRows: [KeyRow, KeyRow, KeyRow] = [
 ];
 
 interface KeyboardProps {
-  onKey: () => void;
+  onKey: (code: KeyCode) => void;
 }
 
+const keyCodes = {
+  a: "a".charCodeAt(0), // 97
+  z: "z".charCodeAt(0), // 122
+};
+
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+const isValidKeyCode = (key: string): key is KeyCode => {
+  const code = key.charCodeAt(0);
+  return keyCodes.a <= code && code <= keyCodes.z;
+};
+
 export const Keyboard = ({ onKey }: KeyboardProps) => {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      if (key === "enter") {
+        onKey("<ENT>");
+      } else if (key === "backspace") {
+        onKey("<BKSP>");
+      } else if (isValidKeyCode(key)) {
+        onKey(key);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onKey]);
+
   return (
     <>
       {keyRows.map((keyRow, index) => (

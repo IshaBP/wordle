@@ -49,9 +49,47 @@ describe("Keyboard", () => {
     onKey.mockReset();
   });
 
-  it.todo(
-    "should trigger onKey callback on typing alphabet, <ENT>, <BKSP> from physical keyboard"
-  );
+  it("should trigger onKey callback on typing uppercase alphabets from physical keyboard", () => {
+    const onKey = jest.fn();
+    render(<Keyboard onKey={onKey} />);
+
+    iterateAlphabets((alphabet) => {
+      userEvent.keyboard(alphabet.toUpperCase()); // Uppercase alphabets
+      expect(onKey).toBeCalledWith(alphabet.toLowerCase());
+      expect(onKey).toBeCalledTimes(1);
+      onKey.mockReset();
+    });
+  });
+
+  it("should trigger onKey callback on typing lowercase alphabets from physical keyboard", () => {
+    const onKey = jest.fn();
+    render(<Keyboard onKey={onKey} />);
+
+    iterateAlphabets((alphabet) => {
+      userEvent.keyboard(alphabet.toLowerCase()); // Lowercase alphabets
+      expect(onKey).toBeCalledWith(alphabet.toLowerCase());
+      expect(onKey).toBeCalledTimes(1);
+      onKey.mockReset();
+    });
+  });
+
+  it("should trigger onKey callback on typing <ENT>, <BKSP> from physical keyboard", () => {
+    const onKey = jest.fn();
+    render(<Keyboard onKey={onKey} />);
+
+    // Enter
+    userEvent.keyboard("{enter}");
+    expect(onKey).toBeCalledWith("<ENT>");
+    expect(onKey).toBeCalledTimes(1);
+    onKey.mockReset();
+
+    // Backspace
+    userEvent.keyboard("{backspace}");
+    expect(onKey).toBeCalledWith("<BKSP>");
+    expect(onKey).toBeCalledTimes(1);
+    onKey.mockReset();
+  });
+
   it.todo(
     "should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>"
   );
