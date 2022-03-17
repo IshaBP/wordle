@@ -4,7 +4,7 @@ import { Keyboard } from "./components/keyboard/Keyboard";
 function App() {
   return (
     <main className="App">
-      <Keyboard />
+      <Keyboard onKey={() => {}} />
     </main>
   );
 }

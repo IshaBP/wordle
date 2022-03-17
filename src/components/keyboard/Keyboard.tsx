@@ -8,21 +8,25 @@ const keyRows: [KeyRow, KeyRow, KeyRow] = [
   ["<ENT>", "z", "x", "c", "v", "b", "n", "m", "<BKSP>"],
 ];
 
-export const Keyboard = () => {
+interface KeyboardProps {
+  onKey: () => void;
+}
+
+export const Keyboard = ({ onKey }: KeyboardProps) => {
   return (
     <>
       {keyRows.map((keyRow, index) => (
-        <KeyRow key={index} keyRow={keyRow} />
+        <KeyRow key={index} keyRow={keyRow} onKey={onKey} />
       ))}
     </>
   );
 };
 
-const KeyRow = ({ keyRow }: { keyRow: KeyRow }) => {
+const KeyRow = ({ keyRow, onKey }: { keyRow: KeyRow } & KeyboardProps) => {
   return (
     <div aria-label="key-row">
       {keyRow.map((keyCode) => (
-        <Key key={keyCode} code={keyCode} onClick={() => {}} />
+        <Key key={keyCode} code={keyCode} onClick={onKey} />
       ))}
     </div>
   );
