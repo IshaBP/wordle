@@ -1,4 +1,4 @@
-type MatchStatus = "MATCH" | "NO_MATCH" | "PARTIAL_MATCH";
+type MatchStatus = "INITIAL" | "MATCH" | "NO_MATCH" | "PARTIAL_MATCH";
 
 type KeyCode =
   | "a"
