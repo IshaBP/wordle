@@ -11,3 +11,5 @@ const dictionary = [
 ];
 
 export const isInDictionary = (word: string) => dictionary.includes(word);
+
+export const getRandomWord = () => "angel";
