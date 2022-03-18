@@ -30,3 +30,18 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+      - run: git fetch
+      - run: npm run generate-badges
+      - run: git add .
+      - run: git stash
+      - run: git checkout badges
+      - run: rm -rf badges
+      - run: git add .
+      - run: git stash pop
+      - name: Generate coverage badges
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Generate coverage badges
+          branch: badges
+          file_pattern: badges/*
+          commit_author: Author <actions@github.com>
