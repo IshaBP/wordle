@@ -30,3 +30,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+      - name: Generate coverage badges
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Generate coverage badges
+          branch: badges
+          file_pattern: badges/*
+          commit_author: Author <actions@github.com>
+          create_branch: true

@@ -12,6 +12,7 @@ coverage
 dist
 dist-ssr
 *.local
+badges
 
 # Editor directories and files
 !.vscode/extensions.json
