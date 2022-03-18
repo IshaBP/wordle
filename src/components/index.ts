@@ -1,2 +1,2 @@
-export * from "./keyboard/Keyboard";
-export * from "./wordboard/Wordboard";
+export * from './keyboard/Keyboard';
+export * from './wordboard/Wordboard';

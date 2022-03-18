@@ -12,10 +12,10 @@ export const Key = ({ code, onClick }: KeyProps) => {
 };
 
 const getDisplay = (code: KeyCode) => {
-  if (code === "<ENT>") {
-    return "ENTER";
-  } else if (code === "<BKSP>") {
-    return "BK";
+  if (code === '<ENT>') {
+    return 'ENTER';
+  } else if (code === '<BKSP>') {
+    return 'BK';
   } else {
     return code.toUpperCase();
   }

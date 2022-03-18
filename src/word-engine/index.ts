@@ -1,2 +1,2 @@
-export { getRandomWord } from "./dictionary";
-export * from "./match";
+export { getRandomWord } from './dictionary';
+export * from './match';

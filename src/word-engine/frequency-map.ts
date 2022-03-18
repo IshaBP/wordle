@@ -1,4 +1,4 @@
-import { iterateWord } from "./util";
+import { iterateWord } from './util';
 
 /**
  * Map based data structure which stores frequency of letters in a word.

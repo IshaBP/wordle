@@ -1,15 +1,15 @@
 const dictionary = [
-  "angel",
-  "baton",
-  "beads",
-  "baths",
-  "basis",
-  "glean",
-  "nudge",
-  "nuked",
-  "ounce",
+  'angel',
+  'baton',
+  'beads',
+  'baths',
+  'basis',
+  'glean',
+  'nudge',
+  'nuked',
+  'ounce',
 ];
 
 export const isInDictionary = (word: string) => dictionary.includes(word);
 
-export const getRandomWord = () => "angel";
+export const getRandomWord = () => 'angel';

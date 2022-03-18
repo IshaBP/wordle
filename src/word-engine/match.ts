@@ -1,6 +1,6 @@
-import { isInDictionary } from "./dictionary";
-import { FrequencyMap } from "./frequency-map";
-import { iterateWord } from "./util";
+import { isInDictionary } from './dictionary';
+import { FrequencyMap } from './frequency-map';
+import { iterateWord } from './util';
 
 /**
  * Throws an error if both words are not of equal length.\
@@ -12,10 +12,10 @@ import { iterateWord } from "./util";
  */
 export const match = (
   chosenWord: string,
-  guessWord: string
+  guessWord: string,
 ): MatchStatus[] | null => {
   if (chosenWord.length !== guessWord.length) {
-    throw new Error("chosenWord and guessWord should be of equal length");
+    throw new Error('chosenWord and guessWord should be of equal length');
   }
 
   if (!isInDictionary(chosenWord) || !isInDictionary(guessWord)) {
@@ -23,7 +23,7 @@ export const match = (
   }
 
   if (chosenWord === guessWord) {
-    return new Array(chosenWord.length).fill("MATCH");
+    return new Array(chosenWord.length).fill('MATCH');
   }
 
   const freqMap = new FrequencyMap(chosenWord);
@@ -31,16 +31,16 @@ export const match = (
 
   iterateWord(guessWord, (guess: string, idx: number) => {
     if (chosenWord[idx] === guess) {
-      result[idx] = "MATCH";
+      result[idx] = 'MATCH';
       freqMap.decrement(guess);
     } else {
-      result[idx] = "NO_MATCH";
+      result[idx] = 'NO_MATCH';
     }
   });
 
   iterateWord(guessWord, (guess: string, idx: number) => {
-    if (result[idx] === "NO_MATCH" && freqMap.has(guess)) {
-      result[idx] = "PARTIAL_MATCH";
+    if (result[idx] === 'NO_MATCH' && freqMap.has(guess)) {
+      result[idx] = 'PARTIAL_MATCH';
       freqMap.decrement(guess);
     }
   });
