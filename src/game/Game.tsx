@@ -1,15 +1,20 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Keyboard } from "../components/keyboard/Keyboard";
 import { Wordboard, WordboardProps } from "../components/wordboard/Wordboard";
 import { getRandomWord, match } from "../word-engine";
 
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
+  const gameOver = useRef(false);
   const [game, setGame] = useState<WordboardProps["game"]>(createInitialGame);
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
   const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
 
   const onKey = (code: KeyCode) => {
+    if (gameOver.current) {
+      return;
+    }
+
     if (code === "<BKSP>") {
       if (currentLetterIdx > 0) {
         const updatedGame = [...game];
@@ -34,9 +39,16 @@ export const Game = () => {
               matchResult[letterIdx];
           }
           setGame(updatedGame);
-          if (!isGuessedWordCorrect(matchResult)) {
+          if (isGuessedWordCorrect(matchResult)) {
+            // Game won
+            gameOver.current = true;
+          } else if (currentWordIdx < 5) {
+            // Game in progress
             setCurrentWordIdx(currentWordIdx + 1);
             setCurrentLetterIdx(0);
+          } else {
+            // Game lost
+            gameOver.current = true;
           }
         }
       }
@@ -53,6 +65,7 @@ export const Game = () => {
 
   return (
     <div aria-label="game">
+      <span>{currentWordIdx}</span>
       <span>{currentLetterIdx}</span>
       <Wordboard game={game} latestRowStatus={"IN_PROGRESS"} />
       <Keyboard onKey={onKey} />
