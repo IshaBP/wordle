@@ -91,7 +91,7 @@ describe("Game", () => {
   });
 
   it("should submit guess word if 5 alphabets are entered and enter is pressed", () => {
-    mockedWordEngine.getRandomWord.mockReturnValueOnce("check");
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
     render(<Game />);
 
     userEvent.keyboard("a");
@@ -101,7 +101,7 @@ describe("Game", () => {
     userEvent.keyboard("e");
     userEvent.keyboard("{enter}");
     expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
-    expect(mockedWordEngine.match).toHaveBeenCalledWith("check", "abcde");
+    expect(mockedWordEngine.match).toHaveBeenCalledWith("baton", "abcde");
   });
 
   it("should not proceed to next row if guess word does not exist in the dictionary", () => {
@@ -122,8 +122,8 @@ describe("Game", () => {
 
   it("should proceed to next row when guessed word is submitted and it exists in dictionary", () => {
     const actualWordEngine = jest.requireActual("../word-engine");
-    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
     mockedWordEngine.match.mockImplementationOnce(actualWordEngine.match);
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
     render(<Game />);
 
     userEvent.keyboard("b");
@@ -142,8 +142,8 @@ describe("Game", () => {
 
   it("should not proceed to next row when guessed word is submitted and is completely matching", () => {
     const actualWordEngine = jest.requireActual("../word-engine");
-    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
     mockedWordEngine.match.mockImplementationOnce(actualWordEngine.match);
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
 
     render(<Game />);
 
@@ -162,6 +162,10 @@ describe("Game", () => {
     userEvent.keyboard("f");
     expect(getAlphabetAtIndex(1, 0)).toBe("");
   });
+
+  it.todo("should change colour of all letter tiles once word is submitted");
+
+  it.todo("should not accept input once all 6 guesses are exhausted");
 
   it.todo(
     "should display a toast with text 'Magnificent' if guessed word completely matches chosen word"

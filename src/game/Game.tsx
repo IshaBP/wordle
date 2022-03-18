@@ -27,9 +27,17 @@ export const Game = () => {
           .join("");
         const matchResult = match(chosenWord, guessWord);
 
-        if (matchResult && !isGuessedWordCorrect(matchResult)) {
-          setCurrentWordIdx(currentWordIdx + 1);
-          setCurrentLetterIdx(0);
+        if (matchResult) {
+          const updatedGame = [...game];
+          for (let letterIdx = 0; letterIdx < matchResult.length; letterIdx++) {
+            updatedGame[currentWordIdx][letterIdx].matchStatus =
+              matchResult[letterIdx];
+          }
+          setGame(updatedGame);
+          if (!isGuessedWordCorrect(matchResult)) {
+            setCurrentWordIdx(currentWordIdx + 1);
+            setCurrentLetterIdx(0);
+          }
         }
       }
     } else if (currentLetterIdx < 5) {
