@@ -3,16 +3,9 @@ import { Keyboard } from "../components/keyboard/Keyboard";
 import { Wordboard, WordboardProps } from "../components/wordboard/Wordboard";
 import { getRandomWord, match } from "../word-engine";
 
-const initialGame: WordboardProps["game"] = new Array(6).fill(null).map(() =>
-  new Array(5).fill(null).map(() => ({
-    key: undefined,
-    matchStatus: "INITIAL",
-  }))
-);
-
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
-  const [game, setGame] = useState(initialGame);
+  const [game, setGame] = useState<WordboardProps["game"]>(createInitialGame);
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
   const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
 
@@ -32,7 +25,12 @@ export const Game = () => {
         const guessWord = game[currentWordIdx]
           .map((letter) => letter.key)
           .join("");
-        match(chosenWord, guessWord);
+        const matchResult = match(chosenWord, guessWord);
+
+        if (matchResult && !isGuessedWordCorrect(matchResult)) {
+          setCurrentWordIdx(currentWordIdx + 1);
+          setCurrentLetterIdx(0);
+        }
       }
     } else if (currentLetterIdx < 5) {
       const updatedGame = [...game];
@@ -53,3 +51,14 @@ export const Game = () => {
     </div>
   );
 };
+
+const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
+  matchResult.every((letterResult) => letterResult === "MATCH");
+
+const createInitialGame = (): WordboardProps["game"] =>
+  new Array(6).fill(null).map(() =>
+    new Array(5).fill(null).map(() => ({
+      key: undefined,
+      matchStatus: "INITIAL",
+    }))
+  );

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as wordEngine from "../word-engine";
 import { Game } from "./Game";
@@ -7,6 +7,8 @@ jest.mock("../word-engine");
 const mockedWordEngine = wordEngine as jest.Mocked<typeof wordEngine>;
 
 describe("Game", () => {
+  beforeEach(() => jest.resetAllMocks());
+
   it("should display Wordboard and Keyboard", () => {
     render(<Game />);
 
@@ -69,10 +71,26 @@ describe("Game", () => {
     userEvent.keyboard("a");
     userEvent.keyboard("b");
     userEvent.keyboard("{enter}");
+
+    // match function is not called
     expect(mockedWordEngine.match).not.toHaveBeenCalled();
   });
 
-  it.only("should submit guess word if 5 alphabets are entered and enter is pressed", () => {
+  it("should not proceed to next row if less than 5 alphabets are entered and enter is pressed", () => {
+    render(<Game />);
+
+    userEvent.keyboard("a");
+    userEvent.keyboard("b");
+    userEvent.keyboard("{enter}");
+    expect(getAlphabetAtIndex(0, 2)).toBe("");
+
+    // next letter input in the same row
+    userEvent.keyboard("c");
+    expect(getAlphabetAtIndex(0, 2)).toBe("C");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+  });
+
+  it("should submit guess word if 5 alphabets are entered and enter is pressed", () => {
     mockedWordEngine.getRandomWord.mockReturnValueOnce("check");
     render(<Game />);
 
@@ -86,11 +104,65 @@ describe("Game", () => {
     expect(mockedWordEngine.match).toHaveBeenCalledWith("check", "abcde");
   });
 
-  it.todo("should submit guess word only if it exists in dictionary");
-  it.todo("should proceed to next row when guessed word is partially matching");
-  it.todo(
-    "should not proceed to next row when guessed word is completely matching"
-  );
+  it("should not proceed to next row if guess word does not exist in the dictionary", () => {
+    render(<Game />);
+
+    userEvent.keyboard("a");
+    userEvent.keyboard("b");
+    userEvent.keyboard("c");
+    userEvent.keyboard("d");
+    userEvent.keyboard("e");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+    userEvent.keyboard("{enter}");
+
+    // next letter input not added in next row
+    userEvent.keyboard("f");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+  });
+
+  it("should proceed to next row when guessed word is submitted and it exists in dictionary", () => {
+    const actualWordEngine = jest.requireActual("../word-engine");
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
+    mockedWordEngine.match.mockImplementationOnce(actualWordEngine.match);
+    render(<Game />);
+
+    userEvent.keyboard("b");
+    userEvent.keyboard("e");
+    userEvent.keyboard("a");
+    userEvent.keyboard("d");
+    userEvent.keyboard("s");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+
+    userEvent.keyboard("{enter}");
+
+    // next alphabet added in the next row
+    userEvent.keyboard("f");
+    expect(getAlphabetAtIndex(1, 0)).toBe("F");
+  });
+
+  it("should not proceed to next row when guessed word is submitted and is completely matching", () => {
+    const actualWordEngine = jest.requireActual("../word-engine");
+    mockedWordEngine.getRandomWord.mockReturnValueOnce("baton");
+    mockedWordEngine.match.mockImplementationOnce(actualWordEngine.match);
+
+    render(<Game />);
+
+    userEvent.keyboard("b");
+    userEvent.keyboard("a");
+    userEvent.keyboard("t");
+    userEvent.keyboard("o");
+    userEvent.keyboard("n");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+
+    userEvent.keyboard("{enter}");
+
+    expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
+
+    // next alphabet not added in the next row
+    userEvent.keyboard("f");
+    expect(getAlphabetAtIndex(1, 0)).toBe("");
+  });
+
   it.todo(
     "should display a toast with text 'Magnificent' if guessed word completely matches chosen word"
   );
