@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest --watchAll",
-    "test:ci": "jest --coverage",
+    "test-watch": "jest --watchAll",
+    "test": "run-s test:*",
+    "test:pretty": "prettier --check .",
+    "test:types": "tsc --noEmit",
+    "test:code": "jest --coverage",
     "lint": "run-s lint:*",
     "lint:pretty": "prettier --write .",
-    "lint:pkg-json": "sort-package-json"
+    "lint:pkg-json": "sort-package-json",
+    "build": "vite build"
   },
   "dependencies": {
     "react": "^17.0.2",
