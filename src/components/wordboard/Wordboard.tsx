@@ -40,14 +40,6 @@ const Letter = styled(FlexBox).attrs({ center: true })<{ status: MatchStatus }>`
   width: 2rem;
   border: 1px solid black;
   padding: 5px;
-  background-color: ${({ status }) => {
-    if (status === 'MATCH') {
-      return 'green';
-    } else if (status === 'PARTIAL_MATCH') {
-      return 'yellow';
-    } else if (status === 'NO_MATCH') {
-      return 'grey';
-    }
-    return undefined;
-  }};
+  background-color: ${({ status, theme }) =>
+    status === 'INITIAL' ? undefined : theme.matchStatus[status]};
 `;

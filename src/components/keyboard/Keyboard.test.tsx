@@ -1,10 +1,12 @@
-import { render, getAllByRole, screen } from '@testing-library/react';
+import { getAllByRole, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { matchKeyColors, renderWithProviders } from '../../test-utils';
+import { darkTheme } from '../../theme';
 import { Keyboard } from './Keyboard';
 
 describe('Keyboard', () => {
   it('should display all keys', () => {
-    render(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
     const keys = screen.getAllByRole('button');
 
     expect(keys).toHaveLength(28);
@@ -16,7 +18,7 @@ describe('Keyboard', () => {
   });
 
   it('should display all keys in QWERTY order', () => {
-    render(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
     const getKeysInRow = (rowIndex: 0 | 1 | 2) => {
       const allRows = screen.getAllByLabelText('key-row');
 
@@ -32,7 +34,7 @@ describe('Keyboard', () => {
 
   it('should trigger onKey callback on clicking alphabet, <ENT>, <BKSP> buttons on display', () => {
     const onKey = jest.fn();
-    render(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
 
     iterateAlphabets((alphabet) => {
       userEvent.click(screen.getByRole('button', { name: alphabet }));
@@ -51,7 +53,7 @@ describe('Keyboard', () => {
 
   it('should trigger onKey callback on typing uppercase alphabets from physical keyboard', () => {
     const onKey = jest.fn();
-    render(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
 
     iterateAlphabets((alphabet) => {
       userEvent.keyboard(alphabet.toUpperCase()); // uppercase alphabets
@@ -63,7 +65,7 @@ describe('Keyboard', () => {
 
   it('should trigger onKey callback on typing lowercase alphabets from physical keyboard', () => {
     const onKey = jest.fn();
-    render(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
 
     iterateAlphabets((alphabet) => {
       userEvent.keyboard(alphabet.toLowerCase()); // lowercase alphabets
@@ -75,7 +77,7 @@ describe('Keyboard', () => {
 
   it('should trigger onKey callback on typing <ENT>, <BKSP> from physical keyboard', () => {
     const onKey = jest.fn();
-    render(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
 
     // enter
     userEvent.keyboard('{enter}');
@@ -92,7 +94,7 @@ describe('Keyboard', () => {
 
   it('should not trigger onKey callback on typing any keys other than alphabets, <ENT>, <BKSP>', () => {
     const onKey = jest.fn();
-    render(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
 
     // numbers
     userEvent.keyboard('1234567890');
@@ -116,21 +118,17 @@ describe('Keyboard', () => {
   });
 
   it('should show key with color corresponding to key status in keyMatchStatusMap', () => {
-    render(
+    renderWithProviders(
       <Keyboard
         keyMatchStatusMap={{ a: 'MATCH', b: 'NO_MATCH', c: 'PARTIAL_MATCH' }}
         onKey={() => {}}
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'A' })).toHaveStyle({
-      backgroundColor: 'green',
-    });
-    expect(screen.getByRole('button', { name: 'B' })).toHaveStyle({
-      backgroundColor: 'grey',
-    });
-    expect(screen.getByRole('button', { name: 'C' })).toHaveStyle({
-      backgroundColor: 'yellow',
+    matchKeyColors({
+      A: darkTheme.matchStatus.MATCH,
+      B: darkTheme.matchStatus.NO_MATCH,
+      C: darkTheme.matchStatus.PARTIAL_MATCH,
     });
   });
 });

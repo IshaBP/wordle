@@ -1,20 +1,25 @@
 import {
   getAllByLabelText,
   getAllByText,
-  render,
   screen,
 } from '@testing-library/react';
+import { renderWithProviders } from '../../test-utils';
+import { darkTheme } from '../../theme';
 import { Wordboard, WordboardProps } from './Wordboard';
 
 describe('Wordboard', () => {
   it('should have 6 guess words', () => {
-    render(<Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />);
+    renderWithProviders(
+      <Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />,
+    );
 
     expect(screen.getAllByLabelText('guess-word')).toHaveLength(6);
   });
 
   it('should have 5 letter tiles in each guess word', () => {
-    render(<Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />);
+    renderWithProviders(
+      <Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />,
+    );
 
     for (let guessWord of screen.getAllByLabelText('guess-word')) {
       expect(getAllByLabelText(guessWord, 'letter')).toHaveLength(5);
@@ -22,7 +27,7 @@ describe('Wordboard', () => {
   });
 
   it('should display alphabets in the letter tiles', () => {
-    render(
+    renderWithProviders(
       <Wordboard
         game={createGame('PARTIAL_MATCH')}
         latestRowStatus={'IN_PROGRESS'}
@@ -35,7 +40,9 @@ describe('Wordboard', () => {
   });
 
   it("should color tile with black if MATCH_STATUS is 'INITIAL'", () => {
-    render(<Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />);
+    renderWithProviders(
+      <Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />,
+    );
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
       backgroundColor: undefined,
@@ -43,17 +50,17 @@ describe('Wordboard', () => {
   });
 
   it("should color tile with green if MATCH_STATUS is 'MATCH'", () => {
-    render(
+    renderWithProviders(
       <Wordboard game={createGame('MATCH')} latestRowStatus={'IN_PROGRESS'} />,
     );
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
-      backgroundColor: 'green',
+      backgroundColor: darkTheme.matchStatus.MATCH,
     });
   });
 
   it("should color tile with yellow if MATCH_STATUS is 'PARTIAL_MATCH'", () => {
-    render(
+    renderWithProviders(
       <Wordboard
         game={createGame('PARTIAL_MATCH')}
         latestRowStatus={'IN_PROGRESS'}
@@ -61,12 +68,12 @@ describe('Wordboard', () => {
     );
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
-      backgroundColor: 'yellow',
+      backgroundColor: darkTheme.matchStatus.PARTIAL_MATCH,
     });
   });
 
   it("should color tile with grey if MATCH_STATUS is 'NO_MATCH'", () => {
-    render(
+    renderWithProviders(
       <Wordboard
         game={createGame('NO_MATCH')}
         latestRowStatus={'IN_PROGRESS'}
@@ -74,7 +81,7 @@ describe('Wordboard', () => {
     );
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
-      backgroundColor: 'grey',
+      backgroundColor: darkTheme.matchStatus.NO_MATCH,
     });
   });
 

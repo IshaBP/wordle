@@ -29,15 +29,6 @@ const getDisplay = (code: KeyCode) => {
 };
 
 const KeyButton = styled.button<{ status: KeyProps['status'] }>`
-  background-color: ${(props) => {
-    const { status } = props;
-    if (status === 'MATCH') {
-      return 'green';
-    } else if (status === 'PARTIAL_MATCH') {
-      return 'yellow';
-    } else if (status === 'NO_MATCH') {
-      return 'grey';
-    }
-    return undefined;
-  }};
+  background-color: ${({ status, theme }) =>
+    status ? theme.matchStatus[status] : theme.matchStatus.INITIAL};
 `;

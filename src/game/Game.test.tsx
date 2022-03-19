@@ -1,5 +1,7 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { matchKeyColors, renderWithProviders } from '../test-utils';
+import { darkTheme } from '../theme';
 import * as wordEngine from '../word-engine';
 import { Game } from './Game';
 
@@ -11,13 +13,13 @@ describe('Game', () => {
 
   describe('Wordboard', () => {
     it('should display Wordboard', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       screen.getByLabelText('wordboard');
     });
 
     it('should display alphabet on Wordboard on pressing it on Keyboard', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('abcde');
       expect(getAlphabetAtIndex(0, 0)).toBe('A');
@@ -28,7 +30,7 @@ describe('Game', () => {
     });
 
     it('should remove alphabet from Wordboard on pressing backspace on Keyboard', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('abcde{backspace}');
       expect(getAlphabetAtIndex(0, 4)).toBe('');
@@ -43,7 +45,7 @@ describe('Game', () => {
     });
 
     it('should keep the row as is on pressing backspace in an empty row', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('{backspace}{backspace}{backspace}');
       expect(getAlphabetAtIndex(0, 0)).toBe('');
@@ -54,7 +56,7 @@ describe('Game', () => {
     });
 
     it('should not submit guess word if less than 5 alphabets are entered and enter is pressed', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('ab{enter}');
 
@@ -62,7 +64,7 @@ describe('Game', () => {
     });
 
     it('should not proceed to next row if less than 5 alphabets are entered and enter is pressed', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('ab{enter}');
       expect(getAlphabetAtIndex(0, 2)).toBe('');
@@ -74,7 +76,7 @@ describe('Game', () => {
 
     it('should try to match guess word if 5 alphabets are entered and enter is pressed', () => {
       mockWordEngine('baton');
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('abcde{enter}');
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -82,7 +84,7 @@ describe('Game', () => {
     });
 
     it('should not proceed to next row if guess word does not exist in the dictionary', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('abcde{enter}f');
 
@@ -92,7 +94,7 @@ describe('Game', () => {
 
     it('should not proceed to next row when guessed word is completely matching', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('baton{enter}f');
 
@@ -102,7 +104,7 @@ describe('Game', () => {
 
     it('should proceed to next row when guessed word is submitted and it exists in dictionary but is not completely matching', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('beads{enter}f');
 
@@ -111,7 +113,7 @@ describe('Game', () => {
 
     it('should change color of all letter tiles once word is submitted', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       for (let letterIdx = 0; letterIdx < 5; letterIdx++) {
         expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
@@ -121,17 +123,22 @@ describe('Game', () => {
 
       userEvent.keyboard('beads{enter}');
 
-      ['green', 'grey', 'yellow', 'grey', 'grey'].forEach(
-        (color: string, letterIdx: number) =>
-          expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
-            backgroundColor: color,
-          }),
+      [
+        darkTheme.matchStatus.MATCH,
+        darkTheme.matchStatus.NO_MATCH,
+        darkTheme.matchStatus.PARTIAL_MATCH,
+        darkTheme.matchStatus.NO_MATCH,
+        darkTheme.matchStatus.NO_MATCH,
+      ].forEach((color: string, letterIdx: number) =>
+        expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
+          backgroundColor: color,
+        }),
       );
     });
 
     it('should not accept input once all 6 guesses are exhausted', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('beads{enter}');
       userEvent.keyboard('glean{enter}');
@@ -150,57 +157,57 @@ describe('Game', () => {
 
   describe('Keyboard', () => {
     it('should display Keyboard', () => {
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       screen.getByLabelText('keyboard');
     });
 
     it('should add button color in keyboard once alphabet is submitted for the first time', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        B: 'green',
-        E: 'grey',
-        A: 'yellow',
-        D: 'grey',
-        S: 'grey',
+        B: darkTheme.matchStatus.MATCH,
+        E: darkTheme.matchStatus.NO_MATCH,
+        A: darkTheme.matchStatus.PARTIAL_MATCH,
+        D: darkTheme.matchStatus.NO_MATCH,
+        S: darkTheme.matchStatus.NO_MATCH,
       });
     });
 
     it('should update button color if eventual guesses have better match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        A: 'yellow',
+        A: darkTheme.matchStatus.PARTIAL_MATCH,
       });
 
       userEvent.keyboard('baths{enter}');
 
       matchKeyColors({
-        A: 'green',
+        A: darkTheme.matchStatus.MATCH,
       });
     });
 
     it('should not update button color if eventual guesses have worse match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
       mockWordEngine('baton', true);
-      render(<Game />);
+      renderWithProviders(<Game />);
 
       userEvent.keyboard('baths{enter}');
 
       matchKeyColors({
-        A: 'green',
+        A: darkTheme.matchStatus.MATCH,
       });
 
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        A: 'green',
+        A: darkTheme.matchStatus.MATCH,
       });
     });
   });
@@ -237,14 +244,4 @@ const mockWordEngine = (chosenWord: string, useActualMatch = false) => {
     mockedWordEngine.match.mockImplementation(actualWordEngine.match);
   }
   mockedWordEngine.getRandomWord.mockReturnValueOnce('baton');
-};
-
-const getButton = (name: string) => screen.getByRole('button', { name });
-
-const matchKeyColors = (keyColorMap: Record<string, string>) => {
-  for (let [name, color] of Object.entries(keyColorMap)) {
-    expect(screen.getByRole('button', { name })).toHaveStyle({
-      backgroundColor: color,
-    });
-  }
 };
