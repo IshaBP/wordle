@@ -12,4 +12,9 @@ export const GlobalStyle = createGlobalStyle<{ theme: WordleTheme }>`
     background-color: ${(props) => props.theme.bgColor};
     margin: 0;
   }
+
+  .App {
+    max-width: 516px;
+    margin: auto;
+  }
 `;

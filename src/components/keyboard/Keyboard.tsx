@@ -1,4 +1,4 @@
-import { FlexBox } from 'react-styled-flex';
+import { FlexBox, FlexItem } from 'react-styled-flex';
 import { Key } from './Key';
 import { useKeyPress } from './useKeyPress';
 
@@ -19,10 +19,17 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
   useKeyPress(onKey);
 
   return (
-    <FlexBox as={'section'} aria-label={'keyboard'} gap={'0.25rem'} column>
+    <FlexBox
+      as={'section'}
+      aria-label={'keyboard'}
+      gap={'0.25rem'}
+      column
+      width={'100%'}
+    >
       {keyRows.map((keyRow, index) => (
         <KeyRow
           key={index}
+          rowIndex={index}
           keyRow={keyRow}
           onKey={onKey}
           keyMatchStatusMap={keyMatchStatusMap}
@@ -33,12 +40,14 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
 };
 
 const KeyRow = ({
+  rowIndex,
   keyRow,
   keyMatchStatusMap,
   onKey,
-}: { keyRow: KeyRow } & KeyboardProps) => {
+}: { rowIndex: number; keyRow: KeyRow } & KeyboardProps) => {
   return (
-    <FlexBox aria-label='key-row' gap={'0.25rem'} center>
+    <FlexBox aria-label='key-row' gap={'0.25rem'} center width={'100%'}>
+      {rowIndex === 1 && <FlexItem flex={0.5} />}
       {keyRow.map((keyCode) => (
         <Key
           key={keyCode}
@@ -47,6 +56,7 @@ const KeyRow = ({
           status={keyMatchStatusMap[keyCode]}
         />
       ))}
+      {rowIndex === 1 && <FlexItem flex={0.5} />}
     </FlexBox>
   );
 };

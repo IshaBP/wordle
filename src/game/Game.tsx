@@ -82,6 +82,7 @@ export const Game = () => {
       height={'100vh'}
       alignItems={'center'}
       justifyContent={'space-around'}
+      padding={'0 0.75rem'}
     >
       <Wordboard game={game} latestRowStatus={'IN_PROGRESS'} />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />

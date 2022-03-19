@@ -15,7 +15,7 @@ export const darkTheme: WordleTheme = {
 export const lightTheme: WordleTheme = {
   textColor: '#000000',
   bgColor: '#FFFFFF',
-  borderColor: 'D3D6DA',
+  borderColor: '#D3D6DA',
   matchStatus: {
     INITIAL: '#D3D6DA',
     MATCH: '#6AAA64',

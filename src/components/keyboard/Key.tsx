@@ -12,7 +12,11 @@ export const Key = ({ code, status, onClick }: KeyProps) => {
   };
 
   return (
-    <KeyButton onClick={onKeyClick} status={status}>
+    <KeyButton
+      onClick={onKeyClick}
+      status={status}
+      specialKey={code === '<ENT>' || code === '<BKSP>'}
+    >
       {getDisplay(code)}
     </KeyButton>
   );
@@ -28,11 +32,13 @@ const getDisplay = (code: KeyCode) => {
   }
 };
 
-const KeyButton = styled.button<{ status: KeyProps['status'] }>`
+const KeyButton = styled.button<{
+  status: KeyProps['status'];
+  specialKey: boolean;
+}>`
   height: 3rem;
-  min-width: 3rem;
+  flex: ${({ specialKey }) => (specialKey ? 1.6 : 1)};
   margin: 0;
-  padding: 1rem;
   border: none;
   outline: none;
   border-radius: 0.25rem;
@@ -40,5 +46,7 @@ const KeyButton = styled.button<{ status: KeyProps['status'] }>`
     status ? theme.matchStatus[status] : theme.matchStatus.INITIAL};
   color: ${({ theme }) => theme.textColor};
   font-weight: bold;
-  font-size: 1rem;
+  font-size: ${({ specialKey }) => (specialKey ? '0.75rem' : '1rem')};
+  cursor: pointer;
+  user-select: none;
 `;
