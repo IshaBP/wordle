@@ -1,14 +1,21 @@
+import styled from 'styled-components';
+
 interface KeyProps {
   code: KeyCode;
+  status: MatchStatus | undefined;
   onClick: (code: KeyCode) => void;
 }
 
-export const Key = ({ code, onClick }: KeyProps) => {
+export const Key = ({ code, status, onClick }: KeyProps) => {
   const onKeyClick = () => {
     onClick(code);
   };
 
-  return <button onClick={onKeyClick}>{getDisplay(code)}</button>;
+  return (
+    <KeyButton onClick={onKeyClick} status={status}>
+      {getDisplay(code)}
+    </KeyButton>
+  );
 };
 
 const getDisplay = (code: KeyCode) => {
@@ -20,3 +27,17 @@ const getDisplay = (code: KeyCode) => {
     return code.toUpperCase();
   }
 };
+
+const KeyButton = styled.button<{ status: KeyProps['status'] }>`
+  background-color: ${(props) => {
+    const { status } = props;
+    if (status === 'MATCH') {
+      return 'green';
+    } else if (status === 'PARTIAL_MATCH') {
+      return 'yellow';
+    } else if (status === 'NO_MATCH') {
+      return 'grey';
+    }
+    return undefined;
+  }};
+`;

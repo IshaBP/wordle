@@ -10,26 +10,41 @@ const keyRows: [KeyRow, KeyRow, KeyRow] = [
 ];
 
 interface KeyboardProps {
+  keyMatchStatusMap: Partial<Record<KeyCode, MatchStatus>>;
   onKey: (code: KeyCode) => void;
 }
 
-export const Keyboard = ({ onKey }: KeyboardProps) => {
+export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
   useKeyPress(onKey);
 
   return (
     <section aria-label={'keyboard'}>
       {keyRows.map((keyRow, index) => (
-        <KeyRow key={index} keyRow={keyRow} onKey={onKey} />
+        <KeyRow
+          key={index}
+          keyRow={keyRow}
+          onKey={onKey}
+          keyMatchStatusMap={keyMatchStatusMap}
+        />
       ))}
     </section>
   );
 };
 
-const KeyRow = ({ keyRow, onKey }: { keyRow: KeyRow } & KeyboardProps) => {
+const KeyRow = ({
+  keyRow,
+  keyMatchStatusMap,
+  onKey,
+}: { keyRow: KeyRow } & KeyboardProps) => {
   return (
     <div aria-label='key-row'>
       {keyRow.map((keyCode) => (
-        <Key key={keyCode} code={keyCode} onClick={onKey} />
+        <Key
+          key={keyCode}
+          code={keyCode}
+          onClick={onKey}
+          status={keyMatchStatusMap[keyCode]}
+        />
       ))}
     </div>
   );

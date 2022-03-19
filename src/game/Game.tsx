@@ -68,7 +68,7 @@ export const Game = () => {
       <span>{currentWordIdx}</span>
       <span>{currentLetterIdx}</span>
       <Wordboard game={game} latestRowStatus={'IN_PROGRESS'} />
-      <Keyboard onKey={onKey} />
+      <Keyboard keyMatchStatusMap={{}} onKey={onKey} />
     </div>
   );
 };
