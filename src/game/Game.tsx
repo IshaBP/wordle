@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import { FlexBox } from 'react-styled-flex';
 import {
   Keyboard,
   KeyboardProps,
@@ -75,12 +76,16 @@ export const Game = () => {
   };
 
   return (
-    <div aria-label='game'>
-      <span>{currentWordIdx}</span>
-      <span>{currentLetterIdx}</span>
+    <FlexBox
+      aria-label='game'
+      column
+      height={'100vh'}
+      alignItems={'center'}
+      justifyContent={'space-around'}
+    >
       <Wordboard game={game} latestRowStatus={'IN_PROGRESS'} />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
-    </div>
+    </FlexBox>
   );
 };
 

@@ -29,6 +29,16 @@ const getDisplay = (code: KeyCode) => {
 };
 
 const KeyButton = styled.button<{ status: KeyProps['status'] }>`
+  height: 3rem;
+  min-width: 3rem;
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  border-radius: 0.25rem;
   background-color: ${({ status, theme }) =>
     status ? theme.matchStatus[status] : theme.matchStatus.INITIAL};
+  color: ${({ theme }) => theme.textColor};
+  font-weight: bold;
+  font-size: 1rem;
 `;

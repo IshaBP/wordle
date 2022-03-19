@@ -17,9 +17,9 @@ export interface WordboardProps {
 
 export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
   return (
-    <FlexBox as={'section'} column gap={'1rem'} aria-label={'wordboard'}>
+    <FlexBox as={'section'} column gap={'0.5rem'} aria-label={'wordboard'}>
       {game.map((guessWord, wordIdx) => (
-        <FlexBox key={wordIdx} aria-label={'guess-word'} gap={'1rem'}>
+        <FlexBox key={wordIdx} aria-label={'guess-word'} gap={'0.5rem'}>
           {guessWord.map((letter, letterIdx) => (
             <Letter
               key={letterIdx}
@@ -36,10 +36,11 @@ export const Wordboard = ({ game, latestRowStatus }: WordboardProps) => {
 };
 
 const Letter = styled(FlexBox).attrs({ center: true })<{ status: MatchStatus }>`
-  height: 2rem;
-  width: 2rem;
-  border: 1px solid black;
-  padding: 5px;
+  height: 3.5rem;
+  width: 3.5rem;
+  border: 2px solid ${({ theme }) => theme.borderColor};
   background-color: ${({ status, theme }) =>
     status === 'INITIAL' ? undefined : theme.matchStatus[status]};
+  font-size: 2rem;
+  font-weight: bold;
 `;
