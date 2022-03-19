@@ -79,7 +79,7 @@ export const Game = () => {
     <FlexBox
       aria-label='game'
       column
-      height={'100vh'}
+      height={'100%'}
       alignItems={'center'}
       justifyContent={'space-around'}
       padding={'0 0.75rem'}
