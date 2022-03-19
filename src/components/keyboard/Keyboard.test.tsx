@@ -115,7 +115,7 @@ describe('Keyboard', () => {
     expect(onKey).not.toBeCalled();
   });
 
-  it('should show key with colour corresponding to key status in keyMatchStatusMap', () => {
+  it('should show key with color corresponding to key status in keyMatchStatusMap', () => {
     render(
       <Keyboard
         keyMatchStatusMap={{ a: 'MATCH', b: 'NO_MATCH', c: 'PARTIAL_MATCH' }}

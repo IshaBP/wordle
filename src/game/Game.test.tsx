@@ -109,7 +109,7 @@ describe('Game', () => {
       expect(getAlphabetAtIndex(1, 0)).toBe('F'); // next alphabet added in the next row
     });
 
-    it('should change colour of all letter tiles once word is submitted', () => {
+    it('should change color of all letter tiles once word is submitted', () => {
       mockWordEngine('baton', true);
       render(<Game />);
 
@@ -122,9 +122,9 @@ describe('Game', () => {
       userEvent.keyboard('beads{enter}');
 
       ['green', 'grey', 'yellow', 'grey', 'grey'].forEach(
-        (colour: string, letterIdx: number) =>
+        (color: string, letterIdx: number) =>
           expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
-            backgroundColor: colour,
+            backgroundColor: color,
           }),
       );
     });
@@ -155,17 +155,54 @@ describe('Game', () => {
       screen.getByLabelText('keyboard');
     });
 
-    it.todo(
-      'should add button colour in keyboard once alphabet is submitted for the first time',
-    );
+    it('should add button color in keyboard once alphabet is submitted for the first time', () => {
+      mockWordEngine('baton', true);
+      render(<Game />);
 
-    it.todo(
-      'should update button colour if eventual guesses have better match status (MATCH > PARTIAL_MATCH > NO_MATCH)',
-    );
+      userEvent.keyboard('beads{enter}');
 
-    it.todo(
-      'should not update button colour if eventual guesses have worse match status (MATCH > PARTIAL_MATCH > NO_MATCH)',
-    );
+      matchKeyColors({
+        B: 'green',
+        E: 'grey',
+        A: 'yellow',
+        D: 'grey',
+        S: 'grey',
+      });
+    });
+
+    it('should update button color if eventual guesses have better match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
+      mockWordEngine('baton', true);
+      render(<Game />);
+
+      userEvent.keyboard('beads{enter}');
+
+      matchKeyColors({
+        A: 'yellow',
+      });
+
+      userEvent.keyboard('baths{enter}');
+
+      matchKeyColors({
+        A: 'green',
+      });
+    });
+
+    it('should not update button color if eventual guesses have worse match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
+      mockWordEngine('baton', true);
+      render(<Game />);
+
+      userEvent.keyboard('baths{enter}');
+
+      matchKeyColors({
+        A: 'green',
+      });
+
+      userEvent.keyboard('beads{enter}');
+
+      matchKeyColors({
+        A: 'green',
+      });
+    });
   });
 
   describe('Toast', () => {
@@ -200,4 +237,14 @@ const mockWordEngine = (chosenWord: string, useActualMatch = false) => {
     mockedWordEngine.match.mockImplementation(actualWordEngine.match);
   }
   mockedWordEngine.getRandomWord.mockReturnValueOnce('baton');
+};
+
+const getButton = (name: string) => screen.getByRole('button', { name });
+
+const matchKeyColors = (keyColorMap: Record<string, string>) => {
+  for (let [name, color] of Object.entries(keyColorMap)) {
+    expect(screen.getByRole('button', { name })).toHaveStyle({
+      backgroundColor: color,
+    });
+  }
 };

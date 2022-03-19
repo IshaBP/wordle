@@ -8,7 +8,7 @@ type Letter =
       matchStatus: Exclude<MatchStatus, 'INITIAL'>;
     };
 
-type Row = Array<Letter>;
+export type Row = Array<Letter>;
 
 export interface WordboardProps {
   game: Array<Row>;

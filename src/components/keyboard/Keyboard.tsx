@@ -9,7 +9,7 @@ const keyRows: [KeyRow, KeyRow, KeyRow] = [
   ['<ENT>', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<BKSP>'],
 ];
 
-interface KeyboardProps {
+export interface KeyboardProps {
   keyMatchStatusMap: Partial<Record<KeyCode, MatchStatus>>;
   onKey: (code: KeyCode) => void;
 }

@@ -1,12 +1,20 @@
 import { useMemo, useRef, useState } from 'react';
-import { Keyboard } from '../components/keyboard/Keyboard';
-import { Wordboard, WordboardProps } from '../components/wordboard/Wordboard';
+import {
+  Keyboard,
+  KeyboardProps,
+  Row,
+  Wordboard,
+  WordboardProps,
+} from '../components';
 import { getRandomWord, match } from '../word-engine';
+
+type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
   const gameOver = useRef(false);
   const [game, setGame] = useState<WordboardProps['game']>(createInitialGame);
+  const [keyStatusMap, setKeyStatusMap] = useState<KeyStatusMap>({});
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
   const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
 
@@ -39,6 +47,9 @@ export const Game = () => {
               matchResult[letterIdx];
           }
           setGame(updatedGame);
+          setKeyStatusMap(
+            getUpdatedKeyStatusMap(updatedGame[currentWordIdx], keyStatusMap),
+          );
           if (isGuessedWordCorrect(matchResult)) {
             // Game won
             gameOver.current = true;
@@ -68,7 +79,7 @@ export const Game = () => {
       <span>{currentWordIdx}</span>
       <span>{currentLetterIdx}</span>
       <Wordboard game={game} latestRowStatus={'IN_PROGRESS'} />
-      <Keyboard keyMatchStatusMap={{}} onKey={onKey} />
+      <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
     </div>
   );
 };
@@ -83,3 +94,38 @@ const createInitialGame = (): WordboardProps['game'] =>
       matchStatus: 'INITIAL',
     })),
   );
+
+const getUpdatedKeyStatusMap = (
+  wordRow: Row,
+  keyStatusMap: KeyStatusMap,
+): KeyStatusMap => {
+  const matchStatusMap: Record<MatchStatus, number> = {
+    INITIAL: 0,
+    IN_PROGRESS: 1,
+    NO_MATCH: 2,
+    PARTIAL_MATCH: 3,
+    MATCH: 4,
+  };
+
+  const max = (
+    existingKeyStatus: MatchStatus | undefined,
+    newKeyStatus: MatchStatus,
+  ): MatchStatus => {
+    if (existingKeyStatus == null) {
+      return newKeyStatus;
+    }
+
+    return matchStatusMap[existingKeyStatus] > matchStatusMap[newKeyStatus]
+      ? existingKeyStatus
+      : newKeyStatus;
+  };
+
+  for (let { key, matchStatus } of wordRow) {
+    if (key) {
+      // TODO: resolve TS error and remove if condition, key will always be present in wordRow while updating keyStatusMap
+      keyStatusMap[key] = max(keyStatusMap[key], matchStatus);
+    }
+  }
+
+  return { ...keyStatusMap };
+};

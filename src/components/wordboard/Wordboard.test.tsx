@@ -34,7 +34,7 @@ describe('Wordboard', () => {
     }
   });
 
-  it("should colour tile with black if MATCH_STATUS is 'INITIAL'", () => {
+  it("should color tile with black if MATCH_STATUS is 'INITIAL'", () => {
     render(<Wordboard game={createGame()} latestRowStatus={'IN_PROGRESS'} />);
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
@@ -42,7 +42,7 @@ describe('Wordboard', () => {
     });
   });
 
-  it("should colour tile with green if MATCH_STATUS is 'MATCH'", () => {
+  it("should color tile with green if MATCH_STATUS is 'MATCH'", () => {
     render(
       <Wordboard game={createGame('MATCH')} latestRowStatus={'IN_PROGRESS'} />,
     );
@@ -52,7 +52,7 @@ describe('Wordboard', () => {
     });
   });
 
-  it("should colour tile with yellow if MATCH_STATUS is 'PARTIAL_MATCH'", () => {
+  it("should color tile with yellow if MATCH_STATUS is 'PARTIAL_MATCH'", () => {
     render(
       <Wordboard
         game={createGame('PARTIAL_MATCH')}
@@ -65,7 +65,7 @@ describe('Wordboard', () => {
     });
   });
 
-  it("should colour tile with grey if MATCH_STATUS is 'NO_MATCH'", () => {
+  it("should color tile with grey if MATCH_STATUS is 'NO_MATCH'", () => {
     render(
       <Wordboard
         game={createGame('NO_MATCH')}

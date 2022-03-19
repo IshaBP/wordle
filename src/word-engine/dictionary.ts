@@ -1,4 +1,5 @@
 const dictionary = [
+  'allow',
   'angel',
   'baton',
   'beads',
