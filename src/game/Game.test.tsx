@@ -1,5 +1,6 @@
 import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { CSSProperties } from 'styled-components';
 import { matchKeyColors, renderWithProviders } from '../test-utils';
 import { darkTheme } from '../theme';
 import * as wordEngine from '../word-engine';
@@ -129,7 +130,7 @@ describe('Game', () => {
         darkTheme.matchStatus.PARTIAL_MATCH,
         darkTheme.matchStatus.NO_MATCH,
         darkTheme.matchStatus.NO_MATCH,
-      ].forEach((color: string, letterIdx: number) =>
+      ].forEach((color: CSSProperties['backgroundColor'], letterIdx: number) =>
         expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
           backgroundColor: color,
         }),
