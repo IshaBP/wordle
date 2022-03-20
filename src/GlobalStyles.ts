@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
-import { WordleTheme } from './theme';
 
-export const GlobalStyle = createGlobalStyle<{ theme: WordleTheme }>`
+export const GlobalStyle = createGlobalStyle`
   html {
     font-family: system-ui;
     box-sizing: border-box;

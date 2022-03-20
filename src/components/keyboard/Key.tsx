@@ -13,6 +13,7 @@ export const Key = ({ code, status, onClick }: KeyProps) => {
 
   return (
     <KeyButton
+      data-code={code}
       onClick={onKeyClick}
       status={status}
       specialKey={code === '<ENT>' || code === '<BKSP>'}
@@ -36,7 +37,7 @@ const KeyButton = styled.button<{
   status: KeyProps['status'];
   specialKey: boolean;
 }>`
-  height: 3rem;
+  height: 3.5rem;
   flex: ${({ specialKey }) => (specialKey ? 1.6 : 1)};
   margin: 0;
   border: none;

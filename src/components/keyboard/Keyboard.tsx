@@ -1,4 +1,5 @@
 import { FlexBox, FlexItem } from 'react-styled-flex';
+import { useTheme } from 'styled-components';
 import { Key } from './Key';
 import { useKeyPress } from './useKeyPress';
 
@@ -16,7 +17,15 @@ export interface KeyboardProps {
 }
 
 export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
-  useKeyPress(onKey);
+  const animate = useAnimation();
+  const onKeyWrapper = (keyCode: KeyCode) => {
+    onKey(keyCode);
+    const node: HTMLButtonElement | null = document.querySelector(
+      `[aria-label=keyboard] button[data-code="${keyCode}"]`,
+    );
+    animate(node);
+  };
+  useKeyPress(onKeyWrapper);
 
   return (
     <FlexBox
@@ -31,7 +40,7 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
           key={index}
           rowIndex={index}
           keyRow={keyRow}
-          onKey={onKey}
+          onKey={onKeyWrapper}
           keyMatchStatusMap={keyMatchStatusMap}
         />
       ))}
@@ -59,4 +68,13 @@ const KeyRow = ({
       {rowIndex === 1 && <FlexItem flex={0.5} />}
     </FlexBox>
   );
+};
+
+const useAnimation = () => {
+  const theme = useTheme();
+  return (element: HTMLElement | null) => {
+    if (element) {
+      element.animate([{ backgroundColor: theme.keyPressBgColor }], 100);
+    }
+  };
 };
