@@ -39,9 +39,9 @@ jobs:
       - run: git add .
       - run: git stash pop
       - name: Generate coverage badges
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Generate coverage badges
-          branch: badges
-          file_pattern: badges/*
-          commit_author: Author <actions@github.com>
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add badges/*
+          git commit -am "Generate coverage badges" --author="Author <actions@github.com>"
+          git push
