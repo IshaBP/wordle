@@ -30,18 +30,22 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-      - run: git fetch
       - run: npm run generate-badges
-      - run: git add .
-      - run: git stash
-      - run: git checkout badges
-      - run: rm -rf badges
-      - run: git add .
-      - run: git stash pop
       - name: Generate coverage badges
         run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
+          git fetch
+          git add .
+          git stash
+          git checkout badges
+          rm -rf badges
+          git add .
+          git stash pop
           git add badges/*
-          git commit -am "Generate coverage badges" --author="Author <actions@github.com>"
-          git push
+          if ! git diff-index --quiet HEAD; then
+            git config --global user.name '  Hub Actions'
+            git config --global user.email 'actions@github.com'
+            git commit -am "Generate coverage badges" --author="Author <actions@github.com>"
+            git push
+          else
+            echo "Working tree clean. Nothing to commit."
+          fi
