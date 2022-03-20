@@ -24,4 +24,12 @@ export const GlobalStyle = createGlobalStyle`
   #root, .App {
     height: 100%;
   }
+
+  input,
+  textarea,
+  button,
+  select,
+  a {
+    -webkit-tap-highlight-color: transparent; // https://stackoverflow.com/questions/45049873/how-to-remove-the-blue-highlight-of-button-on-mobile
+  }
 `;
