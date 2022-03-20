@@ -1,6 +1,7 @@
 import { FlexBox, FlexItem } from 'react-styled-flex';
 import { useTheme } from 'styled-components';
 import { Key } from './Key';
+import { useAnimateKey } from './useAnimateKey';
 import { useKeyPress } from './useKeyPress';
 
 type KeyRow = Array<KeyCode>;
@@ -17,13 +18,10 @@ export interface KeyboardProps {
 }
 
 export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
-  const animate = useAnimation();
+  const animateKey = useAnimateKey();
   const onKeyWrapper = (keyCode: KeyCode) => {
     onKey(keyCode);
-    const node: HTMLButtonElement | null = document.querySelector(
-      `[aria-label=keyboard] button[data-code="${keyCode}"]`,
-    );
-    animate(node);
+    animateKey(keyCode);
   };
   useKeyPress(onKeyWrapper);
 
@@ -68,13 +66,4 @@ const KeyRow = ({
       {rowIndex === 1 && <FlexItem flex={0.5} />}
     </FlexBox>
   );
-};
-
-const useAnimation = () => {
-  const theme = useTheme();
-  return (element: HTMLElement | null) => {
-    if (element) {
-      element.animate([{ backgroundColor: theme.keyPressBgColor }], 100);
-    }
-  };
 };
