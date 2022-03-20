@@ -7,3 +7,7 @@
 ![Built With TS](https://img.shields.io/badge/Built%20With-TypeScript-blue)
 
 Open source non-profit wordle clone for educational purpose.
+
+## License
+
+Zero BSD © Isha Pachkawade
