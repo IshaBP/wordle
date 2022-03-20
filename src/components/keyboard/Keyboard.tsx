@@ -3,6 +3,7 @@ import { useTheme } from 'styled-components';
 import { Key } from './Key';
 import { useAnimateKey } from './useAnimateKey';
 import { useKeyPress } from './useKeyPress';
+import { useVibration } from './useVibration';
 
 type KeyRow = Array<KeyCode>;
 
@@ -19,9 +20,12 @@ export interface KeyboardProps {
 
 export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
   const animateKey = useAnimateKey();
+  const vibrateKey = useVibration();
+
   const onKeyWrapper = (keyCode: KeyCode) => {
     onKey(keyCode);
     animateKey(keyCode);
+    vibrateKey();
   };
   useKeyPress(onKeyWrapper);
 
