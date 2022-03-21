@@ -1,9 +1,4 @@
-type MatchStatus =
-  | 'INITIAL'
-  | 'IN_PROGRESS'
-  | 'MATCH'
-  | 'NO_MATCH'
-  | 'PARTIAL_MATCH';
+type MatchStatus = 'IN_PROGRESS' | 'MATCH' | 'NO_MATCH' | 'PARTIAL_MATCH';
 
 type KeyCode =
   | 'a'
