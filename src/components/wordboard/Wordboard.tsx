@@ -30,7 +30,12 @@ const AcceptedRows = ({
 }) => (
   <>
     {acceptedRows.map((row, rowIdx) => (
-      <FlexBox key={rowIdx} aria-label={'guess-word'} gap={'0.5rem'}>
+      <FlexBox
+        key={rowIdx}
+        gap={'0.5rem'}
+        aria-label={'guess-word'}
+        data-word-type={'accepted'}
+      >
         {row.map((letter, letterIdx) => (
           <Letter
             key={letterIdx}
@@ -56,7 +61,11 @@ const CurrentRow = ({
   ];
 
   return (
-    <FlexBox aria-label={'guess-word'} gap={'0.5rem'}>
+    <FlexBox
+      gap={'0.5rem'}
+      aria-label={'guess-word'}
+      data-word-type={'current'}
+    >
       {row.map((letter, letterIdx) => (
         <Letter key={letterIdx} aria-label={'letter'}>
           {letter}
@@ -74,7 +83,12 @@ const EmptyRows = ({ numberOfRows }: { numberOfRows: number }) => {
   return (
     <>
       {rows.map((row, rowIdx) => (
-        <FlexBox key={rowIdx} aria-label={'guess-word'} gap={'0.5rem'}>
+        <FlexBox
+          key={rowIdx}
+          gap={'0.5rem'}
+          aria-label={'guess-word'}
+          data-word-type={'empty'}
+        >
           {row.map((_, letterIdx) => (
             <Letter key={letterIdx} aria-label={'letter'} />
           ))}
