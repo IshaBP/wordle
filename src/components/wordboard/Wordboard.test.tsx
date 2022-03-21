@@ -49,10 +49,14 @@ describe('Wordboard', () => {
     matchLetters(0, ['a', 'l', 'l', '', '']);
   });
 
-  it.skip("should color tile with black if MATCH_STATUS is 'INITIAL'", () => {
-    renderWithProviders(<Wordboard acceptedRows={[]} currentRow={[]} />);
+  it('should color tile with black for current row', () => {
+    renderWithProviders(
+      <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
+    );
 
-    expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
+    const row = screen.getAllByLabelText('guess-word')[0];
+    const letters = getAllByLabelText(row, 'letter');
+    expect(letters[0]).toHaveStyle({
       backgroundColor: undefined,
     });
   });

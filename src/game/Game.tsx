@@ -84,7 +84,7 @@ export const Game = () => {
       justifyContent={'space-around'}
       padding={'0 0.75rem'}
     >
-      <Wordboard game={game} latestRowStatus={'IN_PROGRESS'} />
+      <Wordboard game={game} />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
     </FlexBox>
   );
