@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import {
+  AcceptedRows,
+  CurrentRow,
   Keyboard,
   KeyboardProps,
   Row,
@@ -14,65 +16,78 @@ type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
   const gameOver = useRef(false);
-  const [game, setGame] = useState<WordboardProps['game']>(createInitialGame);
+  // const currentRowRef = useRef<CurrentRow>([]);
+  const [acceptedRows, setAcceptedRows] = useState<AcceptedRows>([]);
+  const [currentRow, setCurrentRow] = useState<CurrentRow>([]);
   const [keyStatusMap, setKeyStatusMap] = useState<KeyStatusMap>({});
-  const [currentWordIdx, setCurrentWordIdx] = useState(0);
-  const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
+  const [currentWordIdx, setCurrentWordIdx] = useState(0); // TODO: Remove, not required
+  // TODO: create useSyncState hook
+  // const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
+  // const [dummy, setdummy] = useState(0);
 
   const onKey = (code: KeyCode) => {
     if (gameOver.current) {
       return;
     }
 
-    if (code === '<BKSP>') {
-      if (currentLetterIdx > 0) {
-        const updatedGame = [...game];
-        updatedGame[currentWordIdx][currentLetterIdx - 1] = {
-          key: undefined,
-          matchStatus: 'INITIAL',
-        };
-        setGame(updatedGame);
-        setCurrentLetterIdx(currentLetterIdx - 1);
-      }
-    } else if (code === '<ENT>') {
-      if (currentLetterIdx === 5) {
-        const guessWord = game[currentWordIdx]
-          .map((letter) => letter.key)
-          .join('');
-        const matchResult = match(chosenWord, guessWord);
+    setCurrentRow((currentRow) => {
+      // const currentRow: CurrentRow = currentRowRef.current;
+      const currentLetterIdx = currentRow.length;
 
-        if (matchResult) {
-          const updatedGame = [...game];
-          for (let letterIdx = 0; letterIdx < matchResult.length; letterIdx++) {
-            updatedGame[currentWordIdx][letterIdx].matchStatus =
-              matchResult[letterIdx];
-          }
-          setGame(updatedGame);
-          setKeyStatusMap(
-            getUpdatedKeyStatusMap(updatedGame[currentWordIdx], keyStatusMap),
-          );
-          if (isGuessedWordCorrect(matchResult)) {
-            // Game won
-            gameOver.current = true;
-          } else if (currentWordIdx < 5) {
-            // Game in progress
-            setCurrentWordIdx(currentWordIdx + 1);
-            setCurrentLetterIdx(0);
-          } else {
-            // Game lost
-            gameOver.current = true;
-          }
+      if (code === '<BKSP>') {
+        if (currentLetterIdx > 0) {
+          const updatedRow = currentRow.slice(0, -1);
+          // currentRowRef.current = updatedRow;
+          // setCurrentRow(updatedRow);
+          return updatedRow;
+          // setCurrentLetterIdx(currentLetterIdx - 1);
         }
+      } else if (code === '<ENT>') {
+        if (currentLetterIdx === 5) {
+          const guessWord = currentRow.join('');
+          const matchResult = match(chosenWord, guessWord);
+
+          if (matchResult) {
+            const latestAcceptedRow: Row = matchResult.map((result, idx) => ({
+              key: currentRow[idx],
+              matchStatus: result,
+            }));
+
+            setAcceptedRows([...acceptedRows, latestAcceptedRow]);
+            // currentRowRef.current = [];
+            // setCurrentRow([]);
+            setKeyStatusMap(
+              getUpdatedKeyStatusMap(latestAcceptedRow, keyStatusMap),
+            );
+
+            if (isGuessedWordCorrect(matchResult)) {
+              // Game won
+              gameOver.current = true;
+            } else if (currentWordIdx < 5) {
+              // Game in progress
+              setCurrentWordIdx(currentWordIdx + 1);
+              // setCurrentLetterIdx(0);
+            } else {
+              // Game lost
+              gameOver.current = true;
+            }
+          }
+          return [];
+        }
+      } else if (currentLetterIdx < 5) {
+        // Updating current row
+        // currentRowRef.current = [...currentRow, code];
+        // setCurrentRow((prevCurrentRow) => [...prevCurrentRow, code]);
+        console.log(currentLetterIdx, currentRow, code);
+        return [...currentRow, code];
+        // console.log(dummy, currentRow, code);
+        // setdummy((dummy) => dummy + 1);
+        // currentRow[currentLetterIdx] = code;
+        // setCurrentLetterIdx((prevCurrentLetterIdx) => prevCurrentLetterIdx + 1);
       }
-    } else if (currentLetterIdx < 5) {
-      const updatedGame = [...game];
-      updatedGame[currentWordIdx][currentLetterIdx] = {
-        key: code,
-        matchStatus: 'IN_PROGRESS',
-      };
-      setGame(updatedGame);
-      setCurrentLetterIdx(currentLetterIdx + 1);
-    }
+
+      return currentRow;
+    });
   };
 
   return (
@@ -84,7 +99,7 @@ export const Game = () => {
       justifyContent={'space-around'}
       padding={'0 0.75rem'}
     >
-      <Wordboard game={game} />
+      <Wordboard acceptedRows={acceptedRows} currentRow={currentRow} />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
     </FlexBox>
   );
@@ -93,20 +108,11 @@ export const Game = () => {
 const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
   matchResult.every((letterResult) => letterResult === 'MATCH');
 
-const createInitialGame = (): WordboardProps['game'] =>
-  new Array(6).fill(null).map(() =>
-    new Array(5).fill(null).map(() => ({
-      key: undefined,
-      matchStatus: 'INITIAL',
-    })),
-  );
-
 const getUpdatedKeyStatusMap = (
   wordRow: Row,
   keyStatusMap: KeyStatusMap,
 ): KeyStatusMap => {
   const matchStatusMap: Record<MatchStatus, number> = {
-    INITIAL: 0,
     IN_PROGRESS: 1,
     NO_MATCH: 2,
     PARTIAL_MATCH: 3,

@@ -1,7 +1,12 @@
-import { cleanup, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CSSProperties } from 'styled-components';
-import { matchKeyColors, renderWithProviders } from '../test-utils';
+import {
+  getAlphabetAtIndex,
+  getTileAtIndex,
+  matchKeyColors,
+  renderWithProviders,
+} from '../test-utils';
 import { darkTheme } from '../theme';
 import * as wordEngine from '../word-engine';
 import { Game } from './Game';
@@ -13,7 +18,7 @@ describe('Game', () => {
   beforeEach(() => jest.resetAllMocks());
 
   describe('Wordboard', () => {
-    it('should display Wordboard', () => {
+    it.only('should display Wordboard', () => {
       renderWithProviders(<Game />);
 
       screen.getByLabelText('wordboard');
@@ -229,20 +234,10 @@ describe('Game', () => {
   });
 });
 
-const getTileAtIndex = (rowIdx: number, columnIdx: number): Element =>
-  document.querySelector(
-    `[aria-label=guess-word]:nth-child(${
-      rowIdx + 1
-    }) [aria-label=letter]:nth-child(${columnIdx + 1})`,
-  )!;
-
-const getAlphabetAtIndex = (rowIdx: number, columnIdx: number): string =>
-  getTileAtIndex(rowIdx, columnIdx).textContent!;
-
 const mockWordEngine = (chosenWord: string, useActualMatch = false) => {
   if (useActualMatch) {
     const actualWordEngine = jest.requireActual('../word-engine');
     mockedWordEngine.match.mockImplementation(actualWordEngine.match);
   }
-  mockedWordEngine.getRandomWord.mockReturnValueOnce('baton');
+  mockedWordEngine.getRandomWord.mockReturnValueOnce(chosenWord);
 };
