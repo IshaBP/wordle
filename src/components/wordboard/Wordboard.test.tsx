@@ -54,14 +54,13 @@ describe('Wordboard', () => {
       <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
     );
 
-    const row = screen.getAllByLabelText('guess-word')[0];
-    const letters = getAllByLabelText(row, 'letter');
+    const letters = getLettersForRow(0);
     expect(letters[0]).toHaveStyle({
       backgroundColor: undefined,
     });
   });
 
-  it.skip("should color tile with green if MATCH_STATUS is 'MATCH'", () => {
+  it("should color tile with green if MATCH_STATUS is 'MATCH'", () => {
     renderWithProviders(<Wordboard game={createGame('MATCH')} />);
 
     expect(document.querySelector('[aria-label=letter]')).toHaveStyle({
@@ -111,10 +110,14 @@ const createGame = (
   );
 
 const matchLetters = (rowIdx: number, word: string[]) => {
-  const row = screen.getAllByLabelText('guess-word')[rowIdx];
-  const letters = getAllByLabelText(row, 'letter');
+  const letters = getLettersForRow(rowIdx);
 
   word.forEach((letter, idx) => {
     expect(letters[idx]).toHaveTextContent(letter);
   });
+};
+
+const getLettersForRow = (rowIdx: number) => {
+  const row = screen.getAllByLabelText('guess-word')[rowIdx];
+  return getAllByLabelText(row, 'letter');
 };
