@@ -1,33 +1,37 @@
 import { FlexBox } from 'react-styled-flex';
 import styled from 'styled-components';
 
-type Letter = { key: KeyCode; matchStatus: Exclude<MatchStatus, 'INITIAL'> };
+type Letter = { key: KeyCode; matchStatus: MatchStatus };
 
 const WORD_LENGTH = 5;
 const GUESS_COUNT = 6;
 
-export type Row = Array<Letter>;
+export type Row = Letter[]; // TODO: Remove after Game refactor
+export type AcceptedRows = Letter[][];
+export type CurrentRow = KeyCode[];
 
 export interface WordboardProps {
-  acceptedRows: Letter[][];
-  currentRow: KeyCode[];
+  acceptedRows: AcceptedRows;
+  currentRow: CurrentRow;
 }
 
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
+  const remainingRows = GUESS_COUNT - acceptedRows.length;
+
   return (
     <FlexBox as={'section'} column gap={'0.5rem'} aria-label={'wordboard'}>
       <AcceptedRows acceptedRows={acceptedRows} />
-      <CurrentRow currentRow={currentRow} />
-      <EmptyRows numberOfRows={GUESS_COUNT - acceptedRows.length - 1} />
+      {remainingRows > 0 && (
+        <>
+          <CurrentRow currentRow={currentRow} />
+          <EmptyRows numberOfRows={remainingRows - 1} />
+        </>
+      )}
     </FlexBox>
   );
 };
 
-const AcceptedRows = ({
-  acceptedRows,
-}: {
-  acceptedRows: WordboardProps['acceptedRows'];
-}) => (
+const AcceptedRows = ({ acceptedRows }: { acceptedRows: AcceptedRows }) => (
   <>
     {acceptedRows.map((row, rowIdx) => (
       <FlexBox
@@ -50,11 +54,7 @@ const AcceptedRows = ({
   </>
 );
 
-const CurrentRow = ({
-  currentRow,
-}: {
-  currentRow: WordboardProps['currentRow'];
-}) => {
+const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
   const row = [
     ...currentRow,
     ...new Array(WORD_LENGTH - currentRow.length).fill(''),
