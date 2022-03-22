@@ -1,5 +1,5 @@
+import { useCallback } from 'react';
 import { FlexBox, FlexItem } from 'react-styled-flex';
-import { useTheme } from 'styled-components';
 import { Key } from './Key';
 import { useAnimateKey } from './useAnimateKey';
 import { useKeyPress } from './useKeyPress';
@@ -22,11 +22,14 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
   const animateKey = useAnimateKey();
   const vibrateKey = useVibration();
 
-  const onKeyWrapper = (keyCode: KeyCode) => {
-    onKey(keyCode);
-    animateKey(keyCode);
-    vibrateKey();
-  };
+  const onKeyWrapper = useCallback(
+    (keyCode: KeyCode) => {
+      onKey(keyCode);
+      animateKey(keyCode);
+      vibrateKey();
+    },
+    [onKey, animateKey, vibrateKey],
+  );
   useKeyPress(onKeyWrapper);
 
   return (

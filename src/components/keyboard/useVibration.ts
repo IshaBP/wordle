@@ -1,7 +1,7 @@
-export const useVibration = () => {
-  return () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(20);
-    }
-  };
+const vibrate = () => {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(20);
+  }
 };
+
+export const useVibration = () => vibrate;
