@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import {
   AcceptedRows,
@@ -7,40 +7,33 @@ import {
   KeyboardProps,
   Row,
   Wordboard,
-  WordboardProps,
 } from '../components';
 import { getRandomWord, match } from '../word-engine';
+import { useSyncState } from './useSyncState';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
   const gameOver = useRef(false);
-  // const currentRowRef = useRef<CurrentRow>([]);
   const [acceptedRows, setAcceptedRows] = useState<AcceptedRows>([]);
-  const [currentRow, setCurrentRow] = useState<CurrentRow>([]);
+  const [getCurrentRow, setCurrentRow] = useSyncState<CurrentRow>([]);
   const [keyStatusMap, setKeyStatusMap] = useState<KeyStatusMap>({});
-  const [currentWordIdx, setCurrentWordIdx] = useState(0); // TODO: Remove, not required
-  // TODO: create useSyncState hook
-  // const [currentLetterIdx, setCurrentLetterIdx] = useState(0);
-  // const [dummy, setdummy] = useState(0);
 
-  const onKey = (code: KeyCode) => {
-    if (gameOver.current) {
-      return;
-    }
+  const onKey = useCallback(
+    (code: KeyCode) => {
+      if (gameOver.current) {
+        return;
+      }
 
-    setCurrentRow((currentRow) => {
-      // const currentRow: CurrentRow = currentRowRef.current;
+      const currentRow = getCurrentRow();
       const currentLetterIdx = currentRow.length;
+      const currentWordIdx = acceptedRows.length;
 
       if (code === '<BKSP>') {
         if (currentLetterIdx > 0) {
           const updatedRow = currentRow.slice(0, -1);
-          // currentRowRef.current = updatedRow;
-          // setCurrentRow(updatedRow);
-          return updatedRow;
-          // setCurrentLetterIdx(currentLetterIdx - 1);
+          setCurrentRow(updatedRow);
         }
       } else if (code === '<ENT>') {
         if (currentLetterIdx === 5) {
@@ -54,8 +47,7 @@ export const Game = () => {
             }));
 
             setAcceptedRows([...acceptedRows, latestAcceptedRow]);
-            // currentRowRef.current = [];
-            // setCurrentRow([]);
+            setCurrentRow([]);
             setKeyStatusMap(
               getUpdatedKeyStatusMap(latestAcceptedRow, keyStatusMap),
             );
@@ -65,8 +57,6 @@ export const Game = () => {
               gameOver.current = true;
             } else if (currentWordIdx < 5) {
               // Game in progress
-              setCurrentWordIdx(currentWordIdx + 1);
-              // setCurrentLetterIdx(0);
             } else {
               // Game lost
               gameOver.current = true;
@@ -75,20 +65,24 @@ export const Game = () => {
           return [];
         }
       } else if (currentLetterIdx < 5) {
-        // Updating current row
-        // currentRowRef.current = [...currentRow, code];
-        // setCurrentRow((prevCurrentRow) => [...prevCurrentRow, code]);
+        setCurrentRow([...currentRow, code]);
         console.log(currentLetterIdx, currentRow, code);
-        return [...currentRow, code];
-        // console.log(dummy, currentRow, code);
-        // setdummy((dummy) => dummy + 1);
-        // currentRow[currentLetterIdx] = code;
-        // setCurrentLetterIdx((prevCurrentLetterIdx) => prevCurrentLetterIdx + 1);
       }
-
-      return currentRow;
-    });
-  };
+    },
+    [
+      getCurrentRow,
+      setCurrentRow,
+      gameOver,
+      acceptedRows,
+      setAcceptedRows,
+      setKeyStatusMap,
+      getUpdatedKeyStatusMap,
+      keyStatusMap,
+      match,
+      chosenWord,
+      isGuessedWordCorrect,
+    ],
+  );
 
   return (
     <FlexBox
@@ -99,7 +93,7 @@ export const Game = () => {
       justifyContent={'space-around'}
       padding={'0 0.75rem'}
     >
-      <Wordboard acceptedRows={acceptedRows} currentRow={currentRow} />
+      <Wordboard acceptedRows={acceptedRows} currentRow={getCurrentRow()} />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
     </FlexBox>
   );
