@@ -2,8 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CSSProperties } from 'styled-components';
 import {
-  getAlphabetAtIndex,
-  getTileAtIndex,
+  getLettersForRow,
   matchKeyColors,
   matchLetters,
   renderWithProviders,
@@ -36,15 +35,15 @@ describe('Game', () => {
       renderWithProviders(<Game />);
 
       userEvent.keyboard('abcde{backspace}');
-      expect(getAlphabetAtIndex(0, 4)).toBe('');
+      expect(getLettersForRow(0)[4]).toHaveTextContent('');
       userEvent.keyboard('{backspace}');
-      expect(getAlphabetAtIndex(0, 3)).toBe('');
+      expect(getLettersForRow(0)[3]).toHaveTextContent('');
       userEvent.keyboard('{backspace}');
-      expect(getAlphabetAtIndex(0, 2)).toBe('');
+      expect(getLettersForRow(0)[2]).toHaveTextContent('');
       userEvent.keyboard('{backspace}');
-      expect(getAlphabetAtIndex(0, 1)).toBe('');
+      expect(getLettersForRow(0)[1]).toHaveTextContent('');
       userEvent.keyboard('{backspace}');
-      expect(getAlphabetAtIndex(0, 0)).toBe('');
+      expect(getLettersForRow(0)[0]).toHaveTextContent('');
     });
 
     it('should keep the row as is on pressing backspace in an empty row', () => {
@@ -65,11 +64,11 @@ describe('Game', () => {
       renderWithProviders(<Game />);
 
       userEvent.keyboard('ab{enter}');
-      expect(getAlphabetAtIndex(0, 2)).toBe('');
+      expect(getLettersForRow(0)[2]).toHaveTextContent('');
 
       userEvent.keyboard('c');
-      expect(getAlphabetAtIndex(0, 2)).toBe('c'); // next letter input in the same row
-      expect(getAlphabetAtIndex(1, 0)).toBe('');
+      expect(getLettersForRow(0)[2]).toHaveTextContent('c'); // next letter input in the same row
+      expect(getLettersForRow(1)[0]).toHaveTextContent('');
     });
 
     it('should try to match guess word if 5 alphabets are entered and enter is pressed', () => {
@@ -86,7 +85,7 @@ describe('Game', () => {
       userEvent.keyboard('abcde{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
-      expect(getAlphabetAtIndex(1, 0)).toBe(''); // next letter input not added in next row
+      expect(getLettersForRow(1)[0]).toHaveTextContent(''); // next letter input not added in next row
     });
 
     it('should not proceed to next row when guessed word is completely matching', () => {
@@ -95,7 +94,7 @@ describe('Game', () => {
       userEvent.keyboard('baton{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
-      expect(getAlphabetAtIndex(1, 0)).toBe(''); // next alphabet not added in the next row
+      expect(getLettersForRow(1)[0]).toHaveTextContent(''); // next alphabet not added in the next row
     });
 
     it('should proceed to next row when guessed word is submitted and it exists in dictionary but is not completely matching', () => {
@@ -103,21 +102,23 @@ describe('Game', () => {
       renderWithProviders(<Game />);
       userEvent.keyboard('beads{enter}f');
 
-      expect(getAlphabetAtIndex(1, 0)).toBe('f'); // next alphabet added in the next row
+      expect(getLettersForRow(1)[0]).toHaveTextContent('f'); // next alphabet added in the next row
     });
 
     it('should change color of all letter tiles once word is submitted', () => {
       mockWordEngine('baton', true);
       renderWithProviders(<Game />);
 
+      const letters = getLettersForRow(0);
       for (let letterIdx = 0; letterIdx < 5; letterIdx++) {
-        expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
+        expect(letters[letterIdx]).toHaveStyle({
           backgroundColor: undefined,
         });
       }
 
       userEvent.keyboard('beads{enter}');
 
+      const updatedLetters = getLettersForRow(0);
       [
         darkTheme.matchStatus.MATCH,
         darkTheme.matchStatus.NO_MATCH,
@@ -125,7 +126,7 @@ describe('Game', () => {
         darkTheme.matchStatus.NO_MATCH,
         darkTheme.matchStatus.NO_MATCH,
       ].forEach((color: CSSProperties['backgroundColor'], letterIdx: number) =>
-        expect(getTileAtIndex(0, letterIdx)).toHaveStyle({
+        expect(updatedLetters[letterIdx]).toHaveStyle({
           backgroundColor: color,
         }),
       );
