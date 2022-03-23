@@ -41,6 +41,30 @@ describe('Wordboard', () => {
     matchLetters(0, 'allow'.split(''));
   });
 
+  it('should display word in uppercase', () => {
+    renderWithProviders(
+      <Wordboard
+        acceptedRows={[
+          [
+            { key: 'a', matchStatus: 'PARTIAL_MATCH' },
+            { key: 'l', matchStatus: 'NO_MATCH' },
+            { key: 'l', matchStatus: 'NO_MATCH' },
+            { key: 'o', matchStatus: 'MATCH' },
+            { key: 'w', matchStatus: 'NO_MATCH' },
+          ],
+        ]}
+        currentRow={['g', 'l', 'e', 'a', 'n']}
+      />,
+    );
+
+    expect(getLettersForRow(0)[0]).toHaveStyle({
+      textTransform: 'uppercase',
+    });
+    expect(getLettersForRow(1)[0]).toHaveStyle({
+      textTransform: 'uppercase',
+    });
+  });
+
   it('should display word which is being currently edited', () => {
     renderWithProviders(
       <Wordboard acceptedRows={[]} currentRow={['a', 'l', 'l']} />,
