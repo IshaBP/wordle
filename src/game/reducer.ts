@@ -111,9 +111,11 @@ const getUpdatedKeyStatusMap = (
       : newKeyStatus;
   };
 
+  const updatedKeyStatusMap = { ...keyStatusMap };
+
   for (let { key, matchStatus } of wordRow) {
-    keyStatusMap[key] = max(keyStatusMap[key], matchStatus);
+    updatedKeyStatusMap[key] = max(updatedKeyStatusMap[key], matchStatus);
   }
 
-  return { ...keyStatusMap };
+  return updatedKeyStatusMap;
 };

@@ -5,6 +5,7 @@ import {
   getAlphabetAtIndex,
   getTileAtIndex,
   matchKeyColors,
+  matchLetters,
   renderWithProviders,
 } from '../test-utils';
 import { darkTheme } from '../theme';
@@ -18,7 +19,7 @@ describe('Game', () => {
   beforeEach(() => jest.resetAllMocks());
 
   describe('Wordboard', () => {
-    it.only('should display Wordboard', () => {
+    it('should display Wordboard', () => {
       renderWithProviders(<Game />);
 
       screen.getByLabelText('wordboard');
@@ -26,13 +27,9 @@ describe('Game', () => {
 
     it('should display alphabet on Wordboard on pressing it on Keyboard', () => {
       renderWithProviders(<Game />);
-
       userEvent.keyboard('abcde');
-      expect(getAlphabetAtIndex(0, 0)).toBe('A');
-      expect(getAlphabetAtIndex(0, 1)).toBe('B');
-      expect(getAlphabetAtIndex(0, 2)).toBe('C');
-      expect(getAlphabetAtIndex(0, 3)).toBe('D');
-      expect(getAlphabetAtIndex(0, 4)).toBe('E');
+
+      matchLetters(0, 'abcde'.split(''));
     });
 
     it('should remove alphabet from Wordboard on pressing backspace on Keyboard', () => {
@@ -52,18 +49,13 @@ describe('Game', () => {
 
     it('should keep the row as is on pressing backspace in an empty row', () => {
       renderWithProviders(<Game />);
-
       userEvent.keyboard('{backspace}{backspace}{backspace}');
-      expect(getAlphabetAtIndex(0, 0)).toBe('');
-      expect(getAlphabetAtIndex(0, 1)).toBe('');
-      expect(getAlphabetAtIndex(0, 2)).toBe('');
-      expect(getAlphabetAtIndex(0, 3)).toBe('');
-      expect(getAlphabetAtIndex(0, 4)).toBe('');
+
+      matchLetters(0, ['', '', '', '', '']);
     });
 
     it('should not submit guess word if less than 5 alphabets are entered and enter is pressed', () => {
       renderWithProviders(<Game />);
-
       userEvent.keyboard('ab{enter}');
 
       expect(mockedWordEngine.match).not.toHaveBeenCalled();
@@ -76,22 +68,21 @@ describe('Game', () => {
       expect(getAlphabetAtIndex(0, 2)).toBe('');
 
       userEvent.keyboard('c');
-      expect(getAlphabetAtIndex(0, 2)).toBe('C'); // next letter input in the same row
+      expect(getAlphabetAtIndex(0, 2)).toBe('c'); // next letter input in the same row
       expect(getAlphabetAtIndex(1, 0)).toBe('');
     });
 
     it('should try to match guess word if 5 alphabets are entered and enter is pressed', () => {
       mockWordEngine('baton');
       renderWithProviders(<Game />);
-
       userEvent.keyboard('abcde{enter}');
+
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
       expect(mockedWordEngine.match).toHaveBeenCalledWith('baton', 'abcde');
     });
 
     it('should not proceed to next row if guess word does not exist in the dictionary', () => {
       renderWithProviders(<Game />);
-
       userEvent.keyboard('abcde{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -101,7 +92,6 @@ describe('Game', () => {
     it('should not proceed to next row when guessed word is completely matching', () => {
       mockWordEngine('baton', true);
       renderWithProviders(<Game />);
-
       userEvent.keyboard('baton{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -111,10 +101,9 @@ describe('Game', () => {
     it('should proceed to next row when guessed word is submitted and it exists in dictionary but is not completely matching', () => {
       mockWordEngine('baton', true);
       renderWithProviders(<Game />);
-
       userEvent.keyboard('beads{enter}f');
 
-      expect(getAlphabetAtIndex(1, 0)).toBe('F'); // next alphabet added in the next row
+      expect(getAlphabetAtIndex(1, 0)).toBe('f'); // next alphabet added in the next row
     });
 
     it('should change color of all letter tiles once word is submitted', () => {
