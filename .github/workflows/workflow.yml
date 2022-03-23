@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '17.x'
+      - run: npm -v
       - run: npm ci
       - run: npm run test
       - run: npm run build
