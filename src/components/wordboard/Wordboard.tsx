@@ -1,3 +1,4 @@
+import React from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Letter, WordboardRow } from './WordboardRow';
 
@@ -14,7 +15,6 @@ export interface WordboardProps {
 }
 
 // TODO: React.memo for Accepted and Empty row
-// TODO: Common code extract
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 
@@ -48,7 +48,7 @@ const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
   return <WordboardRow type={'current'} row={row} />;
 };
 
-const EmptyRows = ({ numberOfRows }: { numberOfRows: number }) => {
+const EmptyRows = React.memo(({ numberOfRows }: { numberOfRows: number }) => {
   const rows: string[][] = Array.from({ length: numberOfRows }, () =>
     new Array(WORD_LENGTH).fill(''),
   );
@@ -60,4 +60,4 @@ const EmptyRows = ({ numberOfRows }: { numberOfRows: number }) => {
       ))}
     </>
   );
-};
+});
