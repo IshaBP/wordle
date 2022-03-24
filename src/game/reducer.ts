@@ -1,4 +1,4 @@
-import { AcceptedRows, CurrentRow, KeyboardProps, Row } from '../components';
+import { AcceptedRows, CurrentRow, KeyboardProps, Letter } from '../components';
 import { match } from '../word-engine';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
@@ -48,10 +48,12 @@ export const reducer = (state: State, action: Action): State => {
         const matchResult = match(action.chosenWord, guessWord);
 
         if (matchResult) {
-          const latestAcceptedRow: Row = matchResult.map((result, idx) => ({
-            key: currentRow[idx],
-            matchStatus: result,
-          }));
+          const latestAcceptedRow: Letter[] = matchResult.map(
+            (result, idx) => ({
+              key: currentRow[idx],
+              matchStatus: result,
+            }),
+          );
 
           const updatedState: State = {
             ...state,
@@ -88,7 +90,7 @@ const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
   matchResult.every((letterResult) => letterResult === 'MATCH');
 
 const getUpdatedKeyStatusMap = (
-  wordRow: Row,
+  wordRow: Letter[],
   keyStatusMap: KeyStatusMap,
 ): KeyStatusMap => {
   const matchStatusMap: Record<MatchStatus, number> = {

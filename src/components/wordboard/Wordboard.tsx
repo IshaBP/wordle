@@ -1,12 +1,10 @@
 import { FlexBox } from 'react-styled-flex';
-import styled from 'styled-components';
-
-type Letter = { key: KeyCode; matchStatus: MatchStatus };
+import { Letter, WordboardRow } from './WordboardRow';
 
 const WORD_LENGTH = 5;
 const GUESS_COUNT = 6;
 
-export type Row = Letter[]; // TODO: Remove after Game refactor
+export type { Letter };
 export type AcceptedRows = Letter[][];
 export type CurrentRow = KeyCode[];
 
@@ -15,6 +13,8 @@ export interface WordboardProps {
   currentRow: CurrentRow;
 }
 
+// TODO: React.memo for Accepted and Empty row
+// TODO: Common code extract
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 
@@ -34,45 +34,18 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
 const AcceptedRows = ({ acceptedRows }: { acceptedRows: AcceptedRows }) => (
   <>
     {acceptedRows.map((row, rowIdx) => (
-      <FlexBox
-        key={rowIdx}
-        gap={'0.5rem'}
-        aria-label={'guess-word'}
-        data-word-type={'accepted'}
-      >
-        {row.map((letter, letterIdx) => (
-          <Letter
-            key={letterIdx}
-            aria-label={'letter'}
-            status={letter.matchStatus}
-          >
-            {letter.key}
-          </Letter>
-        ))}
-      </FlexBox>
+      <WordboardRow key={rowIdx} type={'accepted'} row={row} />
     ))}
   </>
 );
 
 const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
-  const row = [
+  const row: string[] = [
     ...currentRow,
     ...new Array(WORD_LENGTH - currentRow.length).fill(''),
   ];
 
-  return (
-    <FlexBox
-      gap={'0.5rem'}
-      aria-label={'guess-word'}
-      data-word-type={'current'}
-    >
-      {row.map((letter, letterIdx) => (
-        <Letter key={letterIdx} aria-label={'letter'}>
-          {letter}
-        </Letter>
-      ))}
-    </FlexBox>
-  );
+  return <WordboardRow type={'current'} row={row} />;
 };
 
 const EmptyRows = ({ numberOfRows }: { numberOfRows: number }) => {
@@ -83,30 +56,8 @@ const EmptyRows = ({ numberOfRows }: { numberOfRows: number }) => {
   return (
     <>
       {rows.map((row, rowIdx) => (
-        <FlexBox
-          key={rowIdx}
-          gap={'0.5rem'}
-          aria-label={'guess-word'}
-          data-word-type={'empty'}
-        >
-          {row.map((_, letterIdx) => (
-            <Letter key={letterIdx} aria-label={'letter'} />
-          ))}
-        </FlexBox>
+        <WordboardRow key={rowIdx} type={'empty'} row={row} />
       ))}
     </>
   );
 };
-
-const Letter = styled(FlexBox).attrs({ center: true })<{
-  status?: MatchStatus;
-}>`
-  height: 3.5rem;
-  width: 3.5rem;
-  border: 2px solid ${({ theme }) => theme.borderColor};
-  background-color: ${({ status, theme }) =>
-    status ? theme.matchStatus[status] : undefined};
-  font-size: 2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-`;
