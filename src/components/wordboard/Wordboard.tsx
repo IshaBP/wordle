@@ -14,7 +14,6 @@ export interface WordboardProps {
   currentRow: CurrentRow;
 }
 
-// TODO: React.memo for Accepted and Empty row
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 
@@ -31,12 +30,16 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   );
 };
 
-const AcceptedRows = ({ acceptedRows }: { acceptedRows: AcceptedRows }) => (
-  <>
-    {acceptedRows.map((row, rowIdx) => (
-      <WordboardRow key={rowIdx} type={'accepted'} row={row} />
-    ))}
-  </>
+const AcceptedRows = React.memo(
+  ({ acceptedRows }: { acceptedRows: AcceptedRows }) => {
+    return (
+      <>
+        {acceptedRows.map((row, rowIdx) => (
+          <WordboardRow key={rowIdx} type={'accepted'} row={row} />
+        ))}
+      </>
+    );
+  },
 );
 
 const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
