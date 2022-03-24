@@ -94,10 +94,9 @@ const getUpdatedKeyStatusMap = (
   keyStatusMap: KeyStatusMap,
 ): KeyStatusMap => {
   const matchStatusMap: Record<MatchStatus, number> = {
-    IN_PROGRESS: 1,
-    NO_MATCH: 2,
-    PARTIAL_MATCH: 3,
-    MATCH: 4,
+    NO_MATCH: 1,
+    PARTIAL_MATCH: 2,
+    MATCH: 3,
   };
 
   const max = (

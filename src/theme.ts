@@ -8,7 +8,6 @@ export const darkTheme = {
     MATCH: '#538D4E',
     NO_MATCH: '#3A3A3C',
     PARTIAL_MATCH: '#B59F3B',
-    IN_PROGRESS: undefined,
   },
 };
 
@@ -22,6 +21,5 @@ export const lightTheme = {
     MATCH: '#6AAA64',
     NO_MATCH: '#787C7E',
     PARTIAL_MATCH: '#C9B458',
-    IN_PROGRESS: undefined,
   },
 };

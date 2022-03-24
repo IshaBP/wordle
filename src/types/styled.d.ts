@@ -11,7 +11,6 @@ declare module 'styled-components' {
       MATCH: CSSProperties['backgroundColor'];
       NO_MATCH: CSSProperties['backgroundColor'];
       PARTIAL_MATCH: CSSProperties['backgroundColor'];
-      IN_PROGRESS: CSSProperties['backgroundColor']; // TODO: remove once keyboard and wordboard matchStatus are separated
     };
   }
 }
