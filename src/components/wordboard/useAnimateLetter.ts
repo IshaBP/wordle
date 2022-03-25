@@ -1,15 +1,16 @@
 import { RefObject, useEffect, useRef } from 'react';
 import { useAnimation } from '../useAnimation';
 
+// TODO: Tests
 export const useAnimateLetter = (
   currentRowRef: RefObject<HTMLDivElement>,
   currentRow: string[],
 ) => {
   const lastAnimatedIdx = useRef(0);
-  const animate = useAnimation();
+  const [isAnimationSupported, animate] = useAnimation();
 
   useEffect(() => {
-    if (currentRowRef.current) {
+    if (isAnimationSupported && currentRowRef.current) {
       if (currentRow.length === 0) {
         lastAnimatedIdx.current = 0;
       } else if (currentRow.length === lastAnimatedIdx.current + 1) {

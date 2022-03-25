@@ -4,14 +4,16 @@ import { useAnimation } from '../useAnimation';
 
 export const useAnimateKey = () => {
   const theme = useTheme();
-  const animate = useAnimation();
+  const [isAnimationSupported, animate] = useAnimation();
 
   return useCallback(
     (keyCode: KeyCode) => {
-      const keyEl = document.querySelector(
-        `[aria-label=keyboard] button[data-code="${keyCode}"]`,
-      );
-      animate(keyEl, [{ backgroundColor: theme.bgColor.KEY_PRESS }], 100);
+      if (isAnimationSupported) {
+        const keyEl = document.querySelector(
+          `[aria-label=keyboard] button[data-code="${keyCode}"]`,
+        );
+        animate(keyEl, [{ backgroundColor: theme.bgColor.KEY_PRESS }], 100);
+      }
     },
     [theme],
   );
