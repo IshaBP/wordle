@@ -117,6 +117,31 @@ describe('Keyboard', () => {
     expect(onKey).not.toBeCalled();
   });
 
+  it('should trigger onKey callback on pressing any key with shift', () => {
+    const onKey = jest.fn();
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+
+    userEvent.keyboard('{shift}r');
+    expect(onKey).toBeCalledWith('r');
+  });
+
+  it('should not trigger onKey callback on pressing any key with ctrl or alt even if shift is also pressed', () => {
+    const onKey = jest.fn();
+    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={onKey} />);
+
+    // alt
+    userEvent.keyboard('{alt}r');
+    expect(onKey).not.toBeCalled();
+    userEvent.keyboard('{alt}{shift}r');
+    expect(onKey).not.toBeCalled();
+
+    // alt
+    userEvent.keyboard('{ctrl}r');
+    expect(onKey).not.toBeCalled();
+    userEvent.keyboard('{ctrl}{shift}r');
+    expect(onKey).not.toBeCalled();
+  });
+
   it('should show key with color corresponding to key status in keyMatchStatusMap', () => {
     renderWithProviders(
       <Keyboard

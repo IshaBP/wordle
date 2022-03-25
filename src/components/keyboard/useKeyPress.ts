@@ -4,6 +4,11 @@ export const useKeyPress = (onKey: (code: KeyCode) => void) => {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
+
+      if (event.altKey || event.ctrlKey) {
+        return;
+      }
+
       if (key === 'enter') {
         onKey('<ENT>');
       } else if (key === 'backspace') {
