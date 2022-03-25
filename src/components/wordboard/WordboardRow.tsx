@@ -40,7 +40,8 @@ const Letter = styled(FlexBox).attrs({ center: true })<{
 }>`
   height: 3.5rem;
   width: 3.5rem;
-  border: 2px solid ${({ theme }) => theme.borderColor};
+  border: 2px solid
+    ${({ status, theme }) => (status ? 'transparent' : theme.borderColor)};
   background-color: ${({ status, theme }) =>
     status ? theme.matchStatus[status] : undefined};
   font-size: 2rem;

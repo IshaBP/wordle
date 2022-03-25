@@ -14,7 +14,6 @@ export interface WordboardProps {
   currentRow: CurrentRow;
 }
 
-// TODO: Border color transparent
 // TODO: Wrong word animation
 // TODO: Letter type border and animation add
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
