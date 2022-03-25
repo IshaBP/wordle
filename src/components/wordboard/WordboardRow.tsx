@@ -1,5 +1,5 @@
 import { FlexBox } from 'react-styled-flex';
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 
 type WordboardRowProps =
   | {
@@ -46,13 +46,13 @@ const Letter = styled(FlexBox).attrs({ center: true })<{
   height: 3.5rem;
   width: 3.5rem;
   border: 2px solid
-    ${({ $highlightBorder, status, theme }) => {
+    ${({ $highlightBorder, status, theme }): CSSProperties['borderColor'] => {
       if (status) {
         return 'transparent';
       } else if ($highlightBorder) {
-        return theme.highlightBorder;
+        return theme.borderColor.HIGHLIGHT;
       }
-      return theme.borderColor;
+      return theme.borderColor.INITIAL;
     }};
   background-color: ${({ status, theme }) =>
     status ? theme.bgColor[status] : undefined};

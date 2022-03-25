@@ -1,7 +1,9 @@
 export const darkTheme = {
   textColor: '#FFFFFF',
-  borderColor: '#3A3A3C',
-  highlightBorder: '#565758',
+  borderColor: {
+    INITIAL: '#3A3A3C',
+    HIGHLIGHT: '#565758',
+  },
   bgColor: {
     BODY: '#000000',
     INITIAL: '#818384',
@@ -14,8 +16,10 @@ export const darkTheme = {
 
 export const lightTheme = {
   textColor: '#000000',
-  borderColor: '#D3D6DA',
-  highlightBorder: '#878a8c',
+  borderColor: {
+    INITIAL: '#D3D6DA',
+    HIGHLIGHT: '#878a8c',
+  },
   bgColor: {
     BODY: '#FFFFFF',
     INITIAL: '#D3D6DA',

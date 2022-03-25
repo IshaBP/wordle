@@ -152,10 +152,10 @@ describe('Wordboard', () => {
 
       const letters = getLettersForRow(0);
       expect(letters[0]).toHaveStyle({
-        borderColor: darkTheme.highlightBorder,
+        borderColor: darkTheme.borderColor.HIGHLIGHT,
       });
       expect(letters[1]).toHaveStyle({
-        borderColor: darkTheme.highlightBorder,
+        borderColor: darkTheme.borderColor.HIGHLIGHT,
       });
     });
 
@@ -166,13 +166,13 @@ describe('Wordboard', () => {
 
       const letters = getLettersForRow(0);
       expect(letters[2]).toHaveStyle({
-        borderColor: darkTheme.borderColor,
+        borderColor: darkTheme.borderColor.INITIAL,
       });
       expect(letters[3]).toHaveStyle({
-        borderColor: darkTheme.borderColor,
+        borderColor: darkTheme.borderColor.INITIAL,
       });
       expect(letters[4]).toHaveStyle({
-        borderColor: darkTheme.borderColor,
+        borderColor: darkTheme.borderColor.INITIAL,
       });
     });
 
@@ -184,7 +184,7 @@ describe('Wordboard', () => {
       const letters = getLettersForRow(1); // empty row
       letters.forEach((letterElement) =>
         expect(letterElement).toHaveStyle({
-          borderColor: darkTheme.borderColor,
+          borderColor: darkTheme.borderColor.INITIAL,
         }),
       );
     });

@@ -3,8 +3,10 @@ import 'styled-components';
 declare module 'styled-components' {
   export interface DefaultTheme {
     textColor: CSSProperties['color'];
-    borderColor: CSSProperties['borderColor'];
-    highlightBorder: CSSProperties['borderColor'];
+    borderColor: {
+      INITIAL: CSSProperties['borderColor'];
+      HIGHLIGHT: CSSProperties['borderColor'];
+    };
     bgColor: {
       BODY: CSSProperties['backgroundColor'];
       INITIAL: CSSProperties['backgroundColor'];
