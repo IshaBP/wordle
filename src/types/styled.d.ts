@@ -5,6 +5,7 @@ declare module 'styled-components' {
     textColor: CSSProperties['color'];
     bgColor: CSSProperties['backgroundColor'];
     borderColor: CSSProperties['borderColor'];
+    highlightBorder: CSSProperties['borderColor'];
     keyPressBgColor: CSSProperties['backgroundColor'];
     matchStatus: {
       INITIAL: CSSProperties['backgroundColor'];

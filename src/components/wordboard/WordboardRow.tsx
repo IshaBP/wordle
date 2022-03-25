@@ -27,7 +27,11 @@ export const WordboardRow = ({ type, row }: WordboardRowProps) => {
             </Letter>
           ))
         : row.map((letter, letterIdx) => (
-            <Letter key={letterIdx} aria-label={'letter'}>
+            <Letter
+              key={letterIdx}
+              aria-label={'letter'}
+              $highlightBorder={type === 'current' && letter !== ''}
+            >
               {letter}
             </Letter>
           ))}
@@ -37,11 +41,19 @@ export const WordboardRow = ({ type, row }: WordboardRowProps) => {
 
 const Letter = styled(FlexBox).attrs({ center: true })<{
   status?: MatchStatus;
+  $highlightBorder?: boolean;
 }>`
   height: 3.5rem;
   width: 3.5rem;
   border: 2px solid
-    ${({ status, theme }) => (status ? 'transparent' : theme.borderColor)};
+    ${({ $highlightBorder, status, theme }) => {
+      if (status) {
+        return 'transparent';
+      } else if ($highlightBorder) {
+        return theme.highlightBorder;
+      }
+      return theme.borderColor;
+    }};
   background-color: ${({ status, theme }) =>
     status ? theme.matchStatus[status] : undefined};
   font-size: 2rem;

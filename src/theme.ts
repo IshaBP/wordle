@@ -2,6 +2,7 @@ export const darkTheme = {
   textColor: '#FFFFFF',
   bgColor: '#000000',
   borderColor: '#3A3A3C',
+  highlightBorder: '#565758',
   keyPressBgColor: '#545556',
   matchStatus: {
     INITIAL: '#818384',
@@ -15,6 +16,7 @@ export const lightTheme = {
   textColor: '#000000',
   bgColor: '#FFFFFF',
   borderColor: '#D3D6DA',
+  highlightBorder: '#878a8c',
   keyPressBgColor: '#545556',
   matchStatus: {
     INITIAL: '#D3D6DA',
