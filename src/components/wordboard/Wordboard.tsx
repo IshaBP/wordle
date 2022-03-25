@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FlexBox } from 'react-styled-flex';
+import { useAnimateLetter } from './useAnimateLetter';
 import { Letter, WordboardRow } from './WordboardRow';
 
 const WORD_LENGTH = 5;
@@ -15,7 +16,6 @@ export interface WordboardProps {
 }
 
 // TODO: Wrong word animation
-// TODO: Letter type animation add
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 
@@ -45,12 +45,15 @@ const AcceptedRows = React.memo(
 );
 
 const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
+  const currentRowRef = useRef<HTMLDivElement>(null);
+  useAnimateLetter(currentRowRef, currentRow);
+
   const row: string[] = [
     ...currentRow,
     ...new Array(WORD_LENGTH - currentRow.length).fill(''),
   ];
 
-  return <WordboardRow type={'current'} row={row} />;
+  return <WordboardRow ref={currentRowRef} type={'current'} row={row} />;
 };
 
 const EmptyRows = React.memo(({ numberOfRows }: { numberOfRows: number }) => {
