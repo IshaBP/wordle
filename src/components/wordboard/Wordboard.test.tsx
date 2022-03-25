@@ -105,19 +105,19 @@ describe('Wordboard', () => {
 
       const letters = getLettersForRow(0);
       expect(letters[0]).toHaveStyle({
-        backgroundColor: darkTheme.matchStatus.PARTIAL_MATCH,
+        backgroundColor: darkTheme.bgColor.PARTIAL_MATCH,
       });
       expect(letters[1]).toHaveStyle({
-        backgroundColor: darkTheme.matchStatus.NO_MATCH,
+        backgroundColor: darkTheme.bgColor.NO_MATCH,
       });
       expect(letters[2]).toHaveStyle({
-        backgroundColor: darkTheme.matchStatus.NO_MATCH,
+        backgroundColor: darkTheme.bgColor.NO_MATCH,
       });
       expect(letters[3]).toHaveStyle({
-        backgroundColor: darkTheme.matchStatus.MATCH,
+        backgroundColor: darkTheme.bgColor.MATCH,
       });
       expect(letters[4]).toHaveStyle({
-        backgroundColor: darkTheme.matchStatus.NO_MATCH,
+        backgroundColor: darkTheme.bgColor.NO_MATCH,
       });
     });
   });

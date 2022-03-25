@@ -55,7 +55,7 @@ const Letter = styled(FlexBox).attrs({ center: true })<{
       return theme.borderColor;
     }};
   background-color: ${({ status, theme }) =>
-    status ? theme.matchStatus[status] : undefined};
+    status ? theme.bgColor[status] : undefined};
   font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;

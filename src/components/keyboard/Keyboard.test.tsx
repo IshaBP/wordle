@@ -151,9 +151,9 @@ describe('Keyboard', () => {
     );
 
     matchKeyColors({
-      A: darkTheme.matchStatus.MATCH,
-      B: darkTheme.matchStatus.NO_MATCH,
-      C: darkTheme.matchStatus.PARTIAL_MATCH,
+      A: darkTheme.bgColor.MATCH,
+      B: darkTheme.bgColor.NO_MATCH,
+      C: darkTheme.bgColor.PARTIAL_MATCH,
     });
   });
 });

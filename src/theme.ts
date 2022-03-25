@@ -1,9 +1,9 @@
 export const darkTheme = {
   textColor: '#FFFFFF',
-  bgColor: '#000000',
   borderColor: '#3A3A3C',
   highlightBorder: '#565758',
-  matchStatus: {
+  bgColor: {
+    BODY: '#000000',
     INITIAL: '#818384',
     MATCH: '#538D4E',
     NO_MATCH: '#3A3A3C',
@@ -14,10 +14,10 @@ export const darkTheme = {
 
 export const lightTheme = {
   textColor: '#000000',
-  bgColor: '#FFFFFF',
   borderColor: '#D3D6DA',
   highlightBorder: '#878a8c',
-  matchStatus: {
+  bgColor: {
+    BODY: '#FFFFFF',
     INITIAL: '#D3D6DA',
     MATCH: '#6AAA64',
     NO_MATCH: '#787C7E',

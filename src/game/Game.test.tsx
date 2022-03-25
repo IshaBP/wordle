@@ -120,11 +120,11 @@ describe('Game', () => {
 
       const updatedLetters = getLettersForRow(0);
       [
-        darkTheme.matchStatus.MATCH,
-        darkTheme.matchStatus.NO_MATCH,
-        darkTheme.matchStatus.PARTIAL_MATCH,
-        darkTheme.matchStatus.NO_MATCH,
-        darkTheme.matchStatus.NO_MATCH,
+        darkTheme.bgColor.MATCH,
+        darkTheme.bgColor.NO_MATCH,
+        darkTheme.bgColor.PARTIAL_MATCH,
+        darkTheme.bgColor.NO_MATCH,
+        darkTheme.bgColor.NO_MATCH,
       ].forEach((color: CSSProperties['backgroundColor'], letterIdx: number) =>
         expect(updatedLetters[letterIdx]).toHaveStyle({
           backgroundColor: color,
@@ -165,11 +165,11 @@ describe('Game', () => {
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        B: darkTheme.matchStatus.MATCH,
-        E: darkTheme.matchStatus.NO_MATCH,
-        A: darkTheme.matchStatus.PARTIAL_MATCH,
-        D: darkTheme.matchStatus.NO_MATCH,
-        S: darkTheme.matchStatus.NO_MATCH,
+        B: darkTheme.bgColor.MATCH,
+        E: darkTheme.bgColor.NO_MATCH,
+        A: darkTheme.bgColor.PARTIAL_MATCH,
+        D: darkTheme.bgColor.NO_MATCH,
+        S: darkTheme.bgColor.NO_MATCH,
       });
     });
 
@@ -180,13 +180,13 @@ describe('Game', () => {
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        A: darkTheme.matchStatus.PARTIAL_MATCH,
+        A: darkTheme.bgColor.PARTIAL_MATCH,
       });
 
       userEvent.keyboard('baths{enter}');
 
       matchKeyColors({
-        A: darkTheme.matchStatus.MATCH,
+        A: darkTheme.bgColor.MATCH,
       });
     });
 
@@ -197,13 +197,13 @@ describe('Game', () => {
       userEvent.keyboard('baths{enter}');
 
       matchKeyColors({
-        A: darkTheme.matchStatus.MATCH,
+        A: darkTheme.bgColor.MATCH,
       });
 
       userEvent.keyboard('beads{enter}');
 
       matchKeyColors({
-        A: darkTheme.matchStatus.MATCH,
+        A: darkTheme.bgColor.MATCH,
       });
     });
   });

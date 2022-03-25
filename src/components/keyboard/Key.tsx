@@ -44,7 +44,7 @@ const KeyButton = styled.button<{
   outline: none;
   border-radius: 0.25rem;
   background-color: ${({ status, theme }) =>
-    status ? theme.matchStatus[status] : theme.matchStatus.INITIAL};
+    status ? theme.bgColor[status] : theme.bgColor.INITIAL};
   color: ${({ theme }) => theme.textColor};
   font-weight: bold;
   font-size: ${({ specialKey }) => (specialKey ? '0.75rem' : '1rem')};
