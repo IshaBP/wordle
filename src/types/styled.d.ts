@@ -6,12 +6,12 @@ declare module 'styled-components' {
     bgColor: CSSProperties['backgroundColor'];
     borderColor: CSSProperties['borderColor'];
     highlightBorder: CSSProperties['borderColor'];
-    keyPressBgColor: CSSProperties['backgroundColor'];
     matchStatus: {
       INITIAL: CSSProperties['backgroundColor'];
       MATCH: CSSProperties['backgroundColor'];
       NO_MATCH: CSSProperties['backgroundColor'];
       PARTIAL_MATCH: CSSProperties['backgroundColor'];
+      KEY_PRESS: CSSProperties['backgroundColor'];
     };
   }
 }

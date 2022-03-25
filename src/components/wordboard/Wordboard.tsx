@@ -15,7 +15,7 @@ export interface WordboardProps {
 }
 
 // TODO: Wrong word animation
-// TODO: Letter type border and animation add
+// TODO: Letter type animation add
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 

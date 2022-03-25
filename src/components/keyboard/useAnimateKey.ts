@@ -11,7 +11,10 @@ export const useAnimateKey = () => {
           `[aria-label=keyboard] button[data-code="${keyCode}"]`,
         );
         if (element) {
-          element.animate([{ backgroundColor: theme.keyPressBgColor }], 100);
+          element.animate(
+            [{ backgroundColor: theme.matchStatus.KEY_PRESS }],
+            100,
+          );
         }
       }
     },
