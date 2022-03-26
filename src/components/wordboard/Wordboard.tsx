@@ -36,17 +36,19 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   );
 };
 
-const AcceptedRows = React.memo(
-  ({ acceptedRows }: { acceptedRows: AcceptedRows }) => {
-    return (
-      <>
-        {acceptedRows.map((row, rowIdx) => (
-          <WordboardRow key={rowIdx} type={'accepted'} row={row} />
-        ))}
-      </>
-    );
-  },
-);
+const AcceptedRows = React.memo(function AcceptedRows({
+  acceptedRows,
+}: {
+  acceptedRows: AcceptedRows;
+}) {
+  return (
+    <>
+      {acceptedRows.map((row, rowIdx) => (
+        <WordboardRow key={rowIdx} type={'accepted'} row={row} />
+      ))}
+    </>
+  );
+});
 
 const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
   const currentRowRef = useRef<HTMLDivElement>(null);
@@ -60,7 +62,11 @@ const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
   return <WordboardRow ref={currentRowRef} type={'current'} row={row} />;
 };
 
-const EmptyRows = React.memo(({ numberOfRows }: { numberOfRows: number }) => {
+const EmptyRows = React.memo(function EmptyRows({
+  numberOfRows,
+}: {
+  numberOfRows: number;
+}) {
   const rows: string[][] = Array.from({ length: numberOfRows }, () =>
     new Array(WORD_LENGTH).fill(''),
   );

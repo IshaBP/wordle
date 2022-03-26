@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import styled, { CSSProperties } from 'styled-components';
 
@@ -14,38 +14,39 @@ type WordboardRowProps =
 
 export type Letter = { key: KeyCode; matchStatus: MatchStatus };
 
-export const WordboardRow = forwardRef<HTMLDivElement, WordboardRowProps>(
-  ({ type, row }, ref) => {
-    return (
-      <FlexBox
-        ref={ref}
-        gap={'0.5rem'}
-        aria-label={'guess-word'}
-        data-word-type={type}
-      >
-        {type === 'accepted'
-          ? row.map((letter, letterIdx) => (
-              <Letter
-                key={letterIdx}
-                aria-label={'letter'}
-                status={letter.matchStatus}
-              >
-                {letter.key}
-              </Letter>
-            ))
-          : row.map((letter, letterIdx) => (
-              <Letter
-                key={letterIdx}
-                aria-label={'letter'}
-                $highlightBorder={type === 'current' && letter !== ''}
-              >
-                {letter}
-              </Letter>
-            ))}
-      </FlexBox>
-    );
-  },
-);
+export const WordboardRow = forwardRef(function WordboardRow(
+  { type, row }: WordboardRowProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
+  return (
+    <FlexBox
+      ref={ref}
+      gap={'0.5rem'}
+      aria-label={'guess-word'}
+      data-word-type={type}
+    >
+      {type === 'accepted'
+        ? row.map((letter, letterIdx) => (
+            <Letter
+              key={letterIdx}
+              aria-label={'letter'}
+              status={letter.matchStatus}
+            >
+              {letter.key}
+            </Letter>
+          ))
+        : row.map((letter, letterIdx) => (
+            <Letter
+              key={letterIdx}
+              aria-label={'letter'}
+              $highlightBorder={type === 'current' && letter !== ''}
+            >
+              {letter}
+            </Letter>
+          ))}
+    </FlexBox>
+  );
+});
 
 const Letter = styled(FlexBox).attrs({ center: true })<{
   status?: MatchStatus;
