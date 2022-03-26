@@ -6,7 +6,9 @@ import { Keyboard } from './Keyboard';
 
 describe('Keyboard', () => {
   it('should display all keys', () => {
-    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
+    renderWithProviders(
+      <Keyboard keyMatchStatusMap={{}} onKey={() => void 0} />,
+    );
     const keys = screen.getAllByRole('button');
 
     expect(keys).toHaveLength(28);
@@ -18,7 +20,9 @@ describe('Keyboard', () => {
   });
 
   it('should display all keys in QWERTY order', () => {
-    renderWithProviders(<Keyboard keyMatchStatusMap={{}} onKey={() => {}} />);
+    renderWithProviders(
+      <Keyboard keyMatchStatusMap={{}} onKey={() => void 0} />,
+    );
     const getKeysInRow = (rowIndex: 0 | 1 | 2) => {
       const allRows = screen.getAllByLabelText('key-row');
 
@@ -146,7 +150,7 @@ describe('Keyboard', () => {
     renderWithProviders(
       <Keyboard
         keyMatchStatusMap={{ a: 'MATCH', b: 'NO_MATCH', c: 'PARTIAL_MATCH' }}
-        onKey={() => {}}
+        onKey={() => void 0}
       />,
     );
 
