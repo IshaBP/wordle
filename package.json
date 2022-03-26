@@ -45,8 +45,8 @@
     "@vitejs/plugin-react": "1.0.5",
     "babel-plugin-styled-components": "^2.0.6",
     "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "jest-coverage-badges": "^1.1.2",
@@ -55,6 +55,7 @@
     "prettier": "^2.6.0",
     "sort-package-json": "^1.55.0",
     "typescript": "^4.6.2",
-    "vite": "^2.8.6"
+    "vite": "^2.8.6",
+    "vite-plugin-eslint": "^1.3.0"
   }
 }
