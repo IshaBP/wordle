@@ -25,29 +25,29 @@ export const WordboardRow = forwardRef<HTMLDivElement, WordboardRowProps>(
       >
         {type === 'accepted'
           ? row.map((letter, letterIdx) => (
-              <Letter
+              <LetterTile
                 key={letterIdx}
                 aria-label={'letter'}
                 status={letter.matchStatus}
               >
                 {letter.key}
-              </Letter>
+              </LetterTile>
             ))
           : row.map((letter, letterIdx) => (
-              <Letter
+              <LetterTile
                 key={letterIdx}
                 aria-label={'letter'}
                 $highlightBorder={type === 'current' && letter !== ''}
               >
                 {letter}
-              </Letter>
+              </LetterTile>
             ))}
       </FlexBox>
     );
   },
 );
 
-const Letter = styled(FlexBox).attrs({ center: true })<{
+const LetterTile = styled(FlexBox).attrs({ center: true })<{
   status?: MatchStatus;
   $highlightBorder?: boolean;
 }>`

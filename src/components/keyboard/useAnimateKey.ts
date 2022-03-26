@@ -15,6 +15,6 @@ export const useAnimateKey = () => {
         animate(keyEl, [{ backgroundColor: theme.bgColor.KEY_PRESS }], 100);
       }
     },
-    [theme],
+    [animate, isAnimationSupported, theme.bgColor.KEY_PRESS],
   );
 };

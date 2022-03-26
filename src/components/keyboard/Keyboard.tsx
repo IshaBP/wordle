@@ -41,7 +41,7 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
       width={'100%'}
     >
       {keyRows.map((keyRow, index) => (
-        <KeyRow
+        <Row
           key={index}
           rowIndex={index}
           keyRow={keyRow}
@@ -53,7 +53,7 @@ export const Keyboard = ({ keyMatchStatusMap, onKey }: KeyboardProps) => {
   );
 };
 
-const KeyRow = ({
+const Row = ({
   rowIndex,
   keyRow,
   keyMatchStatusMap,

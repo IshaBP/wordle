@@ -25,10 +25,10 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
 
   return (
     <FlexBox as={'section'} column gap={'0.5rem'} aria-label={'wordboard'}>
-      <AcceptedRows acceptedRows={acceptedRows} />
+      <AcceptedRowsComponent acceptedRows={acceptedRows} />
       {remainingRows > 0 && (
         <>
-          <CurrentRow currentRow={currentRow} />
+          <CurrentRowComponent currentRow={currentRow} />
           <EmptyRows numberOfRows={remainingRows - 1} />
         </>
       )}
@@ -36,7 +36,7 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   );
 };
 
-const AcceptedRows = React.memo(function AcceptedRows({
+const AcceptedRowsComponent = React.memo(function AcceptedRows({
   acceptedRows,
 }: {
   acceptedRows: AcceptedRows;
@@ -50,7 +50,7 @@ const AcceptedRows = React.memo(function AcceptedRows({
   );
 });
 
-const CurrentRow = ({ currentRow }: { currentRow: CurrentRow }) => {
+const CurrentRowComponent = ({ currentRow }: { currentRow: CurrentRow }) => {
   const currentRowRef = useRef<HTMLDivElement>(null);
   useAnimateLetter(currentRowRef, currentRow);
 

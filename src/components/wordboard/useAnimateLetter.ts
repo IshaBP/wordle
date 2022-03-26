@@ -23,5 +23,5 @@ export const useAnimateLetter = (
         lastAnimatedIdx.current -= 1;
       }
     }
-  }, [currentRowRef, currentRow]);
+  }, [currentRowRef, currentRow, isAnimationSupported, animate]);
 };

@@ -12,14 +12,17 @@ type AnimateFn = (
 export const useAnimation = (): [boolean, AnimateFn] => {
   const isAnimationSupported = 'animate' in document.body;
 
-  const animate = useCallback<AnimateFn>((element, keyframes, options) => {
-    // Feature Detection - Web Animation API: Animation will not work if browser does not support Web Animation API
-    if (isAnimationSupported) {
-      if (element) {
-        element.animate(keyframes, options);
+  const animate = useCallback<AnimateFn>(
+    (element, keyframes, options) => {
+      // Feature Detection - Web Animation API: Animation will not work if browser does not support Web Animation API
+      if (isAnimationSupported) {
+        if (element) {
+          element.animate(keyframes, options);
+        }
       }
-    }
-  }, []);
+    },
+    [isAnimationSupported],
+  );
 
   return [isAnimationSupported, animate];
 };
