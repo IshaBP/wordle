@@ -15,6 +15,10 @@ export interface WordboardProps {
   currentRow: CurrentRow;
 }
 
+// TODO: App Accessibility
+// TODO: React 18
+// TODO: fat-fingers
+
 // TODO: Wrong word animation
 export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;

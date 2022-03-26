@@ -18,7 +18,7 @@ describe('Wordboard', () => {
     it('should have 5 letter tiles in each guess word', () => {
       renderWithProviders(<Wordboard acceptedRows={[]} currentRow={[]} />);
 
-      for (let guessWord of screen.getAllByLabelText('guess-word')) {
+      for (const guessWord of screen.getAllByLabelText('guess-word')) {
         expect(getAllByLabelText(guessWord, 'letter')).toHaveLength(5);
       }
     });
