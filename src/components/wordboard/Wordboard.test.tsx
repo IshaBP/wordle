@@ -10,13 +10,25 @@ import { Wordboard } from './Wordboard';
 describe('Wordboard', () => {
   describe('Word display', () => {
     it('should have 6 guess words', () => {
-      renderWithProviders(<Wordboard acceptedRows={[]} currentRow={[]} />);
+      renderWithProviders(
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={[]}
+          currentRowStatus={'INITIAL'}
+        />,
+      );
 
       expect(screen.getAllByLabelText('guess-word')).toHaveLength(6);
     });
 
     it('should have 5 letter tiles in each guess word', () => {
-      renderWithProviders(<Wordboard acceptedRows={[]} currentRow={[]} />);
+      renderWithProviders(
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={[]}
+          currentRowStatus={'INITIAL'}
+        />,
+      );
 
       for (const guessWord of screen.getAllByLabelText('guess-word')) {
         expect(getAllByLabelText(guessWord, 'letter')).toHaveLength(5);
@@ -36,6 +48,7 @@ describe('Wordboard', () => {
             ],
           ]}
           currentRow={[]}
+          currentRowStatus={'INITIAL'}
         />,
       );
 
@@ -55,6 +68,7 @@ describe('Wordboard', () => {
             ],
           ]}
           currentRow={['g', 'l', 'e', 'a', 'n']}
+          currentRowStatus={'IN_PROGRESS'}
         />,
       );
 
@@ -68,7 +82,11 @@ describe('Wordboard', () => {
 
     it('should display word which is being currently edited', () => {
       renderWithProviders(
-        <Wordboard acceptedRows={[]} currentRow={['a', 'l', 'l']} />,
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
       );
 
       matchLetters(0, ['a', 'l', 'l', '', '']);
@@ -78,7 +96,11 @@ describe('Wordboard', () => {
   describe('Tile color', () => {
     it('should color tile with black for current row', () => {
       renderWithProviders(
-        <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
       );
 
       const letters = getLettersForRow(0);
@@ -100,6 +122,7 @@ describe('Wordboard', () => {
             ],
           ]}
           currentRow={[]}
+          currentRowStatus={'INITIAL'}
         />,
       );
 
@@ -136,6 +159,7 @@ describe('Wordboard', () => {
             ],
           ]}
           currentRow={[]}
+          currentRowStatus={'INITIAL'}
         />,
       );
 
@@ -147,7 +171,11 @@ describe('Wordboard', () => {
 
     it('should show highlighted border for current row tiles which have letters', () => {
       renderWithProviders(
-        <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
       );
 
       const letters = getLettersForRow(0);
@@ -161,7 +189,11 @@ describe('Wordboard', () => {
 
     it('should show normal border for current row tiles which do not letters', () => {
       renderWithProviders(
-        <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
       );
 
       const letters = getLettersForRow(0);
@@ -178,7 +210,11 @@ describe('Wordboard', () => {
 
     it('should show normal border for empty row tiles', () => {
       renderWithProviders(
-        <Wordboard acceptedRows={[]} currentRow={['a', 'l']} />,
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
       );
 
       const letters = getLettersForRow(1); // empty row
