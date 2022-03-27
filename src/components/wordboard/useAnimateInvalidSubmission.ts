@@ -6,7 +6,7 @@ export const useAnimateInvalidSubmission = (
   currentRowRef: RefObject<HTMLDivElement>,
   currentRowStatus: CurrentRowStatus,
 ) => {
-  const [_, animate] = useAnimation();
+  const [, animate] = useAnimation();
 
   useEffect(() => {
     if (currentRowStatus === 'INVALID') {

@@ -3,11 +3,15 @@ import {
   renderWithProviders,
   getLettersForRow,
   matchLetters,
+  mockAnimate,
+  restoreMockAnimate,
 } from '../../test-utils';
 import { darkTheme } from '../../theme';
 import { Wordboard } from './Wordboard';
 
 describe('Wordboard', () => {
+  afterEach(restoreMockAnimate);
+
   describe('Word display', () => {
     it('should have 6 guess words', () => {
       renderWithProviders(
@@ -226,5 +230,49 @@ describe('Wordboard', () => {
     });
   });
 
-  it.todo("should animate if latest row status is 'INVALID'");
+  describe('Current row animation', () => {
+    it("should not animate if current row status is 'INITIAL'", () => {
+      const animateFn = mockAnimate();
+      renderWithProviders(
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={[]}
+          currentRowStatus={'INITIAL'}
+        />,
+      );
+
+      expect(animateFn).not.toHaveBeenCalled();
+    });
+
+    it("should not animate if current row status is 'IN_PROGRESS'", () => {
+      const animateFn = mockAnimate();
+      renderWithProviders(
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l', 'l']}
+          currentRowStatus={'IN_PROGRESS'}
+        />,
+      );
+
+      expect(animateFn).not.toHaveBeenCalled();
+    });
+
+    it("should animate if current row status is 'INVALID'", () => {
+      const animateFn = mockAnimate();
+      renderWithProviders(
+        <Wordboard
+          acceptedRows={[]}
+          currentRow={['a', 'l', 'l']}
+          currentRowStatus={'INVALID'}
+        />,
+      );
+
+      expect(animateFn).toHaveBeenCalledTimes(1);
+
+      const animateEl: HTMLElement = animateFn.mock.instances[0];
+      expect(animateEl).toBeInstanceOf(HTMLElement);
+      expect(animateEl.getAttribute('aria-label')).toBe('guess-word');
+      expect(animateEl.getAttribute('data-word-type')).toBe('current');
+    });
+  });
 });

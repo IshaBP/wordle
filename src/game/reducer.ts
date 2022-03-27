@@ -16,7 +16,7 @@ type Action =
       code: KeyCode;
     };
 
-export type CurrentRowStatus = 'INITIAL' | 'INVALID' | 'IN_PROGRESS';
+export type CurrentRowStatus = 'INITIAL' | 'IN_PROGRESS' | 'INVALID';
 
 interface State {
   gameOver: boolean;
