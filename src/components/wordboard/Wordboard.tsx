@@ -1,5 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlexBox } from 'react-styled-flex';
+import { CurrentRowStatus } from '../../game/reducer';
+import { useAnimation } from '../useAnimation';
 import { useAnimateLetter } from './useAnimateLetter';
 import { Letter, WordboardRow } from './WordboardRow';
 
@@ -13,6 +15,7 @@ export type CurrentRow = KeyCode[];
 export interface WordboardProps {
   acceptedRows: AcceptedRows;
   currentRow: CurrentRow;
+  currentRowStatus: CurrentRowStatus;
 }
 
 // TODO: App Accessibility
@@ -20,7 +23,11 @@ export interface WordboardProps {
 // TODO: fat-fingers
 
 // TODO: Wrong word animation
-export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
+export const Wordboard = ({
+  acceptedRows,
+  currentRow,
+  currentRowStatus,
+}: WordboardProps) => {
   const remainingRows = GUESS_COUNT - acceptedRows.length;
 
   return (
@@ -28,7 +35,10 @@ export const Wordboard = ({ acceptedRows, currentRow }: WordboardProps) => {
       <AcceptedRowsComponent acceptedRows={acceptedRows} />
       {remainingRows > 0 && (
         <>
-          <CurrentRowComponent currentRow={currentRow} />
+          <CurrentRowComponent
+            currentRow={currentRow}
+            currentRowStatus={currentRowStatus}
+          />
           <EmptyRows numberOfRows={remainingRows - 1} />
         </>
       )}
@@ -50,14 +60,34 @@ const AcceptedRowsComponent = React.memo(function AcceptedRows({
   );
 });
 
-const CurrentRowComponent = ({ currentRow }: { currentRow: CurrentRow }) => {
+const CurrentRowComponent = ({
+  currentRow,
+  currentRowStatus,
+}: {
+  currentRow: CurrentRow;
+  currentRowStatus: CurrentRowStatus;
+}) => {
   const currentRowRef = useRef<HTMLDivElement>(null);
   useAnimateLetter(currentRowRef, currentRow);
+  const [_, animate] = useAnimation();
 
   const row: string[] = [
     ...currentRow,
     ...new Array(WORD_LENGTH - currentRow.length).fill(''),
   ];
+
+  useEffect(() => {
+    if (currentRowStatus === 'INVALID') {
+      animate(
+        currentRowRef.current,
+        [
+          { transform: 'translateX(0.5rem)' },
+          { transform: 'translateX(-0.5rem)' },
+        ],
+        { iterations: 4, direction: 'alternate', duration: 100 },
+      );
+    }
+  });
 
   return <WordboardRow ref={currentRowRef} type={'current'} row={row} />;
 };
