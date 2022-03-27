@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { CurrentRowStatus } from '../../game/reducer';
-import { useAnimation } from '../useAnimation';
+import { useAnimateInvalidSubmission } from './useAnimateInvalidSubmission';
 import { useAnimateLetter } from './useAnimateLetter';
 import { Letter, WordboardRow } from './WordboardRow';
 
@@ -69,25 +69,12 @@ const CurrentRowComponent = ({
 }) => {
   const currentRowRef = useRef<HTMLDivElement>(null);
   useAnimateLetter(currentRowRef, currentRow);
-  const [_, animate] = useAnimation();
+  useAnimateInvalidSubmission(currentRowRef, currentRowStatus);
 
   const row: string[] = [
     ...currentRow,
     ...new Array(WORD_LENGTH - currentRow.length).fill(''),
   ];
-
-  useEffect(() => {
-    if (currentRowStatus === 'INVALID') {
-      animate(
-        currentRowRef.current,
-        [
-          { transform: 'translateX(0.5rem)' },
-          { transform: 'translateX(-0.5rem)' },
-        ],
-        { iterations: 4, direction: 'alternate', duration: 100 },
-      );
-    }
-  });
 
   return <WordboardRow ref={currentRowRef} type={'current'} row={row} />;
 };
