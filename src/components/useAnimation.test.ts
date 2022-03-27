@@ -22,6 +22,8 @@ describe('useAnimation', () => {
 
   it('should not call browser animate function when it is not supported', () => {
     const browserAnimate = mockAnimate();
+    // TODO: make animate optional in Element prototype
+    /* @ts-ignore */
     delete Element.prototype.animate;
 
     const {

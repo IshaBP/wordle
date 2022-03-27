@@ -11,7 +11,9 @@ export const mockAnimate = () => {
 };
 
 export const restoreMockAnimate = () => {
-  if (Element.prototype.animate) {
+  const animate: Function | undefined = Element.prototype.animate;
+
+  if (animate) {
     Object.defineProperty(Element.prototype, 'animate', {
       value: originalAnimate,
       configurable: true,

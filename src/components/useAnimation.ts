@@ -11,7 +11,6 @@ type AnimateFn = (
 
 export const useAnimation = (): [boolean, AnimateFn] => {
   const isAnimationSupported = 'animate' in document.body;
-  console.log(document.body.animate);
 
   const animate = useCallback<AnimateFn>((element, keyframes, options) => {
     // Feature Detection - Web Animation API: Animation will not work if browser does not support Web Animation API
