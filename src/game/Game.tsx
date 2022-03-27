@@ -6,8 +6,10 @@ import { initialState, reducer } from './reducer';
 
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
-  const [{ gameOver, acceptedRows, currentRow, keyStatusMap }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { gameOver, acceptedRows, currentRow, currentRowStatus, keyStatusMap },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const onKey = useCallback(
     (code: KeyCode) => {
@@ -35,7 +37,11 @@ export const Game = () => {
       justifyContent={'space-around'}
       padding={'0 0.75rem'}
     >
-      <Wordboard acceptedRows={acceptedRows} currentRow={currentRow} />
+      <Wordboard
+        acceptedRows={acceptedRows}
+        currentRow={currentRow}
+        currentRowStatus={currentRowStatus}
+      />
       <Keyboard keyMatchStatusMap={keyStatusMap} onKey={onKey} />
     </FlexBox>
   );

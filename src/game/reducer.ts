@@ -16,10 +16,13 @@ type Action =
       code: KeyCode;
     };
 
+export type CurrentRowStatus = 'INITIAL' | 'INVALID' | 'IN_PROGRESS';
+
 interface State {
   gameOver: boolean;
   acceptedRows: AcceptedRows;
   currentRow: CurrentRow;
+  currentRowStatus: CurrentRowStatus;
   keyStatusMap: KeyStatusMap;
 }
 
@@ -28,13 +31,15 @@ export const initialState: State = {
   acceptedRows: [],
   currentRow: [],
   keyStatusMap: {},
+  currentRowStatus: 'INITIAL',
 };
 
-export const reducer = (state: State, action: Action): State => {
-  const { currentRow, acceptedRows, keyStatusMap } = state;
+export const reducer = (prevState: State, action: Action): State => {
+  const { currentRow, acceptedRows, keyStatusMap } = prevState;
 
   const currentLetterIdx = currentRow.length;
   const currentWordIdx = acceptedRows.length;
+  const state: State = { ...prevState, currentRowStatus: 'IN_PROGRESS' };
 
   switch (action.type) {
     case 'BKSP':
@@ -59,6 +64,7 @@ export const reducer = (state: State, action: Action): State => {
             ...state,
             acceptedRows: [...acceptedRows, latestAcceptedRow],
             currentRow: [],
+            currentRowStatus: 'INITIAL',
             keyStatusMap: getUpdatedKeyStatusMap(
               latestAcceptedRow,
               keyStatusMap,
@@ -77,7 +83,7 @@ export const reducer = (state: State, action: Action): State => {
           }
         }
       }
-      return state;
+      return { ...state, currentRowStatus: 'INVALID' };
 
     case 'LETTER':
       return currentRow.length < 5

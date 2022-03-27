@@ -9,6 +9,7 @@ export const useAnimateKey = () => {
   return useCallback(
     (keyCode: KeyCode) => {
       if (isAnimationSupported) {
+        // isAnimationSupported is also checked in animate. Explicit check here to avoid DOM query and animate try
         const keyEl = document.querySelector(
           `[aria-label=keyboard] button[data-code="${keyCode}"]`,
         );
