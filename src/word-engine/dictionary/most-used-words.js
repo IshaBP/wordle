@@ -1,8 +1,11 @@
 const { getWordsList } = require('most-common-words-by-language');
 
-const x = ['speed', 'breed'];
+const whitelistedWords = [
+  // Words ending with 'ed' but not past tensed
+  'speed',
+  'breed',
 
-const y = [
+  // Words ending with 's' but not plural
   'class',
   'press',
   'cross',
@@ -26,10 +29,10 @@ const y = [
   'bless',
 ];
 
-const words = getWordsList('english')
+const mostUsedWords = getWordsList('english')
   .filter((word) => word.length === 5)
   .filter((word) => word[word.length - 1] !== 's')
   .filter((word) => word.slice(word.length - 2) !== 'ed')
-  .concat(x, y);
+  .concat(whitelistedWords);
 
-console.log(words, words.length);
+module.exports = mostUsedWords;
