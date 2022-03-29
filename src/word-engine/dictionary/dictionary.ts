@@ -1,6 +1,4 @@
-import { baseDictionary } from /* preval */ './base-dict';
-
-console.log(baseDictionary);
+import baseDictionary from /* preval */ './base-dict';
 
 export const isInDictionary = (word: string) => baseDictionary.includes(word);
 
