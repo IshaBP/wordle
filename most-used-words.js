@@ -1,14 +1,35 @@
-const path = require('path');
-const base = require.resolve('dictionary-en');
-const fs = require('fs');
+const { getWordsList } = require('most-common-words-by-language');
 
-const dicWords = fs.readFileSync(path.join(base, '../index.dic'), 'utf-8');
+const x = ['speed', 'breed'];
 
-const words = dicWords
-  .trim()
-  .split('\n')
-  .map((word) => word.split('/')[0])
+const y = [
+  'class',
+  'press',
+  'cross',
+  'focus',
+  'glass',
+  'basis',
+  'virus',
+  'guess',
+  'bonus',
+  'dress',
+  'gross',
+  'brass',
+  'grass',
+  'atlas',
+  'lotus',
+  'oasis',
+  'chaos',
+  'chess',
+  'alias',
+  'minus',
+  'bless',
+];
+
+const words = getWordsList('english')
   .filter((word) => word.length === 5)
-  .filter((word) => word[0] !== word[0].toUpperCase());
+  .filter((word) => word[word.length - 1] !== 's')
+  .filter((word) => word.slice(word.length - 2) !== 'ed')
+  .concat(x, y);
 
-console.log('words', JSON.stringify(words, null, 4));
+console.log(words, words.length);
