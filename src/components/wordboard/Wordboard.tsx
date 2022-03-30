@@ -22,7 +22,7 @@ export interface WordboardProps {
 // TODO: React 18
 // TODO: fat-fingers
 
-// TODO: Wrong word animation
+// TODO: Right word animation
 export const Wordboard = ({
   acceptedRows,
   currentRow,

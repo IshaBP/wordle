@@ -4,4 +4,5 @@ import baseDictionary from /* preval */ './base-dictionary';
 console.log(mostUsedWords.length);
 export const isInDictionary = (word: string) => baseDictionary.includes(word);
 
-export const getRandomWord = () => 'angel';
+export const getRandomWord = () =>
+  mostUsedWords[Math.floor(Math.random() * mostUsedWords.length)];

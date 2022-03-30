@@ -29,6 +29,8 @@ const whitelistedWords = [
   'bless',
 ];
 
+// const blacklistedWords = ['gonna'];
+
 const mostUsedWords = getWordsList('english')
   .filter((word) => word.length === 5)
   .filter((word) => word[word.length - 1] !== 's')

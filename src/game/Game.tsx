@@ -6,6 +6,7 @@ import { initialState, reducer } from './reducer';
 
 export const Game = () => {
   const chosenWord = useMemo(() => getRandomWord(), []);
+  console.log(chosenWord);
   const [
     { gameOver, acceptedRows, currentRow, currentRowStatus, keyStatusMap },
     dispatch,
