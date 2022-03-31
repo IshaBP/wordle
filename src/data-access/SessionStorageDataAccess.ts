@@ -1,4 +1,4 @@
-export class BaseDataAccess {
+export class SessionStorageDataAccess {
   #get() {
     // Get data from session storage
   }

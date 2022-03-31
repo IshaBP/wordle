@@ -29,3 +29,16 @@ type KeyCode =
   | 'z'
   | '<ENT>'
   | '<BKSP>';
+
+interface WordleStatus {
+  currentGame: {
+    acceptedWords: string[];
+    chosenWord: string;
+  };
+  stats: {
+    won: number;
+    lost: number;
+    abandoned: number;
+  };
+  wordList: string[];
+}

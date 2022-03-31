@@ -29,7 +29,7 @@ const whitelistedWords = [
   'bless',
 ];
 
-// const blacklistedWords = ['gonna'];
+// const blacklistedWords = ['gonna', 'chile'];
 
 const mostUsedWords = getWordsList('english')
   .filter((word) => word.length === 5)
