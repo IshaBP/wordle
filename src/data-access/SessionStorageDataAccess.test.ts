@@ -10,10 +10,12 @@ const initialData = {
 };
 
 describe('Session Storage Data Access', () => {
+  beforeEach(() => sessionStorage.clear());
+
   it('should initialize with initialData and return it when data is not available in sessionStorage', () => {
     const dataAccess = new SessionStorageDataAccess('author', initialData);
-    const data = dataAccess.get();
-    expect(data).toEqual(initialData);
+
+    expect(dataAccess.get()).toEqual(initialData);
   });
 
   it('should return persisted data when it is available in sessionStorage', () => {
@@ -36,17 +38,57 @@ describe('Session Storage Data Access', () => {
     );
 
     const dataAccess = new SessionStorageDataAccess('author', initialData);
-    const data = dataAccess.get();
-    expect(data).toEqual(dataAlreadyInSessionStorage);
+
+    expect(dataAccess.get()).toEqual(dataAlreadyInSessionStorage);
   });
 
-  it.todo('should update the state with partial data when provided so');
+  it('should update the state with provided partial data', () => {
+    const newOrgs = ['Opus', 'Amdocs', 'Credit Suisse', 'Google'];
+    const dataAccess = new SessionStorageDataAccess('author', initialData);
+    dataAccess.set({
+      organizationsWorkedIn: newOrgs,
+    });
 
-  it.todo('should update the state with whole data when provided so');
+    expect(dataAccess.get()).toEqual({
+      ...initialData,
+      organizationsWorkedIn: newOrgs,
+    });
+  });
 
-  it.todo(
-    'should update the state with provided partial data and initialize rest of the data when when no base state is present',
-  );
+  it('should update the state with provided partial data and initialize rest of the data when when no base data is present', () => {
+    const newOrgs = ['Opus', 'Amdocs', 'Credit Suisse', 'Google'];
+    const dataAccess = new SessionStorageDataAccess('author', initialData);
+    sessionStorage.clear(); // Forceful delete
+    dataAccess.set({
+      organizationsWorkedIn: newOrgs,
+    });
 
-  it.todo('should return modified data');
+    expect(dataAccess.get()).toEqual({
+      ...initialData,
+      organizationsWorkedIn: newOrgs,
+    });
+  });
+
+  it('should return modified data from get after a series of set operations', () => {
+    const modifiedData = {
+      name: 'Isha_Modified',
+      organizationsWorkedIn: ['Opus', 'Amdocs', 'Credit Suisse', 'Google'],
+      address: {
+        street: 'New Street',
+        city: 'New City',
+      },
+    };
+    const dataAccess = new SessionStorageDataAccess('author', initialData);
+    dataAccess.set({
+      organizationsWorkedIn: modifiedData.organizationsWorkedIn,
+    });
+    dataAccess.set({
+      name: modifiedData.name,
+    });
+    dataAccess.set({
+      address: modifiedData.address,
+    });
+
+    expect(dataAccess.get()).toEqual(modifiedData);
+  });
 });

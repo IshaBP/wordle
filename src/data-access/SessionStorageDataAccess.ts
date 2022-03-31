@@ -19,7 +19,9 @@ export class SessionStorageDataAccess<T extends object> {
     return this.initialData;
   }
 
-  set(data: Partial<T>) {
-    // Set data in session storage
+  set(data: Partial<T>): void {
+    const modifiedData = { ...this.get(), ...data };
+
+    sessionStorage.setItem(this.key, JSON.stringify(modifiedData));
   }
 }
