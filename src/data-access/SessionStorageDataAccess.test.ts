@@ -1,7 +1,20 @@
+import { SessionStorageDataAccess } from './SessionStorageDataAccess';
+
+const initialData = {
+  name: 'Isha',
+  organizationsWorkedIn: ['Opus', 'Amdocs', 'Credit Suisse'],
+  address: {
+    street: 'Imaginary Street',
+    city: 'Pune',
+  },
+};
+
 describe('Session Storage Data Access', () => {
-  it.todo(
-    'should initialize wordle status and return it when it is not present',
-  );
+  it('should initialize with given object and return it when it is not present', () => {
+    const dataAccess = new SessionStorageDataAccess('author', initialData);
+    const data = dataAccess.get();
+    expect(data).toEqual(initialData);
+  });
 
   it.todo(
     'should return persisted wordle status when it is already initialized',

@@ -1,11 +1,11 @@
 export class SessionStorageDataAccess<T extends object> {
-  constructor(initialData: T) {}
+  constructor(key: string, initialData: T) {}
 
-  #get() {
+  get(): T {
     // Get data from session storage
   }
 
-  #set(data: Partial<T>) {
+  set(data: Partial<T>) {
     // Set data in session storage
   }
 }
