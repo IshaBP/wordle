@@ -1,16 +1,44 @@
-import { useCallback, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
+import { createStorageReducer } from '../data-access/createStorageReducer';
+import { wordleReducer } from '../data-access/wordle-reducer';
 import { getRandomWord } from '../word-engine';
 import { initialState, reducer } from './reducer';
 
+const useStorageReducer = createStorageReducer(
+  wordleReducer,
+  {
+    currentGame: null,
+    stats: {
+      won: 0,
+      lost: 0,
+      abandoned: 0,
+    },
+    wordList: [],
+  },
+  'wordle-state',
+);
+
 export const Game = () => {
-  const chosenWord = useMemo(() => getRandomWord(), []);
-  console.log(chosenWord);
+  const chosenWordRef = useRef('');
   const [
     { gameOver, acceptedRows, currentRow, currentRowStatus, keyStatusMap },
     dispatch,
   ] = useReducer(reducer, initialState);
+  const [wordleState, dispatchStorageAction] = useStorageReducer();
+
+  useEffect(() => {
+    chosenWordRef.current =
+      wordleState.currentGame?.chosenWord || getRandomWord();
+
+    if (!wordleState.currentGame?.chosenWord) {
+      dispatchStorageAction({
+        type: 'START_GAME',
+        chosenWord: chosenWordRef.current,
+      });
+    }
+  }, [dispatchStorageAction, wordleState.currentGame?.chosenWord]);
 
   const onKey = useCallback(
     (code: KeyCode) => {
@@ -21,12 +49,12 @@ export const Game = () => {
       if (code === '<BKSP>') {
         dispatch({ type: 'BKSP' });
       } else if (code === '<ENT>') {
-        dispatch({ type: 'ENT', chosenWord });
+        dispatch({ type: 'ENT', chosenWord: chosenWordRef.current });
       } else {
         dispatch({ type: 'LETTER', code });
       }
     },
-    [gameOver, dispatch, chosenWord],
+    [gameOver, dispatch, chosenWordRef],
   );
 
   return (
