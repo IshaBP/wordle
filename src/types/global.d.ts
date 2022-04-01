@@ -30,7 +30,7 @@ type KeyCode =
   | '<ENT>'
   | '<BKSP>';
 
-interface WordleStatus {
+interface WordleState {
   currentGame: {
     acceptedWords: string[];
     chosenWord: string;
