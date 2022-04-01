@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 const getSessionData = <T extends object>(storageKey: string): T | null => {
   const sessionData = sessionStorage.getItem(storageKey);
 
@@ -15,15 +13,12 @@ const setSessionData = <T extends object>(storageKey: string, data: T) => {
   sessionStorage.setItem(storageKey, JSON.stringify(data));
 };
 
-export const useStorageReducer = <S extends object, A extends unknown>(
+export const createStorageReducer = <S extends object, A extends unknown>(
   reducer: (prevState: S, action: A) => S,
   initialState: S,
   storageKey: string,
-): [S, (action: A) => void] => {
-  let state = useMemo(
-    () => getSessionData<S>(storageKey) || initialState,
-    [initialState, storageKey],
-  );
+): ((action: A) => void) => {
+  let state = getSessionData<S>(storageKey) || initialState;
 
   const dispatch = (action: A) => {
     const newState = reducer(state, action);
@@ -34,5 +29,7 @@ export const useStorageReducer = <S extends object, A extends unknown>(
     }
   };
 
-  return [state, dispatch];
+  return function useStorageReducer() {
+    return dispatch;
+  };
 };
