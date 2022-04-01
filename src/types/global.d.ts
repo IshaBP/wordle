@@ -34,7 +34,7 @@ interface WordleStatus {
   currentGame: {
     acceptedWords: string[];
     chosenWord: string;
-  };
+  } | null;
   stats: {
     won: number;
     lost: number;
