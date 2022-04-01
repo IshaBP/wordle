@@ -3,6 +3,8 @@ type Action = {
   chosenWord: string;
 };
 
+// TODO: JsDoc
+// TODO: Test
 export const wordleReducer = (
   state: WordleState,
   action: Action,

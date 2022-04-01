@@ -1,1 +1,2 @@
-export * from './WordleDataAccess';
+export * from './createStorageReducer';
+export * from './wordle-reducer';

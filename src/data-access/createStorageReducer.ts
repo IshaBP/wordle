@@ -1,5 +1,7 @@
 type Dispatch<A extends unknown> = (action: A) => void;
 
+// TODO: JsDoc
+// TODO: Test
 export const createStorageReducer = <S extends object, A extends unknown>(
   reducer: (prevState: S, action: A) => S,
   initialState: S,

@@ -6,6 +6,9 @@ import { wordleReducer } from '../data-access/wordle-reducer';
 import { getRandomWord } from '../word-engine';
 import { initialState, reducer } from './reducer';
 
+// TODO: Move createStorageReducer code to separate hook
+// TODO: Test
+// TODO: Rename variables
 const useStorageReducer = createStorageReducer(
   wordleReducer,
   {
