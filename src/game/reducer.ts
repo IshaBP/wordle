@@ -1,5 +1,5 @@
 import { AcceptedRows, CurrentRow, KeyboardProps, Letter } from '../components';
-import { match } from '../word-engine';
+import { getRandomWord, match } from '../word-engine';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
@@ -9,7 +9,6 @@ type Action =
     }
   | {
       type: 'ENT';
-      chosenWord: string;
     }
   | {
       type: 'LETTER';
@@ -20,6 +19,7 @@ export type CurrentRowStatus = 'INITIAL' | 'IN_PROGRESS' | 'INVALID';
 
 interface State {
   gameOver: boolean;
+  chosenWord: string;
   acceptedRows: AcceptedRows;
   currentRow: CurrentRow;
   currentRowStatus: CurrentRowStatus;
@@ -28,6 +28,7 @@ interface State {
 
 export const initialState: State = {
   gameOver: false,
+  chosenWord: getRandomWord(),
   acceptedRows: [],
   currentRow: [],
   keyStatusMap: {},
@@ -35,7 +36,7 @@ export const initialState: State = {
 };
 
 export const reducer = (prevState: State, action: Action): State => {
-  const { currentRow, acceptedRows, keyStatusMap } = prevState;
+  const { currentRow, acceptedRows, keyStatusMap, chosenWord } = prevState;
 
   const currentLetterIdx = currentRow.length;
   const currentWordIdx = acceptedRows.length;
@@ -50,7 +51,7 @@ export const reducer = (prevState: State, action: Action): State => {
     case 'ENT':
       if (currentLetterIdx === 5) {
         const guessWord = currentRow.join('');
-        const matchResult = match(action.chosenWord, guessWord);
+        const matchResult = match(chosenWord, guessWord);
 
         if (matchResult) {
           const latestAcceptedRow: Letter[] = matchResult.map(
