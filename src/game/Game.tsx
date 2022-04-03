@@ -47,6 +47,17 @@ export const Game = () => {
     }
   }, [chosenWord, dispatchStorageAction, wordleState.currentGame?.chosenWord]);
 
+  useEffect(() => {
+    if (acceptedRows.length > 0) {
+      dispatchStorageAction({
+        type: 'UPDATE_ACCEPTED_WORDS',
+        acceptedWord: acceptedRows[acceptedRows.length - 1]
+          .map((acceptedRow) => acceptedRow.key)
+          .join(''),
+      });
+    }
+  }, [acceptedRows, dispatchStorageAction]);
+
   const onKey = useCallback(
     (code: KeyCode) => {
       if (gameOver) {
