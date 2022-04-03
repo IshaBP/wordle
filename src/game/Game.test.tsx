@@ -208,6 +208,28 @@ describe('Game', () => {
     });
   });
 
+  describe('Wordboard - Continued Game', () => {
+    it.todo('should use last chosen word from storage on reload');
+    it.todo(
+      'should resume accepted words state (words and key colors) on reload',
+    );
+    it.todo(
+      'move to dictionary - should not choose the same word more than once',
+    );
+  });
+
+  describe('Keyboard - Continued Game', () => {
+    it.todo(
+      'should resume accepted words state (words and key colors) on reload',
+    );
+  });
+
+  describe('Stats', () => {
+    it.todo('should update stats when a game is won');
+    it.todo('should update stats when a game is lost');
+    it.todo('should update stats when a game is abandoned');
+  });
+
   describe('Toast', () => {
     it.todo(
       "should display a toast with text 'Magnificent' if guessed word completely matches chosen word",
