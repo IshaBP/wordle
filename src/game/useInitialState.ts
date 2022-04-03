@@ -1,6 +1,6 @@
 import { Letter } from '../components';
 import { getRandomWord, match } from '../word-engine';
-import { GameState } from './reducer';
+import { GameState, getUpdatedKeyStatusMap } from './reducer';
 
 export const useInitialState = (wordleState: WordleState): GameState => {
   if (wordleState.currentGame) {
@@ -18,12 +18,16 @@ export const useInitialState = (wordleState: WordleState): GameState => {
       return accumulator;
     }, [] as Letter[][]);
 
+    const keyStatusMap = acceptedRows.reduce((accumulator, current) => {
+      return getUpdatedKeyStatusMap(current, accumulator);
+    }, {});
+
     return {
       gameOver: false,
       chosenWord: chosenWord,
       acceptedRows,
       currentRow: [],
-      keyStatusMap: {},
+      keyStatusMap,
       currentRowStatus: 'INITIAL',
     };
   } else {

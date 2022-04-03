@@ -48,7 +48,10 @@ export const Game = () => {
   }, [chosenWord, dispatchStorageAction, wordleState.currentGame?.chosenWord]);
 
   useEffect(() => {
-    if (acceptedRows.length !== wordleState.currentGame?.acceptedWords.length) {
+    if (
+      acceptedRows.length > 0 &&
+      acceptedRows.length !== wordleState.currentGame?.acceptedWords.length
+    ) {
       dispatchStorageAction({
         type: 'UPDATE_ACCEPTED_WORDS',
         acceptedWord: acceptedRows[acceptedRows.length - 1]

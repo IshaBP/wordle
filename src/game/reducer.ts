@@ -84,7 +84,7 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
 const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
   matchResult.every((letterResult) => letterResult === 'MATCH');
 
-const getUpdatedKeyStatusMap = (
+export const getUpdatedKeyStatusMap = (
   wordRow: Letter[],
   keyStatusMap: KeyStatusMap,
 ): KeyStatusMap => {
