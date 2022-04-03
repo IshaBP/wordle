@@ -1,16 +1,51 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
-import { initialState, reducer } from './reducer';
+import { createStorageReducer } from '../data-access/createStorageReducer';
+import { wordleReducer } from '../data-access/wordle-reducer';
+import { reducer } from './reducer';
+import { useInitialState } from './useInitialState';
 
 // TODO: Move createStorageReducer code to separate hook
 // TODO: Test
 // TODO: Rename variables
+const useStorageReducer = createStorageReducer(
+  wordleReducer,
+  {
+    currentGame: null,
+    stats: {
+      won: 0,
+      lost: 0,
+      abandoned: 0,
+    },
+    wordList: [],
+  },
+  'wordle-state',
+);
+
 export const Game = () => {
+  const [wordleState, dispatchStorageAction] = useStorageReducer();
+  const initialState = useInitialState(wordleState);
   const [
-    { gameOver, acceptedRows, currentRow, currentRowStatus, keyStatusMap },
+    {
+      gameOver,
+      chosenWord,
+      acceptedRows,
+      currentRow,
+      currentRowStatus,
+      keyStatusMap,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (!wordleState.currentGame?.chosenWord) {
+      dispatchStorageAction({
+        type: 'START_GAME',
+        chosenWord,
+      });
+    }
+  }, [chosenWord, dispatchStorageAction, wordleState.currentGame?.chosenWord]);
 
   const onKey = useCallback(
     (code: KeyCode) => {

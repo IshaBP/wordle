@@ -1,14 +1,11 @@
 import { AcceptedRows, CurrentRow, KeyboardProps, Letter } from '../components';
-import { getRandomWord, match } from '../word-engine';
+import { match } from '../word-engine';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
 type Action =
   | {
-      type: 'BKSP';
-    }
-  | {
-      type: 'ENT';
+      type: 'BKSP' | 'ENT';
     }
   | {
       type: 'LETTER';
@@ -17,7 +14,7 @@ type Action =
 
 export type CurrentRowStatus = 'INITIAL' | 'IN_PROGRESS' | 'INVALID';
 
-interface State {
+export interface GameState {
   gameOver: boolean;
   chosenWord: string;
   acceptedRows: AcceptedRows;
@@ -26,21 +23,12 @@ interface State {
   keyStatusMap: KeyStatusMap;
 }
 
-export const initialState: State = {
-  gameOver: false,
-  chosenWord: getRandomWord(),
-  acceptedRows: [],
-  currentRow: [],
-  keyStatusMap: {},
-  currentRowStatus: 'INITIAL',
-};
-
-export const reducer = (prevState: State, action: Action): State => {
+export const reducer = (prevState: GameState, action: Action): GameState => {
   const { currentRow, acceptedRows, keyStatusMap, chosenWord } = prevState;
 
   const currentLetterIdx = currentRow.length;
   const currentWordIdx = acceptedRows.length;
-  const state: State = { ...prevState, currentRowStatus: 'IN_PROGRESS' };
+  const state: GameState = { ...prevState, currentRowStatus: 'IN_PROGRESS' };
 
   switch (action.type) {
     case 'BKSP':
@@ -61,7 +49,7 @@ export const reducer = (prevState: State, action: Action): State => {
             }),
           );
 
-          const updatedState: State = {
+          const updatedState: GameState = {
             ...state,
             acceptedRows: [...acceptedRows, latestAcceptedRow],
             currentRow: [],
