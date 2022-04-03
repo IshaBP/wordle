@@ -48,7 +48,7 @@ export const Game = () => {
   }, [chosenWord, dispatchStorageAction, wordleState.currentGame?.chosenWord]);
 
   useEffect(() => {
-    if (acceptedRows.length > 0) {
+    if (acceptedRows.length !== wordleState.currentGame?.acceptedWords.length) {
       dispatchStorageAction({
         type: 'UPDATE_ACCEPTED_WORDS',
         acceptedWord: acceptedRows[acceptedRows.length - 1]
@@ -56,7 +56,11 @@ export const Game = () => {
           .join(''),
       });
     }
-  }, [acceptedRows, dispatchStorageAction]);
+  }, [
+    acceptedRows,
+    dispatchStorageAction,
+    wordleState.currentGame?.acceptedWords.length,
+  ]);
 
   const onKey = useCallback(
     (code: KeyCode) => {

@@ -1,12 +1,27 @@
-import { getRandomWord } from '../word-engine';
+import { Letter } from '../components';
+import { getRandomWord, match } from '../word-engine';
 import { GameState } from './reducer';
 
 export const useInitialState = (wordleState: WordleState): GameState => {
   if (wordleState.currentGame) {
+    const {
+      currentGame: { chosenWord, acceptedWords },
+    } = wordleState;
+
+    const acceptedRows = acceptedWords.reduce((accumulator, current) => {
+      const matchStatus = match(chosenWord, current)!;
+      const acceptedRow: Letter[] = matchStatus.map((result, idx) => ({
+        key: current[idx] as KeyCode,
+        matchStatus: result,
+      }));
+      accumulator.push(acceptedRow);
+      return accumulator;
+    }, [] as Letter[][]);
+
     return {
       gameOver: false,
-      chosenWord: wordleState.currentGame.chosenWord,
-      acceptedRows: [],
+      chosenWord: chosenWord,
+      acceptedRows,
       currentRow: [],
       keyStatusMap: {},
       currentRowStatus: 'INITIAL',
