@@ -3,8 +3,7 @@ import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
 import { createStorageReducer } from '../data-access/createStorageReducer';
 import { wordleReducer } from '../data-access/wordle-reducer';
-import { reducer } from './reducer';
-import { useInitialState } from './useInitialState';
+import { reducer, useInitialState } from './reducer';
 
 // TODO: Move createStorageReducer code to separate hook
 // TODO: Test
