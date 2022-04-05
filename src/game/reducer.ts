@@ -1,5 +1,6 @@
 import { AcceptedRows, CurrentRow, KeyboardProps, Letter } from '../components';
 import { getRandomWord, match } from '../word-engine';
+import { useMemoOnce } from './useMemoOnce';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
@@ -82,43 +83,45 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
 };
 
 export const useInitialState = (wordleState: WordleState): GameState => {
-  if (wordleState.currentGame) {
-    const {
-      currentGame: { chosenWord, acceptedWords },
-    } = wordleState;
+  return useMemoOnce(() => {
+    if (wordleState.currentGame) {
+      const {
+        currentGame: { chosenWord, acceptedWords },
+      } = wordleState;
 
-    const acceptedRows = acceptedWords.reduce((accumulator, current) => {
-      const matchStatus = match(chosenWord, current)!;
-      const acceptedRow: Letter[] = matchStatus.map((result, idx) => ({
-        key: current[idx] as KeyCode,
-        matchStatus: result,
-      }));
-      accumulator.push(acceptedRow);
-      return accumulator;
-    }, [] as Letter[][]);
+      const acceptedRows = acceptedWords.reduce((accumulator, current) => {
+        const matchStatus = match(chosenWord, current)!;
+        const acceptedRow: Letter[] = matchStatus.map((result, idx) => ({
+          key: current[idx] as KeyCode,
+          matchStatus: result,
+        }));
+        accumulator.push(acceptedRow);
+        return accumulator;
+      }, [] as Letter[][]);
 
-    const keyStatusMap = acceptedRows.reduce((accumulator, current) => {
-      return getUpdatedKeyStatusMap(current, accumulator);
-    }, {});
+      const keyStatusMap = acceptedRows.reduce((accumulator, current) => {
+        return getUpdatedKeyStatusMap(current, accumulator);
+      }, {});
 
-    return {
-      gameOver: false,
-      chosenWord: chosenWord,
-      acceptedRows,
-      currentRow: [],
-      keyStatusMap,
-      currentRowStatus: 'INITIAL',
-    };
-  } else {
-    return {
-      gameOver: false,
-      chosenWord: getRandomWord(),
-      acceptedRows: [],
-      currentRow: [],
-      keyStatusMap: {},
-      currentRowStatus: 'INITIAL',
-    };
-  }
+      return {
+        gameOver: false,
+        chosenWord: chosenWord,
+        acceptedRows,
+        currentRow: [],
+        keyStatusMap,
+        currentRowStatus: 'INITIAL',
+      };
+    } else {
+      return {
+        gameOver: false,
+        chosenWord: getRandomWord(),
+        acceptedRows: [],
+        currentRow: [],
+        keyStatusMap: {},
+        currentRowStatus: 'INITIAL',
+      };
+    }
+  });
 };
 
 const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
