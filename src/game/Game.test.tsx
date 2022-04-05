@@ -136,6 +136,8 @@ describe('Game', () => {
       mockWordEngine('baton', true);
       renderWithProviders(<Game />);
 
+      expect(mockedWordEngine.match).toHaveBeenCalledTimes(0);
+
       userEvent.keyboard('beads{enter}');
       userEvent.keyboard('glean{enter}');
       userEvent.keyboard('ounce{enter}');
