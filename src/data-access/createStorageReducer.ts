@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 type Dispatch<A extends unknown> = (action: A) => void;
 
 // TODO: JsDoc
@@ -14,11 +16,18 @@ export const createStorageReducer = <S extends object, A extends unknown>(
 
     if (!Object.is(state, newState)) {
       state = newState;
-      setSessionData(storageKey, state);
+      setSessionData(storageKey, newState);
     }
   };
 
   return function useStorageReducer() {
+    useEffect(() => {
+      return () => {
+        if (process.env.NODE_ENV === 'test') {
+          state = initialState;
+        }
+      };
+    }, []);
     return [state, dispatch];
   };
 };
