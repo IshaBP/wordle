@@ -23,6 +23,7 @@ export const createStorageReducer = <S extends object, A extends unknown>(
   return function useStorageReducer() {
     useEffect(() => {
       return () => {
+        // TODO: Remove.. one day..
         if (process.env.NODE_ENV === 'test') {
           state = initialState;
         }
