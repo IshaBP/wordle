@@ -1,4 +1,5 @@
 const { getWordsList } = require('most-common-words-by-language');
+const { moreWords } = require('./more-words');
 
 // TODO: Tests
 const whitelistedWords = [
@@ -133,6 +134,7 @@ const blacklistedWords = [
   'lucia',
   'teddy',
   'wendy',
+  'logan',
   'donna',
   'julia',
   'kathy',
@@ -147,6 +149,7 @@ const blacklistedWords = [
   'floyd',
   'honda',
   'mazda',
+  'rover',
   'tamil',
   'hindu',
   'april',
@@ -173,6 +176,7 @@ const mostUsedWords = getWordsList('english')
   .filter((word) => word[word.length - 1] !== 's')
   .filter((word) => word.slice(word.length - 2) !== 'ed')
   .filter((word) => blacklistedWords.includes(word) === false)
-  .concat(whitelistedWords);
+  .concat(whitelistedWords)
+  .concat(moreWords);
 
-module.exports = mostUsedWords;
+module.exports = Array.from(new Set(mostUsedWords));
