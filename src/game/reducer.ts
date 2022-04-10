@@ -6,7 +6,7 @@ type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
 type Action =
   | {
-      type: 'BKSP' | 'ENT';
+      type: 'BKSP' | 'ENT' | 'NEW_GAME';
     }
   | {
       type: 'LETTER';
@@ -79,6 +79,16 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
       return currentRow.length < 5
         ? { ...state, currentRow: [...currentRow, action.code] }
         : state;
+
+    case 'NEW_GAME':
+      return {
+        gameStatus: 'IN_PROGRESS',
+        chosenWord: getRandomWord(),
+        acceptedRows: [],
+        currentRow: [],
+        keyStatusMap: {},
+        currentRowStatus: 'INITIAL',
+      };
   }
 };
 
