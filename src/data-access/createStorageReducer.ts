@@ -6,8 +6,8 @@ type Dispatch<A extends unknown> = (action: A) => void;
 // TODO: Test
 export const createStorageReducer = <S extends object, A extends unknown>(
   reducer: (prevState: S, action: A) => S,
-  initialState: S,
   storageKey: string,
+  initialState: S,
 ): (() => [S, Dispatch<A>]) => {
   let state = getSessionData<S>(storageKey) || initialState;
 

@@ -1,3 +1,5 @@
+import { GameState } from '../game/reducer';
+
 type Action =
   | {
       type: 'START_GAME';
@@ -6,6 +8,10 @@ type Action =
   | {
       type: 'UPDATE_ACCEPTED_WORDS';
       acceptedWord: string;
+    }
+  | {
+      type: 'END_GAME';
+      status: GameState['gameStatus'];
     };
 
 // TODO: JsDoc
@@ -33,6 +39,19 @@ export const wordleReducer = (
           acceptedWords: [...currentGame!.acceptedWords, action.acceptedWord],
         },
       };
+    }
+    case 'END_GAME': {
+      const newStats = { ...state.stats };
+
+      if (action.status === 'WON') {
+        newStats.won += 1;
+      } else if (action.status === 'LOST') {
+        newStats.lost += 1;
+      } else if (action.status === 'ABANDONED') {
+        newStats.abandoned += 1;
+      }
+
+      return { ...state, currentGame: null, stats: newStats };
     }
   }
 };

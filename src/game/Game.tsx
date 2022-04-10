@@ -8,26 +8,22 @@ import { reducer, useInitialState } from './reducer';
 // TODO: Move createStorageReducer code to separate hook
 // TODO: Test
 // TODO: Rename variables
-const useStorageReducer = createStorageReducer(
-  wordleReducer,
-  {
-    currentGame: null,
-    stats: {
-      won: 0,
-      lost: 0,
-      abandoned: 0,
-    },
-    wordList: [],
+const useStorageReducer = createStorageReducer(wordleReducer, 'wordle-state', {
+  currentGame: null,
+  stats: {
+    won: 0,
+    lost: 0,
+    abandoned: 0,
   },
-  'wordle-state',
-);
+  wordList: [],
+});
 
 export const Game = () => {
   const [wordleState, dispatchStorageAction] = useStorageReducer();
   const initialState = useInitialState(wordleState);
   const [
     {
-      gameOver,
+      gameStatus,
       chosenWord,
       acceptedRows,
       currentRow,
@@ -64,9 +60,15 @@ export const Game = () => {
     wordleState.currentGame?.acceptedWords.length,
   ]);
 
+  useEffect(() => {
+    if (gameStatus !== 'IN_PROGRESS') {
+      dispatchStorageAction({ type: 'END_GAME', status: gameStatus });
+    }
+  }, [dispatchStorageAction, gameStatus]);
+
   const onKey = useCallback(
     (code: KeyCode) => {
-      if (gameOver) {
+      if (gameStatus !== 'IN_PROGRESS') {
         return;
       }
 
@@ -78,7 +80,7 @@ export const Game = () => {
         dispatch({ type: 'LETTER', code });
       }
     },
-    [gameOver, dispatch],
+    [gameStatus, dispatch],
   );
 
   return (

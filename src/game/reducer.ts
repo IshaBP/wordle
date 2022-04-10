@@ -15,8 +15,8 @@ type Action =
 
 export type CurrentRowStatus = 'INITIAL' | 'IN_PROGRESS' | 'INVALID';
 
-interface GameState {
-  gameOver: boolean;
+export interface GameState {
+  gameStatus: 'IN_PROGRESS' | 'WON' | 'LOST' | 'ABANDONED';
   chosenWord: string;
   acceptedRows: AcceptedRows;
   currentRow: CurrentRow;
@@ -63,13 +63,13 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
 
           if (isGuessedWordCorrect(matchResult)) {
             // Game won
-            return { ...updatedState, gameOver: true };
+            return { ...updatedState, gameStatus: 'WON' };
           } else if (currentWordIdx < 5) {
             // Game in progress
             return updatedState;
           } else {
             // Game lost
-            return { ...updatedState, gameOver: true };
+            return { ...updatedState, gameStatus: 'LOST' };
           }
         }
       }
@@ -83,7 +83,7 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
 };
 
 export const useInitialState = (wordleState: WordleState): GameState => {
-  return useMemoOnce(() => {
+  return useMemoOnce((): GameState => {
     if (wordleState.currentGame) {
       const {
         currentGame: { chosenWord, acceptedWords },
@@ -104,7 +104,7 @@ export const useInitialState = (wordleState: WordleState): GameState => {
       }, {});
 
       return {
-        gameOver: false,
+        gameStatus: 'IN_PROGRESS',
         chosenWord: chosenWord,
         acceptedRows,
         currentRow: [],
@@ -113,7 +113,7 @@ export const useInitialState = (wordleState: WordleState): GameState => {
       };
     } else {
       return {
-        gameOver: false,
+        gameStatus: 'IN_PROGRESS',
         chosenWord: getRandomWord(),
         acceptedRows: [],
         currentRow: [],
