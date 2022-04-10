@@ -1,70 +1,41 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
 import { createStorageReducer } from '../data-access/createStorageReducer';
 import { wordleReducer } from '../data-access/wordle-reducer';
 import { reducer, useInitialState } from './reducer';
+import { useUpdateStorage } from './useUpdateStorage';
 
 // TODO: Move createStorageReducer code to separate hook
 // TODO: Test
 // TODO: Rename variables
-const useStorageReducer = createStorageReducer(wordleReducer, 'wordle-state', {
-  currentGame: null,
-  stats: {
-    won: 0,
-    lost: 0,
-    abandoned: 0,
+export const useStorageReducer = createStorageReducer(
+  wordleReducer,
+  'wordle-state',
+  {
+    currentGame: null,
+    stats: {
+      won: 0,
+      lost: 0,
+      abandoned: 0,
+    },
+    wordList: [],
   },
-  wordList: [],
-});
+);
 
 export const Game = () => {
-  const [wordleState, dispatchStorageAction] = useStorageReducer();
+  const [wordleState] = useStorageReducer();
   const initialState = useInitialState(wordleState);
-  const [
-    {
-      gameStatus,
-      chosenWord,
-      acceptedRows,
-      currentRow,
-      currentRowStatus,
-      keyStatusMap,
-    },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [gameState, dispatch] = useReducer(reducer, initialState);
+  useUpdateStorage(gameState);
 
-  useEffect(() => {
-    if (!wordleState.currentGame?.chosenWord) {
-      dispatchStorageAction({
-        type: 'START_GAME',
-        chosenWord,
-      });
-    }
-  }, [chosenWord, dispatchStorageAction, wordleState.currentGame?.chosenWord]);
-
-  useEffect(() => {
-    if (
-      acceptedRows.length > 0 &&
-      acceptedRows.length !== wordleState.currentGame?.acceptedWords.length
-    ) {
-      dispatchStorageAction({
-        type: 'UPDATE_ACCEPTED_WORDS',
-        acceptedWord: acceptedRows[acceptedRows.length - 1]
-          .map((acceptedRow) => acceptedRow.key)
-          .join(''),
-      });
-    }
-  }, [
+  const {
+    gameStatus,
     acceptedRows,
-    dispatchStorageAction,
-    wordleState.currentGame?.acceptedWords.length,
-  ]);
-
-  useEffect(() => {
-    if (gameStatus !== 'IN_PROGRESS') {
-      dispatchStorageAction({ type: 'END_GAME', status: gameStatus });
-    }
-  }, [dispatchStorageAction, gameStatus]);
+    currentRow,
+    currentRowStatus,
+    keyStatusMap,
+  } = gameState;
 
   const onKey = useCallback(
     (code: KeyCode) => {
