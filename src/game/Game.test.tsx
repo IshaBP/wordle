@@ -19,20 +19,20 @@ describe('Game', () => {
 
   describe('Wordboard', () => {
     it('should display Wordboard', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       screen.getByLabelText('wordboard');
     });
 
     it('should display alphabet on Wordboard on pressing it on Keyboard', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('abcde');
 
       matchLetters(0, 'abcde'.split(''));
     });
 
     it('should remove alphabet from Wordboard on pressing backspace on Keyboard', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       userEvent.keyboard('abcde{backspace}');
       expect(getLettersForRow(0)[4]).toHaveTextContent('');
@@ -47,21 +47,21 @@ describe('Game', () => {
     });
 
     it('should keep the row as is on pressing backspace in an empty row', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('{backspace}{backspace}{backspace}');
 
       matchLetters(0, ['', '', '', '', '']);
     });
 
     it('should not submit guess word if less than 5 alphabets are entered and enter is pressed', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('ab{enter}');
 
       expect(mockedWordEngine.match).not.toHaveBeenCalled();
     });
 
     it('should not proceed to next row if less than 5 alphabets are entered and enter is pressed', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       userEvent.keyboard('ab{enter}');
       expect(getLettersForRow(0)[2]).toHaveTextContent('');
@@ -73,7 +73,7 @@ describe('Game', () => {
 
     it('should try to match guess word if 5 alphabets are entered and enter is pressed', () => {
       mockWordEngine('baton');
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('abcde{enter}');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -81,7 +81,7 @@ describe('Game', () => {
     });
 
     it('should not proceed to next row if guess word does not exist in the dictionary', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('abcde{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe('Game', () => {
 
     it('should not proceed to next row when guessed word is completely matching', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('baton{enter}f');
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(1);
@@ -99,7 +99,7 @@ describe('Game', () => {
 
     it('should proceed to next row when guessed word is submitted and it exists in dictionary but is not completely matching', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
       userEvent.keyboard('beads{enter}f');
 
       expect(getLettersForRow(1)[0]).toHaveTextContent('f'); // next alphabet added in the next row
@@ -107,7 +107,7 @@ describe('Game', () => {
 
     it('should change color of all letter tiles once word is submitted', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       const letters = getLettersForRow(0);
       for (let letterIdx = 0; letterIdx < 5; letterIdx++) {
@@ -134,7 +134,7 @@ describe('Game', () => {
 
     it('should not accept input once all 6 guesses are exhausted', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       expect(mockedWordEngine.match).toHaveBeenCalledTimes(0);
 
@@ -155,14 +155,14 @@ describe('Game', () => {
 
   describe('Keyboard', () => {
     it('should display Keyboard', () => {
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       screen.getByLabelText('keyboard');
     });
 
     it('should add button color in keyboard once alphabet is submitted for the first time', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       userEvent.keyboard('beads{enter}');
 
@@ -177,7 +177,7 @@ describe('Game', () => {
 
     it('should update button color if eventual guesses have better match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       userEvent.keyboard('beads{enter}');
 
@@ -194,7 +194,7 @@ describe('Game', () => {
 
     it('should not update button color if eventual guesses have worse match status (MATCH > PARTIAL_MATCH > NO_MATCH)', () => {
       mockWordEngine('baton', true);
-      renderWithProviders(<Game />);
+      renderWithProviders(<Game onGameEnd={() => {}} />);
 
       userEvent.keyboard('baths{enter}');
 

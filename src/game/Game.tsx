@@ -1,9 +1,9 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
 import { createStorageReducer } from '../data-access/createStorageReducer';
 import { wordleReducer } from '../data-access/wordle-reducer';
-import { reducer, useInitialState } from './reducer';
+import { GameState, reducer, useInitialState } from './reducer';
 import { useUpdateStorage } from './useUpdateStorage';
 
 // TODO: Move createStorageReducer code to separate hook
@@ -23,7 +23,11 @@ export const useStorageReducer = createStorageReducer(
   },
 );
 
-export const Game = () => {
+interface GameProps {
+  onGameEnd: (gameStatus: GameState['gameStatus']) => void;
+}
+
+export const Game = ({ onGameEnd }: GameProps) => {
   const [wordleState] = useStorageReducer();
   const initialState = useInitialState(wordleState);
   const [gameState, dispatch] = useReducer(reducer, initialState);
@@ -53,6 +57,12 @@ export const Game = () => {
     },
     [gameStatus, dispatch],
   );
+
+  useEffect(() => {
+    if (gameStatus !== 'IN_PROGRESS') {
+      onGameEnd(gameStatus);
+    }
+  }, [gameStatus, onGameEnd]);
 
   return (
     <FlexBox
