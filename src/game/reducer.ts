@@ -81,14 +81,7 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
         : state;
 
     case 'NEW_GAME':
-      return {
-        gameStatus: 'IN_PROGRESS',
-        chosenWord: getRandomWord(),
-        acceptedRows: [],
-        currentRow: [],
-        keyStatusMap: {},
-        currentRowStatus: 'INITIAL',
-      };
+      return getNewGameState();
   }
 };
 
@@ -122,17 +115,19 @@ export const useInitialState = (wordleState: WordleState): GameState => {
         currentRowStatus: 'INITIAL',
       };
     } else {
-      return {
-        gameStatus: 'IN_PROGRESS',
-        chosenWord: getRandomWord(),
-        acceptedRows: [],
-        currentRow: [],
-        keyStatusMap: {},
-        currentRowStatus: 'INITIAL',
-      };
+      return getNewGameState();
     }
   });
 };
+
+const getNewGameState = (): GameState => ({
+  gameStatus: 'IN_PROGRESS',
+  chosenWord: getRandomWord(),
+  acceptedRows: [],
+  currentRow: [],
+  keyStatusMap: {},
+  currentRowStatus: 'INITIAL',
+});
 
 const isGuessedWordCorrect = (matchResult: MatchStatus[]) =>
   matchResult.every((letterResult) => letterResult === 'MATCH');
