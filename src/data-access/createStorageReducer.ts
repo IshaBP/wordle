@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-type Dispatch<A extends unknown> = (action: A) => void;
+type DispatchStorage<A extends unknown> = (action: A) => void;
 
 // TODO: JsDoc
 // TODO: Test
@@ -8,7 +8,7 @@ export const createStorageReducer = <S extends object, A extends unknown>(
   reducer: (prevState: S, action: A) => S,
   storageKey: string,
   initialState: S,
-): (() => [S, Dispatch<A>]) => {
+): (() => [S, DispatchStorage<A>]) => {
   let state = getSessionData<S>(storageKey) || initialState;
 
   const dispatch = (action: A) => {

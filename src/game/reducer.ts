@@ -4,7 +4,7 @@ import { useMemoOnce } from './useMemoOnce';
 
 type KeyStatusMap = KeyboardProps['keyMatchStatusMap'];
 
-type Action =
+type GameAction =
   | {
       type: 'BKSP' | 'ENT' | 'NEW_GAME';
     }
@@ -24,7 +24,10 @@ export interface GameState {
   keyStatusMap: KeyStatusMap;
 }
 
-export const reducer = (prevState: GameState, action: Action): GameState => {
+export const reducer = (
+  prevState: GameState,
+  action: GameAction,
+): GameState => {
   const { currentRow, acceptedRows, keyStatusMap, chosenWord } = prevState;
 
   const currentLetterIdx = currentRow.length;

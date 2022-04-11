@@ -24,8 +24,8 @@ export const useStorageReducer = createStorageReducer(
 );
 
 export const Game = () => {
-  const [wordleState] = useStorageReducer();
-  const initialState = useInitialState(wordleState);
+  const [wordleStorageState] = useStorageReducer();
+  const initialState = useInitialState(wordleStorageState);
   const [gameState, dispatch] = useReducer(reducer, initialState);
   useUpdateStorage(gameState);
 
