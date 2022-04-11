@@ -7,7 +7,7 @@ export const useUpdateStorage = (gameState: GameState) => {
   const { gameStatus, acceptedRows, chosenWord } = gameState;
 
   useEffect(() => {
-    if (!wordleState.currentGame?.chosenWord) {
+    if (wordleState.currentGame?.chosenWord == null) {
       dispatchStorageAction({
         type: 'START_GAME',
         chosenWord,

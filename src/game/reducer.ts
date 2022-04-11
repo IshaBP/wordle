@@ -85,7 +85,7 @@ export const reducer = (prevState: GameState, action: Action): GameState => {
   }
 };
 
-export const useInitialState = (wordleState: WordleState): GameState => {
+export const useInitialState = (wordleState: WordleStorageState): GameState => {
   return useMemoOnce((): GameState => {
     if (wordleState.currentGame) {
       const {

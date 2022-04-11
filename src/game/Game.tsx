@@ -2,7 +2,7 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { FlexBox } from 'react-styled-flex';
 import { Keyboard, Wordboard } from '../components';
 import { createStorageReducer } from '../data-access/createStorageReducer';
-import { wordleReducer } from '../data-access/wordle-reducer';
+import { wordleStorageReducer } from '../data-access/wordle-storage-reducer';
 import { reducer, useInitialState } from './reducer';
 import { useUpdateStorage } from './useUpdateStorage';
 
@@ -10,7 +10,7 @@ import { useUpdateStorage } from './useUpdateStorage';
 // TODO: Test
 // TODO: Rename variables
 export const useStorageReducer = createStorageReducer(
-  wordleReducer,
+  wordleStorageReducer,
   'wordle-state',
   {
     currentGame: null,

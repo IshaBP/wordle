@@ -1,6 +1,6 @@
 import { GameState } from '../game/reducer';
 
-type Action =
+type WordleStorageAction =
   | {
       type: 'START_GAME';
       chosenWord: string;
@@ -16,10 +16,10 @@ type Action =
 
 // TODO: JsDoc
 // TODO: Test
-export const wordleReducer = (
-  state: WordleState,
-  action: Action,
-): WordleState => {
+export const wordleStorageReducer = (
+  state: WordleStorageState,
+  action: WordleStorageAction,
+): WordleStorageState => {
   switch (action.type) {
     case 'START_GAME':
       return {

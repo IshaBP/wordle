@@ -1,2 +1,2 @@
 export * from './createStorageReducer';
-export * from './wordle-reducer';
+export * from './wordle-storage-reducer';
