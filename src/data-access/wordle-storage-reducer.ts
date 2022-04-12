@@ -14,7 +14,6 @@ type WordleStorageAction =
       status: GameState['gameStatus'];
     };
 
-// TODO: JsDoc
 // TODO: Test
 export const wordleStorageReducer = (
   state: WordleStorageState,

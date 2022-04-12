@@ -33,6 +33,10 @@ export const createStorageReducer = <S extends object, A extends unknown>(
   };
 };
 
+/**
+ * @param storageKey Key with which data has been stored in session storage.
+ * @returns Data if it is present, otherwise returns null.
+ */
 const getSessionData = <T extends object>(storageKey: string): T | null => {
   const sessionData = sessionStorage.getItem(storageKey);
 
@@ -44,6 +48,10 @@ const getSessionData = <T extends object>(storageKey: string): T | null => {
   }
 };
 
+/**
+ * @param storageKey Key with which data has to be stored in session storage.
+ * @param data Data which is to be stored.
+ */
 const setSessionData = <T extends object>(storageKey: string, data: T) => {
   sessionStorage.setItem(storageKey, JSON.stringify(data));
 };
