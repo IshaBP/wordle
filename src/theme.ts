@@ -29,5 +29,3 @@ export const lightTheme = {
     KEY_PRESS: '#545556',
   },
 };
-
-
