@@ -1,5 +1,3 @@
 import '@testing-library/jest-dom';
 
-beforeEach(() => {
-  sessionStorage.clear();
-});
+beforeEach(() => sessionStorage.clear());
